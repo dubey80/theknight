@@ -1,1768 +1,1851 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Shiv Dubey">
-    <title>Secure Hindi-English Dictation</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background 0.5s ease;
-            overflow-x: hidden;
-            position: relative;
-        }
-        
-        body.dark-mode {
-            background: linear-gradient(135deg, #0a122e, #4a0a0a, #0a122e);
-        }
-        
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 25px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 1200px;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            transition: all 0.5s ease;
-            z-index: 10;
-        }
-        
-        body.dark-mode .container {
-            background: rgba(30, 30, 40, 0.95);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(80, 80, 100, 0.3);
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            position: relative;
-            padding-bottom: 25px;
-            border-bottom: 2px solid rgba(26, 42, 108, 0.1);
-            padding-top: 20px;
-        }
-        
-        body.dark-mode .header {
-            border-bottom: 2px solid rgba(100, 100, 150, 0.2);
-        }
-        
-        .made-by {
-            position: absolute;
-            top: -15px;
-            left: 20px;
-            background: linear-gradient(45deg, #1a2a6c, #b21f1f);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 0 0 15px 15px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 10;
-        }
-        
-        .theme-toggle {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            background: rgba(26, 42, 108, 0.1);
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-        
-        .theme-toggle:hover {
-            background: rgba(26, 42, 108, 0.2);
-            transform: rotate(15deg);
-        }
-        
-        body.dark-mode .theme-toggle {
-            background: rgba(200, 200, 255, 0.1);
-        }
-        
-        .header h1 {
-            font-size: 2.8rem;
-            margin: 10px 0 15px;
-            color: #2c3e50;
-            background: linear-gradient(45deg, #1a2a6c, #b21f1f);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            font-weight: 800;
-            transition: all 0.3s ease;
-            padding-top: 10px;
-        }
-        
-        body.dark-mode .header h1 {
-            background: linear-gradient(45deg, #5d8eff, #ff6b6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .header p {
-            color: #5a6268;
-            font-size: 1.3rem;
-            max-width: 700px;
-            margin: 0 auto;
-            font-weight: 400;
-            transition: color 0.3s ease;
-            line-height: 1.6;
-        }
-        
-        body.dark-mode .header p {
-            color: #b0b8c0;
-        }
-        
-        .content-container {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .left-panel {
-            flex: 1;
-        }
-        
-        .right-panel {
-            flex: 1;
-        }
-        
-        .language-selector {
-            display: flex;
-            background-color: #f1f2f6;
-            border-radius: 50px;
-            padding: 8px;
-            margin-bottom: 30px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-        
-        body.dark-mode .language-selector {
-            background-color: #2a2a3a;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .lang-btn {
-            flex: 1;
-            padding: 16px 25px;
-            border: none;
-            border-radius: 50px;
-            background: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.2rem;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            color: #2c3e50;
-        }
-        
-        body.dark-mode .lang-btn {
-            color: #e0e0f0;
-        }
-        
-        .lang-btn:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, #ff6b6b, #ff8e53);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
-        }
-        
-        .lang-btn.active {
-            color: white;
-        }
-        
-        .lang-btn.active:before {
-            opacity: 1;
-        }
-        
-        .lang-btn span {
-            position: relative;
-            transition: transform 0.3s ease;
-        }
-        
-        .lang-btn:hover span {
-            transform: translateY(-3px);
-        }
-        
-        .input-section {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: inset 0 3px 8px rgba(0,0,0,0.05);
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-            flex-wrap: wrap;
-        }
-        
-        body.dark-mode .input-section {
-            background: #2a2a3a;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .input-section input {
-            flex: 1;
-            padding: 18px 28px;
-            border: 2px solid #e0e0e0;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-            font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif;
-            min-width: 200px;
-        }
-        
-        body.dark-mode .input-section input {
-            background: #1e1e2a;
-            border: 2px solid #3a3a4a;
-            color: #f0f0f8;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-        }
-        
-        .input-section input:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
-        }
-        
-        body.dark-mode .input-section input:focus {
-            border-color: #5d8eff;
-            box-shadow: 0 0 15px rgba(93, 142, 255, 0.5);
-        }
-        
-        .btn {
-            padding: 18px 40px;
-            background: linear-gradient(to right, #3498db, #2ecc71);
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-        
-        .btn:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, #2ecc71, #3498db);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
-        }
-        
-        .btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.6);
-        }
-        
-        .btn:hover:after {
-            opacity: 1;
-        }
-        
-        .btn:active {
-            transform: translateY(1px);
-        }
-        
-        .btn i {
-            transition: transform 0.3s ease;
-        }
-        
-        .btn:hover i {
-            transform: scale(1.2);
-        }
-        
-        .btn-play-all {
-            background: linear-gradient(to right, #9b59b6, #8e44ad);
-            margin-top: 25px;
-            width: 100%;
-            padding: 22px;
-            font-size: 1.3rem;
-            position: relative;
-        }
-        
-        .btn-play-all:after {
-            background: linear-gradient(to right, #8e44ad, #9b59b6);
-        }
-        
-        .words-container {
-            background-color: #f8f9fa;
-            border-radius: 25px;
-            padding: 30px;
-            max-height: 500px;
-            overflow-y: auto;
-            box-shadow: inset 0 3px 8px rgba(0,0,0,0.05);
-            border: 1px solid #e9ecef;
-            scrollbar-width: thin;
-            scrollbar-color: #3498db #f1f2f6;
-            transition: all 0.3s ease;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
-        body.dark-mode .words-container {
-            background: #2a2a3a;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            scrollbar-color: #5d8eff #2a2a3a;
-        }
-        
-        .words-container::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        .words-container::-webkit-scrollbar-track {
-            background: #f1f2f6;
-            border-radius: 10px;
-        }
-        
-        body.dark-mode .words-container::-webkit-scrollbar-track {
-            background: #2a2a3a;
-        }
-        
-        .words-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, #3498db, #2ecc71);
-            border-radius: 10px;
-        }
-        
-        body.dark-mode .words-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, #5d8eff, #8e44ad);
-        }
-        
-        .word-card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        body.dark-mode .word-card {
-            background: #333345;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .word-card:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            transition: width 0.3s ease;
-        }
-        
-        .word-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        body.dark-mode .word-card:hover {
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-        }
-        
-        .word-card.hindi:before {
-            background: linear-gradient(to bottom, #e74c3c, #c0392b);
-        }
-        
-        .word-card.english:before {
-            background: linear-gradient(to bottom, #3498db, #2980b9);
-        }
-        
-        .word-card.speaking {
-            animation: pulse 1.5s infinite;
-            background: linear-gradient(to right, rgba(227, 242, 253, 0.3), rgba(255, 255, 255, 0.7));
-        }
-        
-        body.dark-mode .word-card.speaking {
-            background: linear-gradient(to right, rgba(30, 40, 70, 0.5), rgba(60, 60, 90, 0.8));
-        }
-        
-        .word-card.speaking:before {
-            width: 8px;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(52, 152, 219, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
-        }
-        
-        .word-text {
-            font-size: 1.8rem;
-            font-weight: 600;
-            padding-left: 15px;
-            font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif;
-            transition: color 0.3s ease;
-            margin-bottom: 20px;
-        }
-        
-        body.dark-mode .word-text {
-            color: #f0f0f8;
-        }
-        
-        .word-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-        }
-        
-        .action-btn {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.15);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-        
-        .action-btn:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.2);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
-        }
-        
-        .action-btn:hover:after {
-            opacity: 1;
-        }
-        
-        .action-btn:hover {
-            transform: scale(1.15);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-        }
-        
-        .play-btn {
-            background: linear-gradient(to bottom, #2ecc71, #27ae60);
-            color: white;
-        }
-        
-        .delete-btn {
-            background: linear-gradient(to bottom, #e74c3c, #c0392b);
-            color: white;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 50px 20px;
-            color: #6c757d;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.7);
-            transition: all 0.3s ease;
-            grid-column: 1 / -1;
-        }
-        
-        body.dark-mode .empty-state {
-            background: rgba(40, 40, 55, 0.7);
-            color: #a0a8b0;
-        }
-        
-        .empty-state i {
-            font-size: 6rem;
-            margin-bottom: 25px;
-            color: #adb5bd;
-            opacity: 0.8;
-            transition: transform 0.5s ease;
-        }
-        
-        .empty-state:hover i {
-            transform: rotate(10deg) scale(1.1);
-        }
-        
-        .empty-state p {
-            font-size: 1.5rem;
-            margin-top: 15px;
-            font-weight: 500;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            gap: 30px;
-            margin-top: 30px;
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-        
-        body.dark-mode .controls {
-            background: #2a2a3a;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .speed-control {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            background: linear-gradient(to right, #e3f2fd, #f1f8fe);
-            padding: 18px 35px;
-            border-radius: 50px;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            flex: 1;
-        }
-        
-        body.dark-mode .speed-control {
-            background: linear-gradient(to right, #1a1a2a, #252538);
-        }
-        
-        .speed-control label {
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: color 0.3s ease;
-            min-width: 120px;
-        }
-        
-        body.dark-mode .speed-control label {
-            color: #e0e0f0;
-        }
-        
-        .speed-control input {
-            width: 250px;
-            height: 15px;
-            -webkit-appearance: none;
-            background: linear-gradient(to right, #1a2a6c, #3498db);
-            border-radius: 10px;
-            outline: none;
-        }
-        
-        body.dark-mode .speed-control input {
-            background: linear-gradient(to right, #0a122e, #5d8eff);
-        }
-        
-        .speed-control input::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: white;
-            border: 4px solid #3498db;
-            cursor: pointer;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-            transition: all 0.2s ease;
-        }
-        
-        body.dark-mode .speed-control input::-webkit-slider-thumb {
-            border: 4px solid #5d8eff;
-            background: #e0e0f0;
-        }
-        
-        .speed-control input::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
-        
-        #speedValue {
-            min-width: 65px;
-            font-weight: 700;
-            color: #1a2a6c;
-            font-size: 1.4rem;
-            background: rgba(26, 42, 108, 0.1);
-            padding: 8px 15px;
-            border-radius: 30px;
-            transition: all 0.3s ease;
-        }
-        
-        body.dark-mode #speedValue {
-            color: #5d8eff;
-            background: rgba(93, 142, 255, 0.1);
-        }
-        
-        .instructions {
-            background: #f8f9fa;
-            border-radius: 25px;
-            padding: 30px 35px;
-            margin-top: 35px;
-            font-size: 1.2rem;
-            line-height: 1.7;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid #e9ecef;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        body.dark-mode .instructions {
-            background: #2a2a3a;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .instructions:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 6px;
-            height: 100%;
-            background: linear-gradient(to bottom, #3498db, #2ecc71);
-        }
-        
-        body.dark-mode .instructions:before {
-            background: linear-gradient(to bottom, #5d8eff, #8e44ad);
-        }
-        
-        .instructions h3 {
-            margin-bottom: 20px;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
-        }
-        
-        body.dark-mode .instructions h3 {
-            color: #e0e0f0;
-        }
-        
-        .instructions ul {
-            padding-left: 35px;
-        }
-        
-        .instructions li {
-            margin-bottom: 15px;
-            position: relative;
-            color: #5a6268;
-            transition: color 0.3s ease;
-            font-size: 1.15rem;
-        }
-        
-        body.dark-mode .instructions li {
-            color: #b0b8c0;
-        }
-        
-        .instructions li:before {
-            content: '•';
-            color: #1a2a6c;
-            font-weight: bold;
-            position: absolute;
-            left: -25px;
-            top: 0;
-            transition: color 0.3s ease;
-        }
-        
-        body.dark-mode .instructions li:before {
-            color: #5d8eff;
-        }
-        
-        .instructions li strong {
-            color: #1a2a6c;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-        
-        body.dark-mode .instructions li strong {
-            color: #5d8eff;
-        }
-        
-        .preset-speeds {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 25px;
-            flex-wrap: wrap;
-        }
-        
-        .preset-btn {
-            padding: 14px 25px;
-            background: linear-gradient(to right, #9b59b6, #8e44ad);
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
-            font-size: 1.1rem;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-        
-        .preset-btn:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, #8e44ad, #9b59b6);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
-        }
-        
-        .preset-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.3);
-        }
-        
-        .preset-btn:hover:after {
-            opacity: 1;
-        }
-        
-        .preset-btn.active {
-            background: linear-gradient(to right, #e74c3c, #c0392b);
-            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.3);
-        }
-        
-        .preset-btn.active:after {
-            background: linear-gradient(to right, #c0392b, #e74c3c);
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 35px;
-            color: #6c757d;
-            font-size: 1.1rem;
-            padding: 20px;
-            border-top: 1px solid rgba(0,0,0,0.1);
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        body.dark-mode footer {
-            color: #a0a8b0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .security-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            font-size: 1.6rem;
-            text-align: center;
-            padding: 30px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-        }
-        
-        .security-overlay.show {
-            opacity: 1;
-            pointer-events: all;
-        }
-        
-        .security-overlay i {
-            font-size: 5rem;
-            margin-bottom: 25px;
-            color: #ff6b6b;
-        }
-        
-        .security-overlay p {
-            max-width: 700px;
-            margin-bottom: 35px;
-            line-height: 1.7;
-        }
-        
-        .security-overlay button {
-            padding: 15px 35px;
-            background: #3498db;
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .security-overlay button:hover {
-            background: #2ecc71;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .protection-shield {
-            position: fixed;
-            top: 25px;
-            right: 25px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            backdrop-filter: blur(5px);
-            animation: pulse 2s infinite;
-        }
-        
-        .protection-shield i {
-            font-size: 2.2rem;
-            color: #ff6b6b;
-        }
-        
-        .copy-protect {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 50;
-            pointer-events: none;
-        }
-        
-        .watermark {
-            position: absolute;
-            opacity: 0.02;
-            font-size: 8rem;
-            font-weight: 900;
-            color: #ff0000;
-            transform: rotate(-45deg);
-            pointer-events: none;
-            user-select: none;
-            z-index: 1;
-            text-shadow: 0 0 5px rgba(0,0,0,0.1);
-            animation: float 20s infinite linear;
-        }
-        
-        .watermark-2 {
-            font-size: 6rem;
-            opacity: 0.015;
-            animation: floatReverse 25s infinite linear;
-        }
-        
-        .watermark-3 {
-            font-size: 7rem;
-            opacity: 0.018;
-            animation: float 30s infinite linear;
-        }
-        
-        @keyframes float {
-            0% { transform: rotate(-45deg) translateX(-100px) translateY(-100px); }
-            100% { transform: rotate(-45deg) translateX(100px) translateY(100px); }
-        }
-        
-        @keyframes floatReverse {
-            0% { transform: rotate(30deg) translateX(100px) translateY(100px); }
-            100% { transform: rotate(30deg) translateX(-100px) translateY(-100px); }
-        }
-        
-        /* New styles for Google Lens integration */
-        .lens-btn {
-            background: linear-gradient(to right, #FF5722, #FF9800);
-            padding: 18px 35px;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 15px rgba(255, 87, 34, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            border: none;
-        }
-        
-        .lens-btn:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, #FF9800, #FF5722);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
-        }
-        
-        .lens-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(255, 87, 34, 0.6);
-        }
-        
-        .lens-btn:hover:after {
-            opacity: 1;
-        }
-        
-        .lens-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .lens-modal.show {
-            display: flex;
-        }
-        
-        .lens-content {
-            background: white;
-            border-radius: 25px;
-            padding: 40px;
-            width: 90%;
-            max-width: 700px;
-            position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        body.dark-mode .lens-content {
-            background: #2a2a3a;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #e74c3c;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: white;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-        
-        .close-modal:hover {
-            background: #c0392b;
-            transform: rotate(90deg);
-        }
-        
-        .lens-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            margin-top: 30px;
-        }
-        
-        .lens-step {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            padding: 20px;
-            border-radius: 20px;
-            background: rgba(26, 42, 108, 0.05);
-        }
-        
-        body.dark-mode .lens-step {
-            background: rgba(93, 142, 255, 0.1);
-        }
-        
-        .step-number {
-            background: linear-gradient(to right, #1a2a6c, #3498db);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.3rem;
-            flex-shrink: 0;
-        }
-        
-        .step-content {
-            flex: 1;
-        }
-        
-        .step-content h4 {
-            margin-bottom: 10px;
-            color: #1a2a6c;
-        }
-        
-        body.dark-mode .step-content h4 {
-            color: #5d8eff;
-        }
-        
-        .step-content p {
-            color: #5a6268;
-            line-height: 1.6;
-        }
-        
-        body.dark-mode .step-content p {
-            color: #b0b8c0;
-        }
-        
-        .lens-app-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 15px 30px;
-            background: linear-gradient(to right, #1a2a6c, #3498db);
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .lens-app-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(26, 42, 108, 0.4);
-        }
-        
-        .input-row {
-            display: flex;
-            gap: 15px;
-            width: 100%;
-        }
-        
-        .input-row .btn {
-            flex: 1;
-        }
-        
-        .input-row .lens-btn {
-            flex: 1;
-        }
-        
-        @media (max-width: 1200px) {
-            .content-container {
-                flex-direction: column;
-            }
-            
-            .words-container {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 25px;
-            }
-            
-            .header h1 {
-                font-size: 2.2rem;
-                margin-top: 15px;
-            }
-            
-            .made-by {
-                font-size: 1rem;
-                padding: 6px 15px;
-                top: -12px;
-                left: 10px;
-            }
-            
-            .theme-toggle {
-                top: 15px;
-                right: 15px;
-                width: 45px;
-                height: 45px;
-            }
-            
-            .input-section {
-                flex-direction: column;
-            }
-            
-            .word-text {
-                font-size: 1.5rem;
-            }
-            
-            .controls {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .preset-speeds {
-                gap: 10px;
-            }
-            
-            .preset-btn {
-                padding: 12px 20px;
-                font-size: 1rem;
-            }
-            
-            .speed-control {
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            .speed-control input {
-                width: 180px;
-            }
-            
-            .input-row {
-                flex-direction: column;
-            }
-        }
-        
-        /* Animation for word cards when added */
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .word-card {
-            animation: slideIn 0.4s ease forwards;
-        }
-        
-        /* Hindi font styling */
-        .hindi-font {
-            font-family: 'Noto Sans Devanagari', sans-serif;
-            font-weight: 500;
-        }
-        
-        /* Print screen protection */
-        @media print {
-            * {
-                display: none !important;
-            }
-        }
-        
-        /* Security animations */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-            20%, 40%, 60%, 80% { transform: translateX(10px); }
-        }
-        
-        .shake {
-            animation: shake 0.5s;
-        }
-        
-        @keyframes flash {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
-        }
-        
-        .flash {
-            animation: flash 0.3s 3;
-        }
-        
-        .visit-counter {
-            background: linear-gradient(to right, #3498db, #2ecc71);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 15px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hindi-English Dictation Master</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+      min-height: 100vh;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background 0.5s ease;
+      overflow-x: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    body.dark-mode {
+      background: linear-gradient(135deg, #0a122e, #4a0a0a, #0a122e);
+    }
+    
+    /* Main Container */
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 25px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 1200px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      transition: all 0.5s ease;
+      z-index: 10;
+    }
+    
+    body.dark-mode .container {
+      background: rgba(30, 30, 40, 0.95);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(80, 80, 100, 0.3);
+    }
+    
+    /* Header Styles */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+      padding-bottom: 25px;
+      border-bottom: 2px solid rgba(26, 42, 108, 0.1);
+      padding-top: 20px;
+    }
+    
+    body.dark-mode .header {
+      border-bottom: 2px solid rgba(100, 100, 150, 0.2);
+    }
+    
+    .made-by {
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      background: linear-gradient(45deg, #1a2a6c, #b21f1f);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 0 0 15px 15px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+    
+    .theme-toggle {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      background: rgba(26, 42, 108, 0.1);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .theme-toggle:hover {
+      background: rgba(26, 42, 108, 0.2);
+      transform: rotate(15deg);
+    }
+    
+    body.dark-mode .theme-toggle {
+      background: rgba(200, 200, 255, 0.1);
+    }
+    
+    .header h1 {
+      font-size: 2.8rem;
+      margin: 10px 0 15px;
+      color: #2c3e50;
+      background: linear-gradient(45deg, #1a2a6c, #b21f1f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      font-weight: 800;
+      transition: all 0.3s ease;
+      padding-top: 10px;
+    }
+    
+    body.dark-mode .header h1 {
+      background: linear-gradient(45deg, #5d8eff, #ff6b6b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .header p {
+      color: #5a6268;
+      font-size: 1.3rem;
+      max-width: 700px;
+      margin: 0 auto;
+      font-weight: 400;
+      transition: color 0.3s ease;
+      line-height: 1.6;
+    }
+    
+    body.dark-mode .header p {
+      color: #b0b8c0;
+    }
+    
+    /* User Section Styles */
+    .user-section {
+      position: absolute;
+      top: 25px;
+      right: 90px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    
+    .user-btn {
+      padding: 12px 25px;
+      background: linear-gradient(to right, #8e44ad, #9b59b6);
+      border: none;
+      border-radius: 50px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .user-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: white;
+      background: rgba(26, 42, 108, 0.3);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 500;
+      backdrop-filter: blur(5px);
+    }
+    
+    body.dark-mode .user-info {
+      background: rgba(93, 142, 255, 0.2);
+    }
+    
+    .logout-btn {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .logout-btn:hover {
+      transform: rotate(15deg);
+    }
+    
+    /* Content Layout */
+    .content-container {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .left-panel {
+      flex: 1;
+    }
+    
+    .right-panel {
+      flex: 1;
+    }
+    
+    /* Language Selector */
+    .language-selector {
+      display: flex;
+      background-color: #f1f2f6;
+      border-radius: 50px;
+      padding: 8px;
+      margin-bottom: 30px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    
+    body.dark-mode .language-selector {
+      background-color: #2a2a3a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .lang-btn {
+      flex: 1;
+      padding: 16px 25px;
+      border: none;
+      border-radius: 50px;
+      background: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      color: #2c3e50;
+    }
+    
+    body.dark-mode .lang-btn {
+      color: #e0e0f0;
+    }
+    
+    .lang-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, #ff6b6b, #ff8e53);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    
+    .lang-btn.active {
+      color: white;
+    }
+    
+    .lang-btn.active:before {
+      opacity: 1;
+    }
+    
+    .lang-btn span {
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+    
+    .lang-btn:hover span {
+      transform: translateY(-3px);
+    }
+    
+    /* Input Section */
+    .input-section {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: inset 0 3px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e9ecef;
+      transition: all 0.3s ease;
+      flex-wrap: wrap;
+    }
+    
+    body.dark-mode .input-section {
+      background: #2a2a3a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .input-section input {
+      flex: 1;
+      padding: 18px 28px;
+      border: 2px solid #e0e0e0;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+      font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif;
+      min-width: 200px;
+    }
+    
+    body.dark-mode .input-section input {
+      background: #1e1e2a;
+      border: 2px solid #3a3a4a;
+      color: #f0f0f8;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+    
+    .input-section input:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
+    }
+    
+    body.dark-mode .input-section input:focus {
+      border-color: #5d8eff;
+      box-shadow: 0 0 15px rgba(93, 142, 255, 0.5);
+    }
+    
+    /* Buttons */
+    .btn {
+      padding: 18px 40px;
+      background: linear-gradient(to right, #3498db, #2ecc71);
+      border: none;
+      border-radius: 50px;
+      color: white;
+      font-weight: 600;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .btn:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, #2ecc71, #3498db);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    
+    .btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(52, 152, 219, 0.6);
+    }
+    
+    .btn:hover:after {
+      opacity: 1;
+    }
+    
+    .btn:active {
+      transform: translateY(1px);
+    }
+    
+    .btn i {
+      transition: transform 0.3s ease;
+    }
+    
+    .btn:hover i {
+      transform: scale(1.2);
+    }
+    
+    .btn-play-all {
+      background: linear-gradient(to right, #9b59b6, #8e44ad);
+      margin-top: 25px;
+      width: 100%;
+      padding: 22px;
+      font-size: 1.3rem;
+      position: relative;
+    }
+    
+    .btn-play-all:after {
+      background: linear-gradient(to right, #8e44ad, #9b59b6);
+    }
+    
+    /* Words Container */
+    .words-container {
+      background-color: #f8f9fa;
+      border-radius: 25px;
+      padding: 30px;
+      max-height: 500px;
+      overflow-y: auto;
+      box-shadow: inset 0 3px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e9ecef;
+      scrollbar-width: thin;
+      scrollbar-color: #3498db #f1f2f6;
+      transition: all 0.3s ease;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    body.dark-mode .words-container {
+      background: #2a2a3a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      scrollbar-color: #5d8eff #2a2a3a;
+    }
+    
+    .words-container::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    .words-container::-webkit-scrollbar-track {
+      background: #f1f2f6;
+      border-radius: 10px;
+    }
+    
+    body.dark-mode .words-container::-webkit-scrollbar-track {
+      background: #2a2a3a;
+    }
+    
+    .words-container::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #3498db, #2ecc71);
+      border-radius: 10px;
+    }
+    
+    body.dark-mode .words-container::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #5d8eff, #8e44ad);
+    }
+    
+    /* Word Card */
+    .word-card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    body.dark-mode .word-card {
+      background: #333345;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .word-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+    
+    .word-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    body.dark-mode .word-card:hover {
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    .word-card.hindi:before {
+      background: linear-gradient(to bottom, #e74c3c, #c0392b);
+    }
+    
+    .word-card.english:before {
+      background: linear-gradient(to bottom, #3498db, #2980b9);
+    }
+    
+    .word-card.speaking {
+      animation: pulse 1.5s infinite;
+      background: linear-gradient(to right, rgba(227, 242, 253, 0.3), rgba(255, 255, 255, 0.7));
+    }
+    
+    body.dark-mode .word-card.speaking {
+      background: linear-gradient(to right, rgba(30, 40, 70, 0.5), rgba(60, 60, 90, 0.8));
+    }
+    
+    .word-card.speaking:before {
+      width: 8px;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4); }
+      70% { box-shadow: 0 0 0 15px rgba(52, 152, 219, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+    }
+    
+    .word-text {
+      font-size: 1.8rem;
+      font-weight: 600;
+      padding-left: 15px;
+      font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif;
+      transition: color 0.3s ease;
+      margin-bottom: 20px;
+    }
+    
+    body.dark-mode .word-text {
+      color: #f0f0f8;
+    }
+    
+    .word-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+    }
+    
+    .action-btn {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .action-btn:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.2);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    
+    .action-btn:hover:after {
+      opacity: 1;
+    }
+    
+    .action-btn:hover {
+      transform: scale(1.15);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    }
+    
+    .play-btn {
+      background: linear-gradient(to bottom, #2ecc71, #27ae60);
+      color: white;
+    }
+    
+    .delete-btn {
+      background: linear-gradient(to bottom, #e74c3c, #c0392b);
+      color: white;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      color: #6c757d;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.7);
+      transition: all 0.3s ease;
+      grid-column: 1 / -1;
+    }
+    
+    body.dark-mode .empty-state {
+      background: rgba(40, 40, 55, 0.7);
+      color: #a0a8b0;
+    }
+    
+    .empty-state i {
+      font-size: 6rem;
+      margin-bottom: 25px;
+      color: #adb5bd;
+      opacity: 0.8;
+      transition: transform 0.5s ease;
+    }
+    
+    .empty-state:hover i {
+      transform: rotate(10deg) scale(1.1);
+    }
+    
+    .empty-state p {
+      font-size: 1.5rem;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+    
+    /* Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      margin-top: 30px;
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border: 1px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+    
+    body.dark-mode .controls {
+      background: #2a2a3a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      background: linear-gradient(to right, #e3f2fd, #f1f8fe);
+      padding: 18px 35px;
+      border-radius: 50px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      flex: 1;
+    }
+    
+    body.dark-mode .speed-control {
+      background: linear-gradient(to right, #1a1a2a, #252538);
+    }
+    
+    .speed-control label {
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: color 0.3s ease;
+      min-width: 120px;
+    }
+    
+    body.dark-mode .speed-control label {
+      color: #e0e0f0;
+    }
+    
+    .speed-control input {
+      width: 250px;
+      height: 15px;
+      -webkit-appearance: none;
+      background: linear-gradient(to right, #1a2a6c, #3498db);
+      border-radius: 10px;
+      outline: none;
+    }
+    
+    body.dark-mode .speed-control input {
+      background: linear-gradient(to right, #0a122e, #5d8eff);
+    }
+    
+    .speed-control input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: white;
+      border: 4px solid #3498db;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+      transition: all 0.2s ease;
+    }
+    
+    body.dark-mode .speed-control input::-webkit-slider-thumb {
+      border: 4px solid #5d8eff;
+      background: #e0e0f0;
+    }
+    
+    .speed-control input::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    
+    #speedValue {
+      min-width: 65px;
+      font-weight: 700;
+      color: #1a2a6c;
+      font-size: 1.4rem;
+      background: rgba(26, 42, 108, 0.1);
+      padding: 8px 15px;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+    }
+    
+    body.dark-mode #speedValue {
+      color: #5d8eff;
+      background: rgba(93, 142, 255, 0.1);
+    }
+    
+    /* Instructions */
+    .instructions {
+      background: #f8f9fa;
+      border-radius: 25px;
+      padding: 30px 35px;
+      margin-top: 35px;
+      font-size: 1.2rem;
+      line-height: 1.7;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border: 1px solid #e9ecef;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    body.dark-mode .instructions {
+      background: #2a2a3a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .instructions:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 100%;
+      background: linear-gradient(to bottom, #3498db, #2ecc71);
+    }
+    
+    body.dark-mode .instructions:before {
+      background: linear-gradient(to bottom, #5d8eff, #8e44ad);
+    }
+    
+    .instructions h3 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 1.5rem;
+      transition: color 0.3s ease;
+    }
+    
+    body.dark-mode .instructions h3 {
+      color: #e0e0f0;
+    }
+    
+    .instructions ul {
+      padding-left: 35px;
+    }
+    
+    .instructions li {
+      margin-bottom: 15px;
+      position: relative;
+      color: #5a6268;
+      transition: color 0.3s ease;
+      font-size: 1.15rem;
+    }
+    
+    body.dark-mode .instructions li {
+      color: #b0b8c0;
+    }
+    
+    .instructions li:before {
+      content: '•';
+      color: #1a2a6c;
+      font-weight: bold;
+      position: absolute;
+      left: -25px;
+      top: 0;
+      transition: color 0.3s ease;
+    }
+    
+    body.dark-mode .instructions li:before {
+      color: #5d8eff;
+    }
+    
+    .instructions li strong {
+      color: #1a2a6c;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    
+    body.dark-mode .instructions li strong {
+      color: #5d8eff;
+    }
+    
+    /* Preset Speeds */
+    .preset-speeds {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+    
+    .preset-btn {
+      padding: 14px 25px;
+      background: linear-gradient(to right, #9b59b6, #8e44ad);
+      border: none;
+      border-radius: 50px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .preset-btn:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, #8e44ad, #9b59b6);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    
+    .preset-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+    }
+    
+    .preset-btn:hover:after {
+      opacity: 1;
+    }
+    
+    .preset-btn.active {
+      background: linear-gradient(to right, #e74c3c, #c0392b);
+      box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.3);
+    }
+    
+    .preset-btn.active:after {
+      background: linear-gradient(to right, #c0392b, #e74c3c);
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 35px;
+      color: #6c757d;
+      font-size: 1.1rem;
+      padding: 20px;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    body.dark-mode footer {
+      color: #a0a8b0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Google Lens Button */
+    .lens-btn {
+      background: linear-gradient(to right, #FF5722, #FF9800);
+      padding: 18px 35px;
+      border-radius: 50px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 15px rgba(255, 87, 34, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      border: none;
+      width: 100%;
+      margin-top: 15px;
+    }
+    
+    .lens-btn:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, #FF9800, #FF5722);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    
+    .lens-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(255, 87, 34, 0.6);
+    }
+    
+    .lens-btn:hover:after {
+      opacity: 1;
+    }
+    
+    /* Authentication Modal */
+    .auth-modal {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    
+    .auth-modal.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .auth-content {
+      background: white;
+      border-radius: 25px;
+      padding: 40px;
+      width: 90%;
+      max-width: 450px;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      transform: translateY(30px);
+      transition: transform 0.4s ease;
+    }
+    
+    .auth-modal.show .auth-content {
+      transform: translateY(0);
+    }
+    
+    body.dark-mode .auth-content {
+      background: #2a2a3a;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #e74c3c;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+    
+    .close-modal:hover {
+      background: #c0392b;
+      transform: rotate(90deg);
+    }
+    
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+    
+    .form-title {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #1a2a6c;
+      font-size: 2rem;
+    }
+    
+    body.dark-mode .form-title {
+      color: #5d8eff;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .form-group label {
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    body.dark-mode .form-group label {
+      color: #e0e0f0;
+    }
+    
+    .form-group input {
+      padding: 16px 25px;
+      border-radius: 50px;
+      border: 2px solid #e0e0e0;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+    
+    body.dark-mode .form-group input {
+      background: #1e1e2a;
+      border: 2px solid #3a3a4a;
+      color: #f0f0f8;
+    }
+    
+    .form-group input:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
+    }
+    
+    body.dark-mode .form-group input:focus {
+      border-color: #5d8eff;
+      box-shadow: 0 0 15px rgba(93, 142, 255, 0.5);
+    }
+    
+    .form-toggle {
+      text-align: center;
+      margin-top: 15px;
+      color: #5a6268;
+    }
+    
+    body.dark-mode .form-toggle {
+      color: #b0b8c0;
+    }
+    
+    .form-toggle a {
+      color: #1a2a6c;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    body.dark-mode .form-toggle a {
+      color: #5d8eff;
+    }
+    
+    .form-message {
+      padding: 15px;
+      border-radius: 15px;
+      margin-top: 15px;
+      text-align: center;
+      display: none;
+    }
+    
+    .form-message.error {
+      background: rgba(231, 76, 60, 0.2);
+      color: #c0392b;
+    }
+    
+    .form-message.success {
+      background: rgba(46, 204, 113, 0.2);
+      color: #27ae60;
+    }
+    
+    body.dark-mode .form-message.error {
+      background: rgba(231, 76, 60, 0.3);
+      color: #ff8a80;
+    }
+    
+    body.dark-mode .form-message.success {
+      background: rgba(46, 204, 113, 0.3);
+      color: #69f0ae;
+    }
+    
+    /* Animation for word cards when added */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .word-card {
+      animation: slideIn 0.4s ease forwards;
+    }
+    
+    /* Hindi font styling */
+    .hindi-font {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      font-weight: 500;
+    }
+    
+    /* Print screen protection */
+    @media print {
+      * {
+        display: none !important;
+      }
+    }
+    
+    /* Security animations */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+      20%, 40%, 60%, 80% { transform: translateX(10px); }
+    }
+    
+    .shake {
+      animation: shake 0.5s;
+    }
+    
+    @keyframes flash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+    
+    .flash {
+      animation: flash 0.3s 3;
+    }
+    
+    .visit-counter {
+      background: linear-gradient(to right, #3498db, #2ecc71);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 15px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+      .content-container {
+        flex-direction: column;
+      }
+      
+      .words-container {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 25px;
+      }
+      
+      .header h1 {
+        font-size: 2.2rem;
+        margin-top: 15px;
+      }
+      
+      .made-by {
+        font-size: 1rem;
+        padding: 6px 15px;
+        top: -12px;
+        left: 10px;
+      }
+      
+      .theme-toggle {
+        top: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+      }
+      
+      .user-section {
+        top: 15px;
+        right: 70px;
+      }
+      
+      .user-btn {
+        padding: 10px 15px;
+        font-size: 1rem;
+      }
+      
+      .input-section {
+        flex-direction: column;
+      }
+      
+      .word-text {
+        font-size: 1.5rem;
+      }
+      
+      .controls {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .preset-speeds {
+        gap: 10px;
+      }
+      
+      .preset-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+      }
+      
+      .speed-control {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .speed-control input {
+        width: 180px;
+      }
+      
+      .lens-btn {
+        padding: 15px;
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="security-overlay" id="securityOverlay">
-        <i class="fas fa-shield-alt"></i>
-        <h2>Security Alert</h2>
-        <p>This content is protected. Screenshots and copying are strictly prohibited.</p>
-        <button id="closeOverlayBtn">I Understand</button>
-    </div>
-    
-    <div class="lens-modal" id="lensModal">
-        <div class="lens-content">
-            <button class="close-modal" id="closeLensModal">
-                <i class="fas fa-times"></i>
-            </button>
-            <h2><i class="fas fa-camera"></i> Add Words with Google Lens</h2>
-            <p>Easily capture words from your books and add them directly to your dictation practice:</p>
-            
-            <div class="lens-steps">
-                <div class="lens-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>Install Google Lens</h4>
-                        <p>If you don't have it already, download the Google Lens app from your app store.</p>
-                        <a href="https://lens.google" target="_blank" class="lens-app-link">
-                            <i class="fab fa-google"></i> Get Google Lens
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="lens-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h4>Capture Text</h4>
-                        <p>Open Google Lens, point your camera at the text in your book, and select the words you want to practice.</p>
-                    </div>
-                </div>
-                
-                <div class="lens-step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h4>Copy to Dictation Tool</h4>
-                        <p>Tap the "Copy text" option in Google Lens, then paste it into the input field above.</p>
-                    </div>
-                </div>
-                
-                <div class="lens-step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h4>Practice Dictation</h4>
-                        <p>Add the words and use the playback features to practice writing them as they're dictated.</p>
-                    </div>
-                </div>
-            </div>
+  <!-- Authentication Modal -->
+  <div class="auth-modal" id="authModal">
+    <div class="auth-content">
+      <button class="close-modal" id="closeAuthModal">
+        <i class="fas fa-times"></i>
+      </button>
+      <h2 class="form-title"><i class="fas fa-user-shield"></i> Secure Access</h2>
+      <form class="auth-form" id="authForm">
+        <div class="form-group">
+          <label for="username"><i class="fas fa-user"></i> Username</label>
+          <input type="text" id="username" placeholder="Enter your username" required>
         </div>
-    </div>
-    
-    <div class="protection-shield">
-        <i class="fas fa-shield-alt"></i>
-    </div>
-    
-    <!-- Hidden watermarks throughout the page -->
-    <div class="watermark" style="top: 10%; left: 5%;">Made by Shiv Dubey</div>
-    <div class="watermark watermark-2" style="top: 30%; left: 70%;">Made by Shiv Dubey</div>
-    <div class="watermark watermark-3" style="top: 60%; left: 40%;">Made by Shiv Dubey</div>
-    <div class="watermark" style="top: 80%; left: 20%;">Made by Shiv Dubey</div>
-    <div class="watermark watermark-2" style="top: 45%; left: 85%;">Made by Shiv Dubey</div>
-    
-    <div class="copy-protect"></div>
-    
-    <div class="container">
-        <div class="header">
-            <div class="made-by">Made by The Knights</div>
-            <button class="theme-toggle" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <h1>Hindi-English Dictation</h1>
-            <p>Master difficult words for competitive exams like IAS, PCS, UPSI and more</p>
+        <div class="form-group">
+          <label for="password"><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required minlength="4">
         </div>
-        
-        <div class="content-container">
-            <div class="left-panel">
-                <div class="language-selector">
-                    <button class="lang-btn active" id="hindiBtn"><span>Hindi</span></button>
-                    <button class="lang-btn" id="englishBtn"><span>English</span></button>
-                </div>
-                
-                <div class="input-section">
-                    <input type="text" id="wordInput" placeholder="Enter a difficult word...">
-                    <div class="input-row">
-                        <button class="btn" id="addWordBtn">
-                            <i class="fas fa-plus"></i> Add Word
-                        </button>
-                        <button class="lens-btn" id="lensBtn">
-                            <i class="fas fa-camera"></i> Add with Google Lens
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="words-container" id="wordsList">
-                    <div class="empty-state">
-                        <i class="fas fa-book-open"></i>
-                        <p>No words added yet. Add some words to get started!</p>
-                    </div>
-                </div>
-                
-                <button class="btn btn-play-all" id="playAllBtn">
-                    <i class="fas fa-play-circle"></i> Play All Words
-                </button>
-            </div>
-            
-            <div class="right-panel">
-                <div class="controls">
-                    <div class="speed-control">
-                        <label for="speedControl"><i class="fas fa-tachometer-alt"></i> Speed:</label>
-                        <input type="range" id="speedControl" min="0.5" max="2" step="0.1" value="1">
-                        <span id="speedValue">1.0x</span>
-                    </div>
-                </div>
-                
-                <div class="preset-speeds">
-                    <button class="preset-btn" data-speed="0.156">25 WPM</button>
-                    <button class="preset-btn" data-speed="0.125">20 WPM</button>
-                    <button class="preset-btn" data-speed="0.187">30 WPM</button>
-                    <button class="preset-btn" data-speed="0.219">35 WPM</button>
-                </div>
-                
-                <div class="instructions">
-                    <h3><i class="fas fa-graduation-cap"></i> Exam Preparation Guide:</h3>
-                    <ul>
-                        <li><strong>Add challenging words</strong> in your selected language (Hindi or English)</li>
-                        <li><strong>Use Google Lens</strong> to capture words from books and add them directly</li>
-                        <li><strong>Click the play button</strong> next to each word to hear it pronounced</li>
-                        <li><strong>Adjust the speed</strong> to make words easier or more challenging</li>
-                        <li><strong>Use preset buttons</strong> for specific speeds (25, 20, 30, 35 WPM)</li>
-                        <li><strong>Practice writing</strong> the words as you hear them</li>
-                        <li><strong>Delete words</strong> once you've mastered them</li>
-                    </ul>
-                    
-                    <div style="margin-top: 25px; padding: 20px; background: rgba(26, 42, 108, 0.05); border-radius: 20px;">
-                        <h4><i class="fas fa-shield-alt"></i> Security Features:</h4>
-                        <p>This application includes advanced security measures to protect your content:</p>
-                        <ul>
-                            <li>Screenshot detection and prevention</li>
-                            <li>Copy protection for all text</li>
-                            <li>Right-click context menu disabled</li>
-                            <li>Visual watermarking</li>
-                            <li>Print protection</li>
-                            <li>Screen flash effect when security is triggered</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        <div class="form-buttons">
+          <button type="button" id="registerBtn" class="btn" style="background: linear-gradient(to right, #9b59b6, #8e44ad);">
+            <i class="fas fa-user-plus"></i> Register
+          </button>
+          <button type="button" id="loginBtn" class="btn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
         </div>
-        
-        <footer>
-            <i class="fas fa-shield-alt"></i> Protected Content | 
-            <i class="fas fa-copyright"></i> 2024 SecureDictation | 
-            <i class="fas fa-info-circle"></i> For best results, use Chrome or Edge browsers
-            
-            <div class="visit-counter">
-                <i class="fas fa-eye"></i> Visits: <span id="visitCount">0</span>
-            </div>
-        </footer>
+        <div id="authMessage" class="form-message"></div>
+      </form>
+      <div class="form-toggle">
+        <p>Secure your progress with a personal account</p>
+      </div>
     </div>
+  </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM elements
-            const wordInput = document.getElementById('wordInput');
-            const addWordBtn = document.getElementById('addWordBtn');
-            const wordsList = document.getElementById('wordsList');
-            const playAllBtn = document.getElementById('playAllBtn');
-            const hindiBtn = document.getElementById('hindiBtn');
-            const englishBtn = document.getElementById('englishBtn');
-            const speedControl = document.getElementById('speedControl');
-            const speedValue = document.getElementById('speedValue');
-            const presetButtons = document.querySelectorAll('.preset-btn');
-            const themeToggle = document.getElementById('themeToggle');
-            const securityOverlay = document.getElementById('securityOverlay');
-            const closeOverlayBtn = document.getElementById('closeOverlayBtn');
-            const visitCount = document.getElementById('visitCount');
-            const lensBtn = document.getElementById('lensBtn');
-            const lensModal = document.getElementById('lensModal');
-            const closeLensModal = document.getElementById('closeLensModal');
-            
-            let currentLanguage = 'hindi';
-            let words = [];
-            let speechRate = 1;
-            let isSpeaking = false;
-            let currentSpeakingIndex = -1;
-            let isDarkMode = false;
-            let securityTriggered = false;
-            
-            // Initialize visit counter
-            let visits = localStorage.getItem('dictationVisits') || 0;
-            visits = parseInt(visits) + 1;
-            localStorage.setItem('dictationVisits', visits);
-            visitCount.textContent = visits;
-            
-            // Event listeners
-            addWordBtn.addEventListener('click', addWord);
-            playAllBtn.addEventListener('click', playAllWords);
-            wordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') addWord();
-            });
-            
-            hindiBtn.addEventListener('click', function() {
-                setLanguage('hindi');
-            });
-            
-            englishBtn.addEventListener('click', function() {
-                setLanguage('english');
-            });
-            
-            speedControl.addEventListener('input', function() {
-                speechRate = parseFloat(this.value);
-                speedValue.textContent = speechRate.toFixed(1) + 'x';
-                
-                // Remove active class from all preset buttons
-                presetButtons.forEach(btn => btn.classList.remove('active'));
-            });
-            
-            // Add event listeners to preset buttons
-            presetButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const speed = parseFloat(this.dataset.speed);
-                    speechRate = speed;
-                    speedControl.value = speed;
-                    speedValue.textContent = speed.toFixed(3) + 'x';
-                    
-                    // Update active state
-                    presetButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-            
-            // Theme toggle
-            themeToggle.addEventListener('click', toggleTheme);
-            
-            // Close security overlay
-            closeOverlayBtn.addEventListener('click', function() {
-                securityOverlay.classList.remove('show');
-            });
-            
-            // Google Lens functionality
-            lensBtn.addEventListener('click', function() {
-                lensModal.classList.add('show');
-            });
-            
-            closeLensModal.addEventListener('click', function() {
-                lensModal.classList.remove('show');
-            });
-            
-            // Security features
-            document.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-                triggerSecurity();
-            });
-            
-            document.addEventListener('keydown', function(e) {
-                // Detect Print Screen key
-                if (e.key === 'PrintScreen' || e.key === 'Snapshot' || e.keyCode === 44) {
-                    e.preventDefault();
-                    triggerSecurity();
-                }
-                
-                // Detect screenshot shortcuts (Windows: Win+Shift+S, Mac: Cmd+Shift+4)
-                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'S' || e.key === '4')) {
-                    e.preventDefault();
-                    triggerSecurity();
-                }
-                
-                // Detect copy shortcuts (Ctrl+C)
-                if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
-                    e.preventDefault();
-                    triggerSecurity();
-                }
-            });
-            
-            // Prevent text selection
-            document.addEventListener('selectstart', function(e) {
-                e.preventDefault();
-                triggerSecurity();
-            });
-            
-            // Set active language
-            function setLanguage(lang) {
-                currentLanguage = lang;
-                hindiBtn.classList.toggle('active', lang === 'hindi');
-                englishBtn.classList.toggle('active', lang === 'english');
-                wordInput.placeholder = lang === 'hindi' 
-                    ? 'कठिन हिंदी शब्द दर्ज करें...' 
-                    : 'Enter a difficult English word...';
-                    
-                // Add Hindi font class for Devanagari script
-                if(lang === 'hindi') {
-                    wordInput.classList.add('hindi-font');
-                } else {
-                    wordInput.classList.remove('hindi-font');
-                }
-            }
-            
-            // Add word to list
-            function addWord() {
-                const word = wordInput.value.trim();
-                if (!word) return;
-                
-                // Check if word already exists
-                if (words.some(w => w.text === word && w.language === currentLanguage)) {
-                    alert('This word is already in your list!');
-                    return;
-                }
-                
-                words.push({
-                    text: word,
-                    language: currentLanguage
-                });
-                
-                renderWordsList();
-                wordInput.value = '';
-                wordInput.focus();
-            }
-            
-            // Render words list
-            function renderWordsList() {
-                if (words.length === 0) {
-                    wordsList.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-book-open"></i>
-                            <p>No words added yet. Add some words to get started!</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                wordsList.innerHTML = '';
-                words.forEach((word, index) => {
-                    const wordElement = document.createElement('div');
-                    wordElement.className = `word-card ${word.language} ${currentSpeakingIndex === index ? 'speaking' : ''}`;
-                    wordElement.innerHTML = `
-                        <div class="word-text">${word.text}</div>
-                        <div class="word-actions">
-                            <button class="action-btn play-btn" data-index="${index}">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button class="action-btn delete-btn" data-index="${index}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    `;
-                    wordsList.appendChild(wordElement);
-                });
-                
-                // Add event listeners to action buttons
-                document.querySelectorAll('.play-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const index = parseInt(this.getAttribute('data-index'));
-                        speakWord(words[index], index);
-                    });
-                });
-                
-                document.querySelectorAll('.delete-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const index = parseInt(this.getAttribute('data-index'));
-                        // If currently speaking this word, stop speech
-                        if (currentSpeakingIndex === index) {
-                            window.speechSynthesis.cancel();
-                            isSpeaking = false;
-                            currentSpeakingIndex = -1;
-                        }
-                        words.splice(index, 1);
-                        renderWordsList();
-                    });
-                });
-            }
-            
-            // Speak a single word
-            function speakWord(word, index) {
-                if ('speechSynthesis' in window) {
-                    // Cancel any ongoing speech
-                    window.speechSynthesis.cancel();
-                    
-                    const utterance = new SpeechSynthesisUtterance(word.text);
-                    
-                    // Set language based on word
-                    utterance.lang = word.language === 'hindi' ? 'hi-IN' : 'en-US';
-                    utterance.rate = speechRate;
-                    
-                    // Set speaking state
-                    isSpeaking = true;
-                    currentSpeakingIndex = index;
-                    renderWordsList();
-                    
-                    // Highlight the word while speaking
-                    utterance.onstart = function() {
-                        currentSpeakingIndex = index;
-                        renderWordsList();
-                    };
-                    
-                    utterance.onend = function() {
-                        isSpeaking = false;
-                        currentSpeakingIndex = -1;
-                        renderWordsList();
-                    };
-                    
-                    utterance.onerror = function() {
-                        isSpeaking = false;
-                        currentSpeakingIndex = -1;
-                        renderWordsList();
-                        alert('Error pronouncing the word. Please try again or use a different browser.');
-                    };
-                    
-                    window.speechSynthesis.speak(utterance);
-                } else {
-                    alert('Text-to-speech is not supported in your browser. Try using Chrome or Edge.');
-                }
-            }
-            
-            // Play all words in sequence
-            function playAllWords() {
-                if (words.length === 0) {
-                    alert('Please add some words first!');
-                    return;
-                }
-                
-                if (isSpeaking) {
-                    window.speechSynthesis.cancel();
-                    isSpeaking = false;
-                    currentSpeakingIndex = -1;
-                    renderWordsList();
-                    playAllBtn.innerHTML = '<i class="fas fa-play-circle"></i> Play All Words';
-                    return;
-                }
-                
-                let index = 0;
-                
-                function playNextWord() {
-                    if (index >= words.length) {
-                        isSpeaking = false;
-                        currentSpeakingIndex = -1;
-                        renderWordsList();
-                        playAllBtn.innerHTML = '<i class="fas fa-play-circle"></i> Play All Words';
-                        return;
-                    }
-                    
-                    speakWord(words[index], index);
-                    index++;
-                    
-                    // Wait for the current word to finish before playing the next
-                    const checkEnd = setInterval(() => {
-                        if (!isSpeaking) {
-                            clearInterval(checkEnd);
-                            setTimeout(playNextWord, 500);
-                        }
-                    }, 100);
-                }
-                
-                playAllBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Playback';
-                playNextWord();
-            }
-            
-            // Toggle dark/light mode
-            function toggleTheme() {
-                isDarkMode = !isDarkMode;
-                document.body.classList.toggle('dark-mode', isDarkMode);
-                
-                // Update icon
-                const icon = themeToggle.querySelector('i');
-                icon.classList.toggle('fa-moon', !isDarkMode);
-                icon.classList.toggle('fa-sun', isDarkMode);
-                
-                // Save preference
-                localStorage.setItem('darkMode', isDarkMode);
-            }
-            
-            // Trigger security measures
-            function triggerSecurity() {
-                if (securityTriggered) return;
-                
-                securityTriggered = true;
-                
-                // Show security overlay
-                securityOverlay.classList.add('show');
-                
-                // Flash the screen
-                document.body.classList.add('flash');
-                
-                // Shake effect
-                document.body.classList.add('shake');
-                
-                // Reset after animations
-                setTimeout(() => {
-                    document.body.classList.remove('flash');
-                    document.body.classList.remove('shake');
-                    securityTriggered = false;
-                }, 1500);
-                
-                // Auto-hide after 5 seconds
-                setTimeout(() => {
-                    securityOverlay.classList.remove('show');
-                }, 5000);
-            }
-            
-            // Initialize
-            setLanguage('hindi');
-            renderWordsList();
-            
-            // Load theme preference
-            if (localStorage.getItem('darkMode') === 'true') {
-                toggleTheme();
-            }
-            
-            // Add custom console message
-            console.log('%c🔒 SECURE DICTATION TOOL', 'color: #ff6b6b; font-size: 24px; font-weight: bold;');
-            console.log('%cThis application is protected against unauthorized copying and screenshots.', 'font-size: 16px;');
-            
-            // Focus on input field when modal closes
-            closeLensModal.addEventListener('click', function() {
-                wordInput.focus();
-            });
+  <!-- Main Container -->
+  <div class="container" id="mainContainer">
+    <div class="header">
+      <div class="made-by">Developed by Shiv Dubey</div>
+      <div class="user-section">
+        <div class="user-info" id="userInfo">
+          <span id="usernameDisplay">Guest</span>
+          <button class="logout-btn" id="logoutBtn" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
+      <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+      </button>
+      <h1>Hindi-English Dictation</h1>
+      <p>Master difficult words for competitive exams like IAS, PCS, UPSI and more</p>
+    </div>
+    
+    <div class="content-container">
+      <div class="left-panel">
+        <div class="language-selector">
+          <button class="lang-btn active" id="hindiBtn"><span>Hindi</span></button>
+          <button class="lang-btn" id="englishBtn"><span>English</span></button>
+        </div>
+        
+        <div class="input-section">
+          <input type="text" id="wordInput" placeholder="Enter a difficult word...">
+          <button class="btn" id="addWordBtn">
+            <i class="fas fa-plus"></i> Add Word
+          </button>
+        </div>
+        
+        <div class="words-container" id="wordsList">
+          <div class="empty-state">
+            <i class="fas fa-book-open"></i>
+            <p>No words added yet. Add some words to get started!</p>
+          </div>
+        </div>
+        
+        <button class="btn btn-play-all" id="playAllBtn">
+          <i class="fas fa-play-circle"></i> Play All Words
+        </button>
+        
+        <button class="lens-btn" id="lensBtn">
+          <i class="fas fa-camera"></i> Add Words with Google Lens
+        </button>
+      </div>
+      
+      <div class="right-panel">
+        <div class="controls">
+          <div class="speed-control">
+            <label for="speedControl"><i class="fas fa-tachometer-alt"></i> Speed:</label>
+            <input type="range" id="speedControl" min="0.5" max="2" step="0.1" value="1">
+            <span id="speedValue">1.0x</span>
+          </div>
+        </div>
+        
+        <div class="preset-speeds">
+          <button class="preset-btn" data-speed="0.156">25 WPM</button>
+          <button class="preset-btn" data-speed="0.125">20 WPM</button>
+          <button class="preset-btn" data-speed="0.187">30 WPM</button>
+          <button class="preset-btn" data-speed="0.219">35 WPM</button>
+        </div>
+        
+        <div class="instructions">
+          <h3><i class="fas fa-graduation-cap"></i> Exam Preparation Guide:</h3>
+          <ul>
+            <li><strong>Add challenging words</strong> in your selected language (Hindi or English)</li>
+            <li><strong>Login to save words</strong> to your personal account for future practice</li>
+            <li><strong>Click the play button</strong> next to each word to hear it pronounced</li>
+            <li><strong>Adjust the speed</strong> to make words easier or more challenging</li>
+            <li><strong>Use preset buttons</strong> for specific speeds (25, 20, 30, 35 WPM)</li>
+            <li><strong>Practice writing</strong> the words as you hear them</li>
+            <li><strong>Delete words</strong> once you've mastered them</li>
+          </ul>
+          
+          <div style="margin-top: 25px; padding: 20px; background: rgba(26, 42, 108, 0.05); border-radius: 20px;">
+            <h4><i class="fas fa-shield-alt"></i> Security Features:</h4>
+            <p>This application includes advanced security measures to protect your content:</p>
+            <ul>
+              <li>Screenshot detection and prevention</li>
+              <li>Copy protection for all text</li>
+              <li>Right-click context menu disabled</li>
+              <li>Visual watermarking</li>
+              <li>Print protection</li>
+              <li>Screen flash effect when security is triggered</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <i class="fas fa-shield-alt"></i> Protected Content | 
+      <i class="fas fa-copyright"></i> 2024 SecureDictation | 
+      <i class="fas fa-info-circle"></i> For best results, use Chrome or Edge browsers
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // DOM elements
+      const wordInput = document.getElementById('wordInput');
+      const addWordBtn = document.getElementById('addWordBtn');
+      const wordsList = document.getElementById('wordsList');
+      const playAllBtn = document.getElementById('playAllBtn');
+      const hindiBtn = document.getElementById('hindiBtn');
+      const englishBtn = document.getElementById('englishBtn');
+      const speedControl = document.getElementById('speedControl');
+      const speedValue = document.getElementById('speedValue');
+      const presetButtons = document.querySelectorAll('.preset-btn');
+      const themeToggle = document.getElementById('themeToggle');
+      const mainContainer = document.getElementById('mainContainer');
+      const authModal = document.getElementById('authModal');
+      const closeAuthModal = document.getElementById('closeAuthModal');
+      const registerBtn = document.getElementById('registerBtn');
+      const loginBtn = document.getElementById('loginBtn');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const usernameDisplay = document.getElementById('usernameDisplay');
+      const authMessage = document.getElementById('authMessage');
+      const lensBtn = document.getElementById('lensBtn');
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      
+      // State variables
+      let currentLanguage = 'hindi';
+      let words = [];
+      let speechRate = 1;
+      let isSpeaking = false;
+      let currentSpeakingIndex = -1;
+      let isDarkMode = false;
+      let currentUser = null;
+
+      // Initialize the app
+      function initApp() {
+        // Check if user is already logged in
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+          currentUser = JSON.parse(savedUser);
+          words = currentUser.words || [];
+          updateUI();
+        } else {
+          // Show authentication modal
+          authModal.classList.add('show');
+        }
+        
+        // Set up event listeners
+        setupEventListeners();
+        
+        // Render initial word list
+        renderWordsList();
+        
+        // Set initial language
+        setLanguage('hindi');
+      }
+      
+      // Set up all event listeners
+      function setupEventListeners() {
+        // Word management
+        addWordBtn.addEventListener('click', addWord);
+        playAllBtn.addEventListener('click', playAllWords);
+        wordInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') addWord();
         });
-    </script>
+        
+        // Language selection
+        hindiBtn.addEventListener('click', () => setLanguage('hindi'));
+        englishBtn.addEventListener('click', () => setLanguage('english'));
+        
+        // Speed control
+        speedControl.addEventListener('input', updateSpeed);
+        
+        // Preset speed buttons
+        presetButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const speed = parseFloat(this.dataset.speed);
+            speechRate = speed;
+            speedControl.value = speed;
+            speedValue.textContent = speed.toFixed(3) + 'x';
+            
+            // Update active state
+            presetButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+          });
+        });
+        
+        // Theme toggle
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        // Google Lens
+        lensBtn.addEventListener('click', showLensInstructions);
+        
+        // Authentication
+        closeAuthModal.addEventListener('click', () => authModal.classList.remove('show'));
+        registerBtn.addEventListener('click', registerUser);
+        loginBtn.addEventListener('click', loginUser);
+        logoutBtn.addEventListener('click', logoutUser);
+      }
+      
+      // Update speed display
+      function updateSpeed() {
+        speechRate = parseFloat(this.value);
+        speedValue.textContent = speechRate.toFixed(1) + 'x';
+        presetButtons.forEach(btn => btn.classList.remove('active'));
+      }
+      
+      // Set active language
+      function setLanguage(lang) {
+        currentLanguage = lang;
+        hindiBtn.classList.toggle('active', lang === 'hindi');
+        englishBtn.classList.toggle('active', lang === 'english');
+        wordInput.placeholder = lang === 'hindi' 
+          ? 'कठिन हिंदी शब्द दर्ज करें...' 
+          : 'Enter a difficult English word...';
+        
+        // Add Hindi font class for Devanagari script
+        if (lang === 'hindi') {
+          wordInput.classList.add('hindi-font');
+        } else {
+          wordInput.classList.remove('hindi-font');
+        }
+      }
+      
+      // Add word to list
+      function addWord() {
+        const word = wordInput.value.trim();
+        if (!word) return;
+        
+        // Check if word already exists
+        if (words.some(w => w.text === word && w.language === currentLanguage)) {
+          showMessage('This word is already in your list!', 'error');
+          return;
+        }
+        
+        words.push({
+          text: word,
+          language: currentLanguage
+        });
+        
+        // Save words if user is logged in
+        if (currentUser) {
+          saveUserData();
+        }
+        
+        renderWordsList();
+        wordInput.value = '';
+        wordInput.focus();
+      }
+      
+      // Render words list
+      function renderWordsList() {
+        if (words.length === 0) {
+          wordsList.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-book-open"></i>
+              <p>No words added yet. Add some words to get started!</p>
+            </div>
+          `;
+          return;
+        }
+        
+        wordsList.innerHTML = '';
+        words.forEach((word, index) => {
+          const wordElement = document.createElement('div');
+          wordElement.className = `word-card ${word.language} ${currentSpeakingIndex === index ? 'speaking' : ''}`;
+          wordElement.innerHTML = `
+            <div class="word-text">${word.text}</div>
+            <div class="word-actions">
+              <button class="action-btn play-btn" data-index="${index}">
+                <i class="fas fa-volume-up"></i>
+              </button>
+              <button class="action-btn delete-btn" data-index="${index}">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          `;
+          wordsList.appendChild(wordElement);
+        });
+        
+        // Add event listeners to action buttons
+        document.querySelectorAll('.play-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            speakWord(words[index], index);
+          });
+        });
+        
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            // If currently speaking this word, stop speech
+            if (currentSpeakingIndex === index) {
+              window.speechSynthesis.cancel();
+              isSpeaking = false;
+              currentSpeakingIndex = -1;
+            }
+            words.splice(index, 1);
+            
+            // Save words if user is logged in
+            if (currentUser) {
+              saveUserData();
+            }
+            
+            renderWordsList();
+          });
+        });
+      }
+      
+      // Speak a single word
+      function speakWord(word, index) {
+        if ('speechSynthesis' in window) {
+          // Cancel any ongoing speech
+          window.speechSynthesis.cancel();
+          
+          const utterance = new SpeechSynthesisUtterance(word.text);
+          
+          // Set language based on word
+          utterance.lang = word.language === 'hindi' ? 'hi-IN' : 'en-US';
+          utterance.rate = speechRate;
+          
+          // Set speaking state
+          isSpeaking = true;
+          currentSpeakingIndex = index;
+          renderWordsList();
+          
+          // Highlight the word while speaking
+          utterance.onstart = function() {
+            currentSpeakingIndex = index;
+            renderWordsList();
+          };
+          
+          utterance.onend = function() {
+            isSpeaking = false;
+            currentSpeakingIndex = -1;
+            renderWordsList();
+          };
+          
+          utterance.onerror = function() {
+            isSpeaking = false;
+            currentSpeakingIndex = -1;
+            renderWordsList();
+            showMessage('Error pronouncing the word. Please try again or use a different browser.', 'error');
+          };
+          
+          window.speechSynthesis.speak(utterance);
+        } else {
+          showMessage('Text-to-speech is not supported in your browser. Try using Chrome or Edge.', 'error');
+        }
+      }
+      
+      // Play all words in sequence
+      function playAllWords() {
+        if (words.length === 0) {
+          showMessage('Please add some words first!', 'error');
+          return;
+        }
+        
+        if (isSpeaking) {
+          window.speechSynthesis.cancel();
+          isSpeaking = false;
+          currentSpeakingIndex = -1;
+          renderWordsList();
+          playAllBtn.innerHTML = '<i class="fas fa-play-circle"></i> Play All Words';
+          return;
+        }
+        
+        let index = 0;
+        
+        function playNextWord() {
+          if (index >= words.length) {
+            isSpeaking = false;
+            currentSpeakingIndex = -1;
+            renderWordsList();
+            playAllBtn.innerHTML = '<i class="fas fa-play-circle"></i> Play All Words';
+            return;
+          }
+          
+          speakWord(words[index], index);
+          index++;
+          
+          // Wait for the current word to finish before playing the next
+          const checkEnd = setInterval(() => {
+            if (!isSpeaking) {
+              clearInterval(checkEnd);
+              setTimeout(playNextWord, 500);
+            }
+          }, 100);
+        }
+        
+        playAllBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Playback';
+        playNextWord();
+      }
+      
+      // Toggle dark/light mode
+      function toggleTheme() {
+        isDarkMode = !isDarkMode;
+        document.body.classList.toggle('dark-mode', isDarkMode);
+        
+        // Update icon
+        const icon = themeToggle.querySelector('i');
+        icon.classList.toggle('fa-moon', !isDarkMode);
+        icon.classList.toggle('fa-sun', isDarkMode);
+        
+        // Save preference
+        localStorage.setItem('darkMode', isDarkMode);
+      }
+      
+      // Register user
+      function registerUser() {
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
+        
+        if (!username || !password) {
+          showAuthMessage('Please enter both username and password', 'error');
+          return;
+        }
+        
+        if (password.length < 4) {
+          showAuthMessage('Password must be at least 4 characters', 'error');
+          return;
+        }
+        
+        // Get existing users or initialize empty array
+        const users = JSON.parse(localStorage.getItem('dictationUsers')) || [];
+        
+        // Check if user already exists
+        const userExists = users.some(u => u.username === username);
+        
+        if (userExists) {
+          showAuthMessage('Username already exists!', 'error');
+          return;
+        }
+        
+        // Create new user
+        const newUser = {
+          username,
+          password,
+          words: []
+        };
+        
+        users.push(newUser);
+        localStorage.setItem('dictationUsers', JSON.stringify(users));
+        
+        // Log the user in
+        currentUser = newUser;
+        words = currentUser.words;
+        saveUserData();
+        updateUI();
+        
+        showAuthMessage('Account created successfully!', 'success');
+        
+        // Close modal after delay
+        setTimeout(() => {
+          authModal.classList.remove('show');
+        }, 1500);
+      }
+      
+      // Login user
+      function loginUser() {
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
+        
+        if (!username || !password) {
+          showAuthMessage('Please enter both username and password', 'error');
+          return;
+        }
+        
+        // Get existing users
+        const users = JSON.parse(localStorage.getItem('dictationUsers')) || [];
+        
+        // Find user
+        const foundUser = users.find(u => u.username === username && u.password === password);
+        
+        if (foundUser) {
+          currentUser = foundUser;
+          words = foundUser.words || [];
+          saveUserData();
+          updateUI();
+          
+          showAuthMessage('Login successful!', 'success');
+          
+          // Close modal after delay
+          setTimeout(() => {
+            authModal.classList.remove('show');
+          }, 1500);
+        } else {
+          showAuthMessage('Invalid username or password', 'error');
+        }
+      }
+      
+      // Logout user
+      function logoutUser() {
+        currentUser = null;
+        words = [];
+        localStorage.removeItem('currentUser');
+        updateUI();
+        authModal.classList.add('show');
+      }
+      
+      // Save user data
+      function saveUserData() {
+        if (!currentUser) return;
+        
+        // Update user data in storage
+        const users = JSON.parse(localStorage.getItem('dictationUsers')) || [];
+        const userIndex = users.findIndex(u => u.username === currentUser.username);
+        
+        if (userIndex !== -1) {
+          users[userIndex].words = words;
+          localStorage.setItem('dictationUsers', JSON.stringify(users));
+        }
+        
+        // Save current user session
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      }
+      
+      // Update UI based on authentication state
+      function updateUI() {
+        if (currentUser) {
+          // Update username display
+          usernameDisplay.textContent = currentUser.username;
+          
+          // Render words
+          renderWordsList();
+        } else {
+          // Reset UI for guest
+          usernameDisplay.textContent = 'Guest';
+          words = [];
+          renderWordsList();
+        }
+      }
+      
+      // Show Google Lens instructions
+      function showLensInstructions() {
+        alert('To add words with Google Lens:\n1. Install Google Lens app\n2. Capture text from books\n3. Copy and paste the words here');
+      }
+      
+      // Show authentication message
+      function showAuthMessage(message, type) {
+        authMessage.textContent = message;
+        authMessage.className = `form-message ${type}`;
+        authMessage.style.display = 'block';
+        
+        // Clear message after 3 seconds
+        setTimeout(() => {
+          authMessage.style.display = 'none';
+        }, 3000);
+      }
+      
+      // Show general message
+      function showMessage(message, type) {
+        // Create message element
+        const messageEl = document.createElement('div');
+        messageEl.className = `form-message ${type}`;
+        messageEl.textContent = message;
+        messageEl.style.position = 'fixed';
+        messageEl.style.top = '20px';
+        messageEl.style.left = '50%';
+        messageEl.style.transform = 'translateX(-50%)';
+        messageEl.style.zIndex = '1000';
+        messageEl.style.padding = '15px 30px';
+        messageEl.style.borderRadius = '50px';
+        messageEl.style.fontWeight = '600';
+        
+        document.body.appendChild(messageEl);
+        
+        // Remove message after 3 seconds
+        setTimeout(() => {
+          messageEl.style.opacity = '0';
+          setTimeout(() => {
+            document.body.removeChild(messageEl);
+          }, 300);
+        }, 3000);
+      }
+      
+      // Initialize the application
+      initApp();
+    });
+  </script>
 </body>
 </html>

@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
+    /* Made by Nirbhay */
     * {
       margin: 0;
       padding: 0;
@@ -64,6 +65,9 @@
       padding-bottom: 25px;
       border-bottom: 2px solid rgba(26, 42, 108, 0.1);
       padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     
     body.dark-mode .header {
@@ -87,8 +91,8 @@
     
     .theme-toggle {
       position: absolute;
-      top: 25px;
-      right: 25px;
+      top: 15px;
+      left: 90px;
       background: rgba(26, 42, 108, 0.1);
       border: none;
       border-radius: 50%;
@@ -146,12 +150,11 @@
     
     /* User Section Styles */
     .user-section {
-      position: absolute;
-      top: 25px;
-      right: 90px;
       display: flex;
       gap: 15px;
       align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
     }
     
     .user-btn {
@@ -616,9 +619,9 @@
     /* Controls */
     .controls {
       display: flex;
-      justify-content: space-between;
-      gap: 30px;
-      margin-top: 30px;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 30px;
       background: #f8f9fa;
       padding: 30px;
       border-radius: 25px;
@@ -641,7 +644,6 @@
       border-radius: 50px;
       box-shadow: 0 8px 15px rgba(0,0,0,0.08);
       transition: all 0.3s ease;
-      flex: 1;
     }
     
     body.dark-mode .speed-control {
@@ -719,7 +721,6 @@
       background: #f8f9fa;
       border-radius: 25px;
       padding: 30px 35px;
-      margin-top: 35px;
       font-size: 1.2rem;
       line-height: 1.7;
       box-shadow: 0 5px 15px rgba(0,0,0,0.05);
@@ -805,9 +806,8 @@
     /* Preset Speeds */
     .preset-speeds {
       display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 25px;
+      justify-content: space-between;
+      gap: 15px;
       flex-wrap: wrap;
     }
     
@@ -825,6 +825,8 @@
       position: relative;
       overflow: hidden;
       z-index: 1;
+      flex: 1;
+      text-align: center;
     }
     
     .preset-btn:after {
@@ -894,7 +896,7 @@
       z-index: 1;
       border: none;
       width: 100%;
-      margin-top: 15px;
+      margin-bottom: 15px;
     }
     
     .lens-btn:after {
@@ -1149,6 +1151,7 @@
       align-items: center;
       gap: 8px;
       margin-top: 15px;
+      width: fit-content;
     }
     
     /* Responsive adjustments */
@@ -1181,14 +1184,14 @@
       
       .theme-toggle {
         top: 15px;
-        right: 15px;
+        left: 70px;
         width: 45px;
         height: 45px;
       }
       
       .user-section {
-        top: 15px;
-        right: 70px;
+        flex-direction: column;
+        gap: 10px;
       }
       
       .user-btn {
@@ -1232,9 +1235,94 @@
         font-size: 1rem;
       }
     }
+    
+    /* New: Floating Visit Counter */
+    .visit-counter-container {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .visit-counter-badge {
+      background: linear-gradient(45deg, #1a2a6c, #b21f1f);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+    }
+    
+    .visit-counter-badge:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    
+    .visit-counter-badge i {
+      font-size: 1.2rem;
+    }
+    
+    /* New: Security Watermark */
+    .security-watermark {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      color: rgba(255,255,255,0.1);
+      font-size: 12px;
+      pointer-events: none;
+      z-index: 99;
+      transform: rotate(-30deg);
+      font-family: monospace;
+    }
+    
+    /* New: Animated background elements */
+    .bg-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    
+    .bg-element {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.1;
+      filter: blur(20px);
+      animation: float 15s infinite linear;
+    }
+    
+    @keyframes float {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(100vw, 100vh) rotate(360deg); }
+    }
   </style>
 </head>
 <body>
+  <!-- Made by Nirbhay -->
+  
+  <!-- Background animation elements -->
+  <div class="bg-animation">
+    <div class="bg-element" style="width: 300px; height: 300px; background: #3498db; top: 10%; left: 5%; animation-duration: 25s;"></div>
+    <div class="bg-element" style="width: 200px; height: 200px; background: #e74c3c; top: 60%; left: 80%; animation-duration: 20s;"></div>
+    <div class="bg-element" style="width: 150px; height: 150px; background: #2ecc71; top: 30%; left: 70%; animation-duration: 30s;"></div>
+    <div class="bg-element" style="width: 250px; height: 250px; background: #9b59b6; top: 70%; left: 20%; animation-duration: 35s;"></div>
+  </div>
+
+  <!-- Security watermark -->
+  <div class="security-watermark">Made by Nirbhay</div>
+  
   <!-- Authentication Modal -->
   <div class="auth-modal" id="authModal">
     <div class="auth-content">
@@ -1271,6 +1359,9 @@
   <div class="container" id="mainContainer">
     <div class="header">
       <div class="made-by">Developed by Shiv Dubey</div>
+      <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+      </button>
       <div class="user-section">
         <div class="user-info" id="userInfo">
           <span id="usernameDisplay">Guest</span>
@@ -1278,16 +1369,20 @@
             <i class="fas fa-sign-out-alt"></i>
           </button>
         </div>
+        <button class="user-btn" id="authBtn">
+          <i class="fas fa-user"></i> Login/Register
+        </button>
       </div>
-      <button class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon"></i>
-      </button>
       <h1>Hindi-English Dictation</h1>
       <p>Master difficult words for competitive exams like IAS, PCS, UPSI and more</p>
     </div>
     
     <div class="content-container">
       <div class="left-panel">
+        <button class="lens-btn" id="lensBtn">
+          <i class="fas fa-camera"></i> Add Words with Google Lens
+        </button>
+        
         <div class="language-selector">
           <button class="lang-btn active" id="hindiBtn"><span>Hindi</span></button>
           <button class="lang-btn" id="englishBtn"><span>English</span></button>
@@ -1311,9 +1406,11 @@
           <i class="fas fa-play-circle"></i> Play All Words
         </button>
         
-        <button class="lens-btn" id="lensBtn">
-          <i class="fas fa-camera"></i> Add Words with Google Lens
-        </button>
+        <!-- Visit counter in the left panel -->
+        <div class="visit-counter">
+          <i class="fas fa-eye"></i>
+          <span id="visitCount">0</span> Visits
+        </div>
       </div>
       
       <div class="right-panel">
@@ -1323,13 +1420,12 @@
             <input type="range" id="speedControl" min="0.5" max="2" step="0.1" value="1">
             <span id="speedValue">1.0x</span>
           </div>
-        </div>
-        
-        <div class="preset-speeds">
-          <button class="preset-btn" data-speed="0.156">25 WPM</button>
-          <button class="preset-btn" data-speed="0.125">20 WPM</button>
-          <button class="preset-btn" data-speed="0.187">30 WPM</button>
-          <button class="preset-btn" data-speed="0.219">35 WPM</button>
+          <div class="preset-speeds">
+            <button class="preset-btn" data-speed="0.156">25 WPM</button>
+            <button class="preset-btn" data-speed="0.125">20 WPM</button>
+            <button class="preset-btn" data-speed="0.187">30 WPM</button>
+            <button class="preset-btn" data-speed="0.219">35 WPM</button>
+          </div>
         </div>
         
         <div class="instructions">
@@ -1364,10 +1460,21 @@
       <i class="fas fa-shield-alt"></i> Protected Content | 
       <i class="fas fa-copyright"></i> 2024 SecureDictation | 
       <i class="fas fa-info-circle"></i> For best results, use Chrome or Edge browsers
+      <!-- Made by Nirbhay -->
+      <span style="display: none;">Made by Nirbhay</span>
     </footer>
+  </div>
+  
+  <!-- Floating visit counter -->
+  <div class="visit-counter-container">
+    <div class="visit-counter-badge">
+      <i class="fas fa-users"></i>
+      <span id="floatingVisitCount">0</span> Users
+    </div>
   </div>
 
   <script>
+    /* Made by Nirbhay */
     document.addEventListener('DOMContentLoaded', function() {
       // DOM elements
       const wordInput = document.getElementById('wordInput');
@@ -1386,11 +1493,14 @@
       const registerBtn = document.getElementById('registerBtn');
       const loginBtn = document.getElementById('loginBtn');
       const logoutBtn = document.getElementById('logoutBtn');
+      const authBtn = document.getElementById('authBtn');
       const usernameDisplay = document.getElementById('usernameDisplay');
       const authMessage = document.getElementById('authMessage');
       const lensBtn = document.getElementById('lensBtn');
       const usernameInput = document.getElementById('username');
       const passwordInput = document.getElementById('password');
+      const visitCount = document.getElementById('visitCount');
+      const floatingVisitCount = document.getElementById('floatingVisitCount');
       
       // State variables
       let currentLanguage = 'hindi';
@@ -1409,9 +1519,6 @@
           currentUser = JSON.parse(savedUser);
           words = currentUser.words || [];
           updateUI();
-        } else {
-          // Show authentication modal
-          authModal.classList.add('show');
         }
         
         // Set up event listeners
@@ -1422,6 +1529,28 @@
         
         // Set initial language
         setLanguage('hindi');
+        
+        // Load theme preference
+        const savedTheme = localStorage.getItem('darkMode');
+        if (savedTheme === 'true') {
+          toggleTheme();
+        }
+        
+        // Update visit counter
+        updateVisitCounter();
+      }
+      
+      // Update visit counter
+      function updateVisitCounter() {
+        let count = localStorage.getItem('visitCount');
+        if (count === null) {
+          count = 1;
+        } else {
+          count = parseInt(count) + 1;
+        }
+        localStorage.setItem('visitCount', count);
+        visitCount.textContent = count;
+        floatingVisitCount.textContent = count;
       }
       
       // Set up all event listeners
@@ -1465,6 +1594,10 @@
         registerBtn.addEventListener('click', registerUser);
         loginBtn.addEventListener('click', loginUser);
         logoutBtn.addEventListener('click', logoutUser);
+        authBtn.addEventListener('click', () => {
+          authModal.classList.add('show');
+          authBtn.style.display = currentUser ? 'none' : 'block';
+        });
       }
       
       // Update speed display
@@ -1752,7 +1885,7 @@
           // Close modal after delay
           setTimeout(() => {
             authModal.classList.remove('show');
-          }, 1500);
+          }, 1000);
         } else {
           showAuthMessage('Invalid username or password', 'error');
         }
@@ -1764,7 +1897,7 @@
         words = [];
         localStorage.removeItem('currentUser');
         updateUI();
-        authModal.classList.add('show');
+        authBtn.style.display = 'block';
       }
       
       // Save user data
@@ -1789,12 +1922,14 @@
         if (currentUser) {
           // Update username display
           usernameDisplay.textContent = currentUser.username;
+          authBtn.style.display = 'none';
           
           // Render words
           renderWordsList();
         } else {
           // Reset UI for guest
           usernameDisplay.textContent = 'Guest';
+          authBtn.style.display = 'block';
           words = [];
           renderWordsList();
         }
@@ -1845,7 +1980,28 @@
       
       // Initialize the application
       initApp();
+      
+      // Security features
+      // Disable context menu
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        document.body.classList.add('shake');
+        setTimeout(() => document.body.classList.remove('shake'), 500);
+      });
+      
+      // Disable text selection
+      document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        document.body.classList.add('flash');
+        setTimeout(() => document.body.classList.remove('flash'), 1000);
+      });
+      
+      // Print protection
+      window.addEventListener('beforeprint', function() {
+        document.body.innerHTML = '<div style="padding: 100px; text-align: center; font-size: 24px;"><i class="fas fa-ban" style="font-size: 48px; margin-bottom: 20px;"></i><p>Printing disabled for security</p></div>';
+      });
     });
   </script>
+  <!-- Made by Nirbhay -->
 </body>
 </html>

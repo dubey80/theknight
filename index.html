@@ -1409,9 +1409,47 @@ Don't copy without permission 🙏
       width: 0%;
       transition: width 1s ease;
     }
+    
+    /* Firebase connection status */
+    .firebase-status {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+    }
+    
+    .firebase-status.connected {
+      background: rgba(46, 204, 113, 0.9);
+      color: white;
+    }
+    
+    .firebase-status.disconnected {
+      background: rgba(231, 76, 60, 0.9);
+      color: white;
+    }
+    
+    body.dark-mode .firebase-status {
+      background: rgba(30, 30, 40, 0.9);
+      color: white;
+    }
   </style>
 </head>
 <body>
+  <div class="firebase-status" id="firebaseStatus">
+    <i class="fas fa-sync fa-spin"></i>
+    Connecting to server...
+  </div>
+  
   <div class="bg-animation">
     <div class="bg-element" style="width: 300px; height: 300px; background: #3498db; top: 10%; left: 5%; animation-duration: 25s;"></div>
     <div class="bg-element" style="width: 200px; height: 200px; background: #e74c3c; top: 60%; left: 80%; animation-duration: 20s;"></div>
@@ -1597,7 +1635,26 @@ Don't copy without permission 🙏
     </div>
   </div>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
   <script>
+    // Firebase configuration - replace with your actual config
+    const firebaseConfig = {
+      apiKey: "AIzaSyD7kq9Fd8Lwj0mGdZ0z6Vf4Hq7YkXy6Z6A",
+      authDomain: "hindi-english-dictation.firebaseapp.com",
+      databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "hindi-english-dictation",
+      storageBucket: "hindi-english-dictation.appspot.com",
+      messagingSenderId: "123456789012",
+      appId: "1:123456789012:web:abc123def456ghi789jkl0"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
     document.addEventListener('DOMContentLoaded', function() {
       // DOM elements
       const wordInput = document.getElementById('wordInput');
@@ -1627,6 +1684,7 @@ Don't copy without permission 🙏
       const progressFill = document.getElementById('progressFill');
       const inputSection = document.getElementById('inputSection');
       const breathIndicator = document.getElementById('breathIndicator');
+      const firebaseStatus = document.getElementById('firebaseStatus');
       
       // State variables
       let currentLanguage = 'hindi';
@@ -1639,6 +1697,18 @@ Don't copy without permission 🙏
 
       // Initialize the app
       function initApp() {
+        // Check Firebase connection
+        const connectedRef = database.ref('.info/connected');
+        connectedRef.on('value', function(snap) {
+          if (snap.val() === true) {
+            firebaseStatus.innerHTML = '<i class="fas fa-wifi"></i> Connected to server';
+            firebaseStatus.className = 'firebase-status connected';
+          } else {
+            firebaseStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Offline mode';
+            firebaseStatus.className = 'firebase-status disconnected';
+          }
+        });
+        
         // Check if user is already logged in
         const savedUser = localStorage.getItem('currentUser');
         if (savedUser) {
@@ -1664,18 +1734,46 @@ Don't copy without permission 🙏
         }
         
         // Update visit counter
-        updateVisitCounter();
+        updateGlobalVisitCounter();
       }
       
-      // Update visit counter
-      function updateVisitCounter() {
-        let count = localStorage.getItem('visitCount');
+      // Update global visit counter using Firebase
+      function updateGlobalVisitCounter() {
+        const visitRef = database.ref('globalVisitCount');
+        
+        // Increment the count
+        visitRef.transaction(function(currentCount) {
+          return (currentCount || 0) + 1;
+        }, function(error, committed, snapshot) {
+          if (error) {
+            console.error('Visit count update failed:', error);
+            // Fallback to local count if Firebase fails
+            updateLocalVisitCounter();
+          } else if (committed) {
+            // Update UI with new count
+            const count = snapshot.val();
+            visitCount.textContent = count;
+            floatingVisitCount.textContent = count;
+          }
+        });
+        
+        // Also listen for real-time updates
+        visitRef.on('value', function(snapshot) {
+          const count = snapshot.val() || 0;
+          visitCount.textContent = count;
+          floatingVisitCount.textContent = count;
+        });
+      }
+      
+      // Fallback to local visit counter if Firebase fails
+      function updateLocalVisitCounter() {
+        let count = localStorage.getItem('localVisitCount');
         if (count === null) {
           count = 1;
         } else {
           count = parseInt(count) + 1;
         }
-        localStorage.setItem('visitCount', count);
+        localStorage.setItem('localVisitCount', count);
         visitCount.textContent = count;
         floatingVisitCount.textContent = count;
       }

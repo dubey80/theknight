@@ -179,7 +179,7 @@ Don't copy without permission 🙏
     /* Language Selector */
     .language-selector {
       display: flex;
-      background-color: #f1f okt2f6;
+      background-color: #f1f2f6;
       border-radius: 50px;
       padding: 8px;
       margin-bottom: 30px;
@@ -1224,7 +1224,7 @@ Don't copy without permission 🙏
           
           <div class="visit-counter">
             <i class="fas fa-eye"></i>
-            <span id="visitCount">0</span> Total Visitors
+            <span id="visitCount">0</span> Total Visits
           </div>
         </div>
         
@@ -1305,7 +1305,7 @@ Don't copy without permission 🙏
   <div class="visit-counter-container">
     <div class="visit-counter-badge">
       <i class="fas fa-users"></i>
-      <span id="floatingVisitCount">0</span> Total Visitors
+      <span id="floatingVisitCount">0</span> Total Visits
     </div>
   </div>
 
@@ -1326,8 +1326,15 @@ Don't copy without permission 🙏
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
+    let database;
+    try {
+      firebase.initializeApp(firebaseConfig);
+      database = firebase.database();
+      console.log('Firebase initialized successfully');
+    } catch (error) {
+      console.error('Firebase initialization failed:', error);
+      showMessage('Failed to connect to server. Visit count may not update.', 'error');
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
       // DOM elements
@@ -1385,26 +1392,50 @@ Don't copy without permission 🙏
       
       // Update global visit counter using Firebase
       function updateGlobalVisitCounter() {
+        if (!database) {
+          console.error('Database not initialized');
+          showMessage('Cannot update visit count due to server issue.', 'error');
+          return;
+        }
+
         const visitRef = database.ref('globalVisitCount');
         
         // Increment the count
         visitRef.transaction(function(currentCount) {
+          console.log('Current visit count:', currentCount);
           return (currentCount || 0) + 1;
         }, function(error, committed, snapshot) {
           if (error) {
             console.error('Visit count update failed:', error);
+            showMessage('Failed to update visit count.', 'error');
+            // Display last known count from local storage as fallback
+            const lastCount = localStorage.getItem('lastVisitCount') || '0';
+            visitCount.textContent = lastCount;
+            floatingVisitCount.textContent = lastCount;
           } else if (committed) {
             const count = snapshot.val();
+            console.log('Updated visit count:', count);
             visitCount.textContent = count;
             floatingVisitCount.textContent = count;
+            // Store last known count in local storage
+            localStorage.setItem('lastVisitCount', count);
           }
         });
         
         // Listen for real-time updates
         visitRef.on('value', function(snapshot) {
           const count = snapshot.val() || 0;
+          console.log('Real-time visit count update:', count);
           visitCount.textContent = count;
           floatingVisitCount.textContent = count;
+          localStorage.setItem('lastVisitCount', count);
+        }, function(error) {
+          console.error('Real-time listener error:', error);
+          showMessage('Cannot fetch real-time visit count.', 'error');
+          // Display last known count
+          const lastCount = localStorage.getItem('lastVisitCount') || '0';
+          visitCount.textContent = lastCount;
+          floatingVisitCount.textContent = lastCount;
         });
       }
       

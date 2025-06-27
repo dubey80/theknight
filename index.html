@@ -6,6 +6,7 @@ Made by THE KNIGHTS
 Website: www.theknight.info
 Don't copy without permission 🙏
 -->
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hindi-English Dictation Master</title>
@@ -93,7 +94,7 @@ Don't copy without permission 🙏
       z-index: 10;
     }
     
-    /* Theme toggle */
+    /* Theme toggle moved to top-right */
     .theme-toggle {
       position: absolute;
       top: 15px;
@@ -153,27 +154,26 @@ Don't copy without permission 🙏
       color: #b0b8c0;
     }
     
-    /* Content Layout */
-    .content-container {
+    /* User Section Styles */
+    .user-section {
       display: flex;
-      flex-direction: column;
-      gap: 30px;
-      margin-bottom: 30px;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
     }
     
-    .main-content {
+    .total-visitors {
+      background: linear-gradient(to right, #8e44ad, #9b59b6);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 50px;
+      font-weight: 600;
       display: flex;
-      gap: 30px;
-    }
-    
-    .left-panel {
-      flex: 1;
-    }
-    
-    .right-panel {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     
     /* Language Selector */
@@ -615,7 +615,7 @@ Don't copy without permission 🙏
       background: rgba(93, 142, 255, 0.1);
     }
     
-    /* Instructions */
+    /* Instructions - Moved below */
     .instructions {
       background: #f8f9fa;
       border-radius: 25px;
@@ -821,7 +821,7 @@ Don't copy without permission 🙏
       opacity: 1;
     }
     
-    /* Animation for word cards */
+    /* Animation for word cards when added */
     @keyframes slideIn {
       from {
         opacity: 0;
@@ -1047,6 +1047,11 @@ Don't copy without permission 🙏
         height: 45px;
       }
       
+      .user-section {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
       .input-section {
         flex-direction: column;
       }
@@ -1082,39 +1087,6 @@ Don't copy without permission 🙏
         padding: 15px;
         font-size: 1rem;
       }
-    }
-    
-    .visit-counter-container {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .visit-counter-badge {
-      background: linear-gradient(45deg, #1a2a6c, #b21f1f);
-      color: white;
-      padding: 10px 20px;
-      border-radius: 50px;
-      font-weight: 600;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.3s ease;
-    }
-    
-    .visit-counter-badge:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-    }
-    
-    .visit-counter-badge i {
-      font-size: 1.2rem;
     }
     
     .security-watermark {
@@ -1182,10 +1154,17 @@ Don't copy without permission 🙏
   
   <div class="container" id="mainContainer">
     <div class="header">
-      <div class="made-by">DEDICATED TO THE KNIGHTS</div>
+      <div class="made-by">DEDICATED TO THE KNIGHTS </div>
+      <!-- Theme toggle moved to top-right -->
       <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
       </button>
+      <div class="user-section">
+        <div class="total-visitors">
+          <i class="fas fa-users"></i>
+          <span id="totalVisitors">0</span> Total Visitors
+        </div>
+      </div>
       <h1>Hindi-English Dictation</h1>
       <p>Master difficult words for competitive exams like IAS, PCS, UPSI and more</p>
     </div>
@@ -1221,14 +1200,10 @@ Don't copy without permission 🙏
           <button class="btn btn-play-all" id="playAllBtn">
             <i class="fas fa-play-circle"></i> Play All Words
           </button>
-          
-          <div class="visit-counter">
-            <i class="fas fa-eye"></i>
-            <span id="visitCount">0</span> Total Visits
-          </div>
         </div>
         
         <div class="right-panel">
+          <!-- SPEED LABEL ADDED HERE -->
           <div class="speed-label">
             <i class="fas fa-tachometer-alt"></i> SPEED
           </div>
@@ -1249,6 +1224,7 @@ Don't copy without permission 🙏
         </div>
       </div>
       
+      <!-- Exam Preparation Guide moved below -->
       <div class="instructions">
         <h3><i class="fas fa-graduation-cap"></i> Exam Preparation Guide:</h3>
         <ul>
@@ -1262,30 +1238,27 @@ Don't copy without permission 🙏
         </ul>
         
         <div class="benefits-container">
-          <h3><i class="fas fa-crown"></i> Benefits of Using Dictation Master</h3>
+          <h3><i class="fas fa-crown"></i> Features</h3>
           <div class="benefits-list">
             <div class="benefit-card">
-              <i class="fas fa-cloud-upload-alt"></i>
-              <h4>Local Storage</h4>
-              <p>Save your words locally in your browser for easy access</p>
+              <i class="fas fa-language"></i>
+              <h4>Dual Language</h4>
+              <p>Supports both Hindi and English words with proper pronunciation</p>
             </div>
             <div class="benefit-card">
-              <i class="fas fa-chart-line"></i>
-              <h4>Progress Tracking</h4>
-              <p>Track your learning progress with a visual progress bar</p>
-              <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-              </div>
+              <i class="fas fa-sliders-h"></i>
+              <h4>Speed Control</h4>
+              <p>Adjust the playback speed to match your learning pace</p>
             </div>
             <div class="benefit-card">
-              <i class="fas fa-sync-alt"></i>
-              <h4>Seamless Experience</h4>
-              <p>Continue your learning without needing an account</p>
+              <i class="fas fa-volume-up"></i>
+              <h4>Text-to-Speech</h4>
+              <p>High-quality speech synthesis for accurate pronunciation</p>
             </div>
             <div class="benefit-card">
-              <i class="fas fa-shield-alt"></i>
-              <h4>Secure Interface</h4>
-              <p>Protected against unauthorized copying or printing</p>
+              <i class="fas fa-moon"></i>
+              <h4>Dark Mode</h4>
+              <p>Eye-friendly dark theme for comfortable learning</p>
             </div>
           </div>
         </div>
@@ -1301,41 +1274,8 @@ Don't copy without permission 🙏
       Made by THE KNIGHTS © 2024 | All rights reserved
     </footer>
   </div>
-  
-  <div class="visit-counter-container">
-    <div class="visit-counter-badge">
-      <i class="fas fa-users"></i>
-      <span id="floatingVisitCount">0</span> Total Visits
-    </div>
-  </div>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyD7kq9Fd8Lwj0mGdZ0z6Vf4Hq7YkXy6Z6A",
-      authDomain: "hindi-english-dictation.firebaseapp.com",
-      databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "hindi-english-dictation",
-      storageBucket: "hindi-english-dictation.appspot.com",
-      messagingSenderId: "123456789012",
-      appId: "1:123456789012:web:abc123def456ghi789jkl0"
-    };
-
-    // Initialize Firebase
-    let database;
-    try {
-      firebase.initializeApp(firebaseConfig);
-      database = firebase.database();
-      console.log('Firebase initialized successfully');
-    } catch (error) {
-      console.error('Firebase initialization failed:', error);
-      showMessage('Failed to connect to server. Visit count may not update.', 'error');
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
       // DOM elements
       const wordInput = document.getElementById('wordInput');
@@ -1348,12 +1288,11 @@ Don't copy without permission 🙏
       const speedValue = document.getElementById('speedValue');
       const presetButtons = document.querySelectorAll('.preset-btn');
       const themeToggle = document.getElementById('themeToggle');
+      const mainContainer = document.getElementById('mainContainer');
       const lensBtn = document.getElementById('lensBtn');
+      const totalVisitors = document.getElementById('totalVisitors');
       const inputSection = document.getElementById('inputSection');
       const breathIndicator = document.getElementById('breathIndicator');
-      const visitCount = document.getElementById('visitCount');
-      const floatingVisitCount = document.getElementById('floatingVisitCount');
-      const progressFill = document.getElementById('progressFill');
       
       // State variables
       let currentLanguage = 'hindi';
@@ -1365,8 +1304,11 @@ Don't copy without permission 🙏
 
       // Initialize the app
       function initApp() {
-        // Load words from local storage
-        words = JSON.parse(localStorage.getItem('localWords')) || [];
+        // Load words from localStorage
+        const savedWords = localStorage.getItem('dictationWords');
+        if (savedWords) {
+          words = JSON.parse(savedWords);
+        }
         
         // Set up event listeners
         setupEventListeners();
@@ -1383,68 +1325,20 @@ Don't copy without permission 🙏
           toggleTheme();
         }
         
-        // Update visit counter
-        updateGlobalVisitCounter();
-        
-        // Update progress
-        updateProgress();
+        // Update visitor counter
+        updateVisitorCounter();
       }
       
-      // Update global visit counter using Firebase
-      function updateGlobalVisitCounter() {
-        if (!database) {
-          console.error('Database not initialized');
-          showMessage('Cannot update visit count due to server issue.', 'error');
-          return;
+      // Update visitor counter
+      function updateVisitorCounter() {
+        let count = localStorage.getItem('visitorCount');
+        if (!count) {
+          count = 1;
+        } else {
+          count = parseInt(count) + 1;
         }
-
-        const visitRef = database.ref('globalVisitCount');
-        
-        // Increment the count
-        visitRef.transaction(function(currentCount) {
-          console.log('Current visit count:', currentCount);
-          return (currentCount || 0) + 1;
-        }, function(error, committed, snapshot) {
-          if (error) {
-            console.error('Visit count update failed:', error);
-            showMessage('Failed to update visit count.', 'error');
-            // Display last known count from local storage as fallback
-            const lastCount = localStorage.getItem('lastVisitCount') || '0';
-            visitCount.textContent = lastCount;
-            floatingVisitCount.textContent = lastCount;
-          } else if (committed) {
-            const count = snapshot.val();
-            console.log('Updated visit count:', count);
-            visitCount.textContent = count;
-            floatingVisitCount.textContent = count;
-            // Store last known count in local storage
-            localStorage.setItem('lastVisitCount', count);
-          }
-        });
-        
-        // Listen for real-time updates
-        visitRef.on('value', function(snapshot) {
-          const count = snapshot.val() || 0;
-          console.log('Real-time visit count update:', count);
-          visitCount.textContent = count;
-          floatingVisitCount.textContent = count;
-          localStorage.setItem('lastVisitCount', count);
-        }, function(error) {
-          console.error('Real-time listener error:', error);
-          showMessage('Cannot fetch real-time visit count.', 'error');
-          // Display last known count
-          const lastCount = localStorage.getItem('lastVisitCount') || '0';
-          visitCount.textContent = lastCount;
-          floatingVisitCount.textContent = lastCount;
-        });
-      }
-      
-      // Update progress bar
-      function updateProgress() {
-        const totalWords = words.length;
-        const masteredWords = words.filter(word => word.mastered).length;
-        const percentage = totalWords > 0 ? (masteredWords / totalWords) * 100 : 0;
-        progressFill.style.width = `${percentage}%`;
+        localStorage.setItem('visitorCount', count);
+        totalVisitors.textContent = count;
       }
       
       // Set up all event listeners
@@ -1526,8 +1420,8 @@ Don't copy without permission 🙏
           addedDate: new Date().toISOString()
         });
         
-        // Save words to local storage
-        localStorage.setItem('localWords', JSON.stringify(words));
+        // Save words to localStorage
+        localStorage.setItem('dictationWords', JSON.stringify(words));
         
         // Trigger box breathing if word is "BOX"
         if (word.toUpperCase() === 'BOX') {
@@ -1537,14 +1431,15 @@ Don't copy without permission 🙏
         renderWordsList();
         wordInput.value = '';
         wordInput.focus();
-        updateProgress();
       }
       
       // Trigger box breathing animation
       function triggerBoxBreathing() {
+        // Add breathing animation class
         inputSection.classList.add('box-breathing');
         breathIndicator.classList.add('active');
         
+        // Remove animation after completion
         setTimeout(() => {
           inputSection.classList.remove('box-breathing');
           breathIndicator.classList.remove('active');
@@ -1597,24 +1492,23 @@ Don't copy without permission 🙏
           btn.addEventListener('click', function() {
             const index = parseInt(this.getAttribute('data-index'));
             words[index].mastered = !words[index].mastered;
-            localStorage.setItem('localWords', JSON.stringify(words));
+            localStorage.setItem('dictationWords', JSON.stringify(words));
             renderWordsList();
-            updateProgress();
           });
         });
         
         document.querySelectorAll('.delete-btn').forEach(btn => {
           btn.addEventListener('click', function() {
             const index = parseInt(this.getAttribute('data-index'));
+            // If currently speaking this word, stop speech
             if (currentSpeakingIndex === index) {
               window.speechSynthesis.cancel();
               isSpeaking = false;
               currentSpeakingIndex = -1;
             }
             words.splice(index, 1);
-            localStorage.setItem('localWords', JSON.stringify(words));
+            localStorage.setItem('dictationWords', JSON.stringify(words));
             renderWordsList();
-            updateProgress();
           });
         });
       }
@@ -1622,16 +1516,21 @@ Don't copy without permission 🙏
       // Speak a single word
       function speakWord(word, index) {
         if ('speechSynthesis' in window) {
+          // Cancel any ongoing speech
           window.speechSynthesis.cancel();
           
           const utterance = new SpeechSynthesisUtterance(word.text);
+          
+          // Set language based on word
           utterance.lang = word.language === 'hindi' ? 'hi-IN' : 'en-US';
           utterance.rate = speechRate;
           
+          // Set speaking state
           isSpeaking = true;
           currentSpeakingIndex = index;
           renderWordsList();
           
+          // Highlight the word while speaking
           utterance.onstart = function() {
             currentSpeakingIndex = index;
             renderWordsList();
@@ -1686,6 +1585,7 @@ Don't copy without permission 🙏
           speakWord(words[index], index);
           index++;
           
+          // Wait for the current word to finish before playing the next
           const checkEnd = setInterval(() => {
             if (!isSpeaking) {
               clearInterval(checkEnd);
@@ -1703,10 +1603,12 @@ Don't copy without permission 🙏
         isDarkMode = !isDarkMode;
         document.body.classList.toggle('dark-mode', isDarkMode);
         
+        // Update icon
         const icon = themeToggle.querySelector('i');
         icon.classList.toggle('fa-moon', !isDarkMode);
         icon.classList.toggle('fa-sun', isDarkMode);
         
+        // Save preference
         localStorage.setItem('darkMode', isDarkMode);
       }
       
@@ -1717,6 +1619,7 @@ Don't copy without permission 🙏
       
       // Show general message
       function showMessage(message, type) {
+        // Create message element
         const messageEl = document.createElement('div');
         messageEl.className = `form-message ${type}`;
         messageEl.textContent = message;
@@ -1729,26 +1632,9 @@ Don't copy without permission 🙏
         messageEl.style.borderRadius = '50px';
         messageEl.style.fontWeight = '600';
         
-        if (type === 'error') {
-          messageEl.style.background = 'rgba(231, 76, 60, 0.2)';
-          messageEl.style.color = '#c0392b';
-        } else if (type === 'success') {
-          messageEl.style.background = 'rgba(46, 204, 113, 0.2)';
-          messageEl.style.color = '#27ae60';
-        }
-        
-        if (isDarkMode) {
-          if (type === 'error') {
-            messageEl.style.background = 'rgba(231, 76, 60, 0.3)';
-            messageEl.style.color = '#ff8a80';
-          } else if (type === 'success') {
-            messageEl.style.background = 'rgba(46, 204, 113, 0.3)';
-            messageEl.style.color = '#69f0ae';
-          }
-        }
-        
         document.body.appendChild(messageEl);
         
+        // Remove message after 3 seconds
         setTimeout(() => {
           messageEl.style.opacity = '0';
           setTimeout(() => {

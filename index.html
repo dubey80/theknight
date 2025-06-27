@@ -6,7 +6,6 @@ Made by THE KNIGHTS
 Website: www.theknight.info
 Don't copy without permission 🙏
 -->
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hindi-English Dictation Master</title>
@@ -94,7 +93,7 @@ Don't copy without permission 🙏
       z-index: 10;
     }
     
-    /* Theme toggle moved to top-right */
+    /* Theme toggle */
     .theme-toggle {
       position: absolute;
       top: 15px;
@@ -154,66 +153,7 @@ Don't copy without permission 🙏
       color: #b0b8c0;
     }
     
-    /* User Section Styles */
-    .user-section {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    
-    .user-btn {
-      padding: 12px 25px;
-      background: linear-gradient(to right, #8e44ad, #9b59b6);
-      border: none;
-      border-radius: 50px;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    
-    .user-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-    }
-    
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      color: white;
-      background: rgba(26, 42, 108, 0.3);
-      padding: 8px 20px;
-      border-radius: 50px;
-      font-weight: 500;
-      backdrop-filter: blur(5px);
-    }
-    
-    body.dark-mode .user-info {
-      background: rgba(93, 142, 255, 0.2);
-    }
-    
-    .logout-btn {
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      font-size: 1.1rem;
-      transition: transform 0.3s ease;
-    }
-    
-    .logout-btn:hover {
-      transform: rotate(15deg);
-    }
-    
-    /* Content Layout - Modified for new structure */
+    /* Content Layout */
     .content-container {
       display: flex;
       flex-direction: column;
@@ -239,7 +179,7 @@ Don't copy without permission 🙏
     /* Language Selector */
     .language-selector {
       display: flex;
-      background-color: #f1f2f6;
+      background-color: #f1f okt2f6;
       border-radius: 50px;
       padding: 8px;
       margin-bottom: 30px;
@@ -675,7 +615,7 @@ Don't copy without permission 🙏
       background: rgba(93, 142, 255, 0.1);
     }
     
-    /* Instructions - Moved below */
+    /* Instructions */
     .instructions {
       background: #f8f9fa;
       border-radius: 25px;
@@ -881,178 +821,7 @@ Don't copy without permission 🙏
       opacity: 1;
     }
     
-    /* Authentication Modal */
-    .auth-modal {
-      display: flex;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 2000;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-    
-    .auth-modal.show {
-      opacity: 1;
-      pointer-events: all;
-    }
-    
-    .auth-content {
-      background: white;
-      border-radius: 25px;
-      padding: 40px;
-      width: 90%;
-      max-width: 450px;
-      position: relative;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-      transform: translateY(30px);
-      transition: transform 0.4s ease;
-    }
-    
-    .auth-modal.show .auth-content {
-      transform: translateY(0);
-    }
-    
-    body.dark-mode .auth-content {
-      background: #2a2a3a;
-    }
-    
-    .close-modal {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: #e74c3c;
-      border: none;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: white;
-      font-size: 1.2rem;
-      transition: all 0.3s ease;
-    }
-    
-    .close-modal:hover {
-      background: #c0392b;
-      transform: rotate(90deg);
-    }
-    
-    .auth-form {
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-    }
-    
-    .form-title {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #1a2a6c;
-      font-size: 2rem;
-    }
-    
-    body.dark-mode .form-title {
-      color: #5d8eff;
-    }
-    
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    
-    .form-group label {
-      font-weight: 600;
-      color: #2c3e50;
-    }
-    
-    body.dark-mode .form-group label {
-      color: #e0e0f0;
-    }
-    
-    .form-group input {
-      padding: 16px 25px;
-      border-radius: 50px;
-      border: 2px solid #e0e0e0;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-    }
-    
-    body.dark-mode .form-group input {
-      background: #1e1e2a;
-      border: 2px solid #3a3a4a;
-      color: #f0f0f8;
-    }
-    
-    .form-group input:focus {
-      border-color: #3498db;
-      outline: none;
-      box-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
-    }
-    
-    body.dark-mode .form-group input:focus {
-      border-color: #5d8eff;
-      box-shadow: 0 0 15px rgba(93, 142, 255, 0.5);
-    }
-    
-    .form-toggle {
-      text-align: center;
-      margin-top: 15px;
-      color: #5a6268;
-    }
-    
-    body.dark-mode .form-toggle {
-      color: #b0b8c0;
-    }
-    
-    .form-toggle a {
-      color: #1a2a6c;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    
-    body.dark-mode .form-toggle a {
-      color: #5d8eff;
-    }
-    
-    .form-message {
-      padding: 15px;
-      border-radius: 15px;
-      margin-top: 15px;
-      text-align: center;
-      display: none;
-    }
-    
-    .form-message.error {
-      background: rgba(231, 76, 60, 0.2);
-      color: #c0392b;
-    }
-    
-    .form-message.success {
-      background: rgba(46, 204, 113, 0.2);
-      color: #27ae60;
-    }
-    
-    body.dark-mode .form-message.error {
-      background: rgba(231, 76, 60, 0.3);
-      color: #ff8a80;
-    }
-    
-    body.dark-mode .form-message.success {
-      background: rgba(46, 204, 113, 0.3);
-      color: #69f0ae;
-    }
-    
-    /* Animation for word cards when added */
+    /* Animation for word cards */
     @keyframes slideIn {
       from {
         opacity: 0;
@@ -1278,16 +1047,6 @@ Don't copy without permission 🙏
         height: 45px;
       }
       
-      .user-section {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      .user-btn {
-        padding: 10px 15px;
-        font-size: 1rem;
-      }
-      
       .input-section {
         flex-direction: column;
       }
@@ -1409,47 +1168,9 @@ Don't copy without permission 🙏
       width: 0%;
       transition: width 1s ease;
     }
-    
-    /* Firebase connection status */
-    .firebase-status {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 1000;
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-      background: rgba(255, 255, 255, 0.9);
-      color: #333;
-    }
-    
-    .firebase-status.connected {
-      background: rgba(46, 204, 113, 0.9);
-      color: white;
-    }
-    
-    .firebase-status.disconnected {
-      background: rgba(231, 76, 60, 0.9);
-      color: white;
-    }
-    
-    body.dark-mode .firebase-status {
-      background: rgba(30, 30, 40, 0.9);
-      color: white;
-    }
   </style>
 </head>
 <body>
-  <div class="firebase-status" id="firebaseStatus">
-    <i class="fas fa-sync fa-spin"></i>
-    Connecting to server...
-  </div>
-  
   <div class="bg-animation">
     <div class="bg-element" style="width: 300px; height: 300px; background: #3498db; top: 10%; left: 5%; animation-duration: 25s;"></div>
     <div class="bg-element" style="width: 200px; height: 200px; background: #e74c3c; top: 60%; left: 80%; animation-duration: 20s;"></div>
@@ -1459,55 +1180,12 @@ Don't copy without permission 🙏
 
   <div class="security-watermark">Made by Nirbhay</div>
   
-  <div class="auth-modal" id="authModal">
-    <div class="auth-content">
-      <button class="close-modal" id="closeAuthModal">
-        <i class="fas fa-times"></i>
-      </button>
-      <h2 class="form-title"><i class="fas fa-user-shield"></i> Secure Access</h2>
-      <form class="auth-form" id="authForm">
-        <div class="form-group">
-          <label for="username"><i class="fas fa-user"></i> Username</label>
-          <input type="text" id="username" placeholder="Enter your username" required>
-        </div>
-        <div class="form-group">
-          <label for="password"><i class="fas fa-lock"></i> Password</label>
-          <input type="password" id="password" placeholder="Enter your password" required minlength="4">
-        </div>
-        <div class="form-buttons">
-          <button type="button" id="registerBtn" class="btn" style="background: linear-gradient(to right, #9b59b6, #8e44ad);">
-            <i class="fas fa-user-plus"></i> Register
-          </button>
-          <button type="button" id="loginBtn" class="btn">
-            <i class="fas fa-sign-in-alt"></i> Login
-          </button>
-        </div>
-        <div id="authMessage" class="form-message"></div>
-      </form>
-      <div class="form-toggle">
-        <p>Secure your progress with a personal account</p>
-      </div>
-    </div>
-  </div>
-
   <div class="container" id="mainContainer">
     <div class="header">
-      <div class="made-by">DEDICATED TO THE KNIGHTS </div>
-      <!-- Theme toggle moved to top-right -->
+      <div class="made-by">DEDICATED TO THE KNIGHTS</div>
       <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
       </button>
-      <div class="user-section">
-        <div class="user-info" id="userInfo">
-          <span id="usernameDisplay">Guest</span>
-          <button class="logout-btn" id="logoutBtn" title="Logout">
-            <i class="fas fa-sign-out-alt"></i>
-          </button>
-        </div>
-        <button class="user-btn" id="authBtn">
-          <i class="fas fa-user"></i> Login/Register
-        </button>
-      </div>
       <h1>Hindi-English Dictation</h1>
       <p>Master difficult words for competitive exams like IAS, PCS, UPSI and more</p>
     </div>
@@ -1546,12 +1224,11 @@ Don't copy without permission 🙏
           
           <div class="visit-counter">
             <i class="fas fa-eye"></i>
-            <span id="visitCount">0</span> Visits
+            <span id="visitCount">0</span> Total Visitors
           </div>
         </div>
         
         <div class="right-panel">
-          <!-- SPEED LABEL ADDED HERE -->
           <div class="speed-label">
             <i class="fas fa-tachometer-alt"></i> SPEED
           </div>
@@ -1572,12 +1249,10 @@ Don't copy without permission 🙏
         </div>
       </div>
       
-      <!-- Exam Preparation Guide moved below -->
       <div class="instructions">
         <h3><i class="fas fa-graduation-cap"></i> Exam Preparation Guide:</h3>
         <ul>
           <li><strong>Add challenging words</strong> in your selected language (Hindi or English)</li>
-          <li><strong>Login to save words</strong> to your personal account for future practice</li>
           <li><strong>Click the play button</strong> next to each word to hear it pronounced</li>
           <li><strong>Adjust the speed</strong> to make words easier or more challenging</li>
           <li><strong>Use preset buttons</strong> for specific speeds (25, 20, 30, 35 WPM)</li>
@@ -1587,30 +1262,30 @@ Don't copy without permission 🙏
         </ul>
         
         <div class="benefits-container">
-          <h3><i class="fas fa-crown"></i> Benefits of Creating an Account</h3>
+          <h3><i class="fas fa-crown"></i> Benefits of Using Dictation Master</h3>
           <div class="benefits-list">
             <div class="benefit-card">
               <i class="fas fa-cloud-upload-alt"></i>
-              <h4>Cloud Storage</h4>
-              <p>Save all your words securely in the cloud and access them from any device</p>
+              <h4>Local Storage</h4>
+              <p>Save your words locally in your browser for easy access</p>
             </div>
             <div class="benefit-card">
               <i class="fas fa-chart-line"></i>
               <h4>Progress Tracking</h4>
-              <p>Track your learning progress over time with detailed statistics</p>
+              <p>Track your learning progress with a visual progress bar</p>
               <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
               </div>
             </div>
             <div class="benefit-card">
               <i class="fas fa-sync-alt"></i>
-              <h4>Sync Across Devices</h4>
-              <p>Continue your learning seamlessly between phone, tablet, and computer</p>
+              <h4>Seamless Experience</h4>
+              <p>Continue your learning without needing an account</p>
             </div>
             <div class="benefit-card">
               <i class="fas fa-shield-alt"></i>
-              <h4>Enhanced Security</h4>
-              <p>Protect your learning materials with password authentication</p>
+              <h4>Secure Interface</h4>
+              <p>Protected against unauthorized copying or printing</p>
             </div>
           </div>
         </div>
@@ -1623,15 +1298,14 @@ Don't copy without permission 🙏
       <i class="fas fa-info-circle"></i> For best results, use Chrome or Edge browsers
     </footer>
     <footer>
-  Made by THE KNIGHTS © 2024 | All rights reserved
-</footer>
-
+      Made by THE KNIGHTS © 2024 | All rights reserved
+    </footer>
   </div>
   
   <div class="visit-counter-container">
     <div class="visit-counter-badge">
       <i class="fas fa-users"></i>
-      <span id="floatingVisitCount">0</span> Users
+      <span id="floatingVisitCount">0</span> Total Visitors
     </div>
   </div>
 
@@ -1640,7 +1314,7 @@ Don't copy without permission 🙏
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
-    // Firebase configuration - replace with your actual config
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyD7kq9Fd8Lwj0mGdZ0z6Vf4Hq7YkXy6Z6A",
       authDomain: "hindi-english-dictation.firebaseapp.com",
@@ -1667,24 +1341,12 @@ Don't copy without permission 🙏
       const speedValue = document.getElementById('speedValue');
       const presetButtons = document.querySelectorAll('.preset-btn');
       const themeToggle = document.getElementById('themeToggle');
-      const mainContainer = document.getElementById('mainContainer');
-      const authModal = document.getElementById('authModal');
-      const closeAuthModal = document.getElementById('closeAuthModal');
-      const registerBtn = document.getElementById('registerBtn');
-      const loginBtn = document.getElementById('loginBtn');
-      const logoutBtn = document.getElementById('logoutBtn');
-      const authBtn = document.getElementById('authBtn');
-      const usernameDisplay = document.getElementById('usernameDisplay');
-      const authMessage = document.getElementById('authMessage');
       const lensBtn = document.getElementById('lensBtn');
-      const usernameInput = document.getElementById('username');
-      const passwordInput = document.getElementById('password');
+      const inputSection = document.getElementById('inputSection');
+      const breathIndicator = document.getElementById('breathIndicator');
       const visitCount = document.getElementById('visitCount');
       const floatingVisitCount = document.getElementById('floatingVisitCount');
       const progressFill = document.getElementById('progressFill');
-      const inputSection = document.getElementById('inputSection');
-      const breathIndicator = document.getElementById('breathIndicator');
-      const firebaseStatus = document.getElementById('firebaseStatus');
       
       // State variables
       let currentLanguage = 'hindi';
@@ -1693,30 +1355,11 @@ Don't copy without permission 🙏
       let isSpeaking = false;
       let currentSpeakingIndex = -1;
       let isDarkMode = false;
-      let currentUser = null;
 
       // Initialize the app
       function initApp() {
-        // Check Firebase connection
-        const connectedRef = database.ref('.info/connected');
-        connectedRef.on('value', function(snap) {
-          if (snap.val() === true) {
-            firebaseStatus.innerHTML = '<i class="fas fa-wifi"></i> Connected to server';
-            firebaseStatus.className = 'firebase-status connected';
-          } else {
-            firebaseStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Offline mode';
-            firebaseStatus.className = 'firebase-status disconnected';
-          }
-        });
-        
-        // Check if user is already logged in
-        const savedUser = localStorage.getItem('currentUser');
-        if (savedUser) {
-          currentUser = JSON.parse(savedUser);
-          words = currentUser.words || [];
-          updateUI();
-          updateProgress();
-        }
+        // Load words from local storage
+        words = JSON.parse(localStorage.getItem('localWords')) || [];
         
         // Set up event listeners
         setupEventListeners();
@@ -1735,6 +1378,9 @@ Don't copy without permission 🙏
         
         // Update visit counter
         updateGlobalVisitCounter();
+        
+        // Update progress
+        updateProgress();
       }
       
       // Update global visit counter using Firebase
@@ -1747,35 +1393,19 @@ Don't copy without permission 🙏
         }, function(error, committed, snapshot) {
           if (error) {
             console.error('Visit count update failed:', error);
-            // Fallback to local count if Firebase fails
-            updateLocalVisitCounter();
           } else if (committed) {
-            // Update UI with new count
             const count = snapshot.val();
             visitCount.textContent = count;
             floatingVisitCount.textContent = count;
           }
         });
         
-        // Also listen for real-time updates
+        // Listen for real-time updates
         visitRef.on('value', function(snapshot) {
           const count = snapshot.val() || 0;
           visitCount.textContent = count;
           floatingVisitCount.textContent = count;
         });
-      }
-      
-      // Fallback to local visit counter if Firebase fails
-      function updateLocalVisitCounter() {
-        let count = localStorage.getItem('localVisitCount');
-        if (count === null) {
-          count = 1;
-        } else {
-          count = parseInt(count) + 1;
-        }
-        localStorage.setItem('localVisitCount', count);
-        visitCount.textContent = count;
-        floatingVisitCount.textContent = count;
       }
       
       // Update progress bar
@@ -1821,16 +1451,6 @@ Don't copy without permission 🙏
         
         // Google Lens
         lensBtn.addEventListener('click', showLensInstructions);
-        
-        // Authentication
-        closeAuthModal.addEventListener('click', () => authModal.classList.remove('show'));
-        registerBtn.addEventListener('click', registerUser);
-        loginBtn.addEventListener('click', loginUser);
-        logoutBtn.addEventListener('click', logoutUser);
-        authBtn.addEventListener('click', () => {
-          authModal.classList.add('show');
-          authBtn.style.display = currentUser ? 'none' : 'block';
-        });
       }
       
       // Update speed display
@@ -1875,11 +1495,8 @@ Don't copy without permission 🙏
           addedDate: new Date().toISOString()
         });
         
-        // Save words if user is logged in
-        if (currentUser) {
-          saveUserData();
-          updateProgress();
-        }
+        // Save words to local storage
+        localStorage.setItem('localWords', JSON.stringify(words));
         
         // Trigger box breathing if word is "BOX"
         if (word.toUpperCase() === 'BOX') {
@@ -1889,15 +1506,14 @@ Don't copy without permission 🙏
         renderWordsList();
         wordInput.value = '';
         wordInput.focus();
+        updateProgress();
       }
       
       // Trigger box breathing animation
       function triggerBoxBreathing() {
-        // Add breathing animation class
         inputSection.classList.add('box-breathing');
         breathIndicator.classList.add('active');
         
-        // Remove animation after completion
         setTimeout(() => {
           inputSection.classList.remove('box-breathing');
           breathIndicator.classList.remove('active');
@@ -1950,32 +1566,24 @@ Don't copy without permission 🙏
           btn.addEventListener('click', function() {
             const index = parseInt(this.getAttribute('data-index'));
             words[index].mastered = !words[index].mastered;
-            if (currentUser) {
-              saveUserData();
-              updateProgress();
-            }
+            localStorage.setItem('localWords', JSON.stringify(words));
             renderWordsList();
+            updateProgress();
           });
         });
         
         document.querySelectorAll('.delete-btn').forEach(btn => {
           btn.addEventListener('click', function() {
             const index = parseInt(this.getAttribute('data-index'));
-            // If currently speaking this word, stop speech
             if (currentSpeakingIndex === index) {
               window.speechSynthesis.cancel();
               isSpeaking = false;
               currentSpeakingIndex = -1;
             }
             words.splice(index, 1);
-            
-            // Save words if user is logged in
-            if (currentUser) {
-              saveUserData();
-              updateProgress();
-            }
-            
+            localStorage.setItem('localWords', JSON.stringify(words));
             renderWordsList();
+            updateProgress();
           });
         });
       }
@@ -1983,21 +1591,16 @@ Don't copy without permission 🙏
       // Speak a single word
       function speakWord(word, index) {
         if ('speechSynthesis' in window) {
-          // Cancel any ongoing speech
           window.speechSynthesis.cancel();
           
           const utterance = new SpeechSynthesisUtterance(word.text);
-          
-          // Set language based on word
           utterance.lang = word.language === 'hindi' ? 'hi-IN' : 'en-US';
           utterance.rate = speechRate;
           
-          // Set speaking state
           isSpeaking = true;
           currentSpeakingIndex = index;
           renderWordsList();
           
-          // Highlight the word while speaking
           utterance.onstart = function() {
             currentSpeakingIndex = index;
             renderWordsList();
@@ -2052,7 +1655,6 @@ Don't copy without permission 🙏
           speakWord(words[index], index);
           index++;
           
-          // Wait for the current word to finish before playing the next
           const checkEnd = setInterval(() => {
             if (!isSpeaking) {
               clearInterval(checkEnd);
@@ -2070,143 +1672,11 @@ Don't copy without permission 🙏
         isDarkMode = !isDarkMode;
         document.body.classList.toggle('dark-mode', isDarkMode);
         
-        // Update icon
         const icon = themeToggle.querySelector('i');
         icon.classList.toggle('fa-moon', !isDarkMode);
         icon.classList.toggle('fa-sun', isDarkMode);
         
-        // Save preference
         localStorage.setItem('darkMode', isDarkMode);
-      }
-      
-      // Register user
-      function registerUser() {
-        const username = usernameInput.value.trim();
-        const password = passwordInput.value.trim();
-        
-        if (!username || !password) {
-          showAuthMessage('Please enter both username and password', 'error');
-          return;
-        }
-        
-        if (password.length < 4) {
-          showAuthMessage('Password must be at least 4 characters', 'error');
-          return;
-        }
-        
-        // Get existing users or initialize empty array
-        const users = JSON.parse(localStorage.getItem('dictationUsers')) || [];
-        
-        // Check if user already exists
-        const userExists = users.some(u => u.username === username);
-        
-        if (userExists) {
-          showAuthMessage('Username already exists!', 'error');
-          return;
-        }
-        
-        // Create new user
-        const newUser = {
-          username,
-          password,
-          words: [],
-          createdAt: new Date().toISOString()
-        };
-        
-        users.push(newUser);
-        localStorage.setItem('dictationUsers', JSON.stringify(users));
-        
-        // Log the user in
-        currentUser = newUser;
-        words = currentUser.words;
-        saveUserData();
-        updateUI();
-        
-        showAuthMessage('Account created successfully!', 'success');
-        
-        // Close modal after delay
-        setTimeout(() => {
-          authModal.classList.remove('show');
-        }, 1500);
-      }
-      
-      // Login user
-      function loginUser() {
-        const username = usernameInput.value.trim();
-        const password = passwordInput.value.trim();
-        
-        if (!username || !password) {
-          showAuthMessage('Please enter both username and password', 'error');
-          return;
-        }
-        
-        // Get existing users
-        const users = JSON.parse(localStorage.getItem('dictationUsers')) || [];
-        
-        // Find user
-        const foundUser = users.find(u => u.username === username && u.password === password);
-        
-        if (foundUser) {
-          currentUser = foundUser;
-          words = foundUser.words || [];
-          saveUserData();
-          updateUI();
-          updateProgress();
-          
-          showAuthMessage('Login successful!', 'success');
-          
-          // Close modal after delay
-          setTimeout(() => {
-            authModal.classList.remove('show');
-          }, 1000);
-        } else {
-          showAuthMessage('Invalid username or password', 'error');
-        }
-      }
-      
-      // Logout user
-      function logoutUser() {
-        currentUser = null;
-        words = [];
-        localStorage.removeItem('currentUser');
-        updateUI();
-        authBtn.style.display = 'block';
-        progressFill.style.width = '0%';
-      }
-      
-      // Save user data
-      function saveUserData() {
-        if (!currentUser) return;
-        
-        // Update user data in storage
-        const users = JSON.parse(localStorage.getItem('dictationUsers')) || [];
-        const userIndex = users.findIndex(u => u.username === currentUser.username);
-        
-        if (userIndex !== -1) {
-          users[userIndex].words = words;
-          localStorage.setItem('dictationUsers', JSON.stringify(users));
-        }
-        
-        // Save current user session
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-      }
-      
-      // Update UI based on authentication state
-      function updateUI() {
-        if (currentUser) {
-          // Update username display
-          usernameDisplay.textContent = currentUser.username;
-          authBtn.style.display = 'none';
-          
-          // Render words
-          renderWordsList();
-        } else {
-          // Reset UI for guest
-          usernameDisplay.textContent = 'Guest';
-          authBtn.style.display = 'block';
-          words = [];
-          renderWordsList();
-        }
       }
       
       // Show Google Lens instructions
@@ -2214,21 +1684,8 @@ Don't copy without permission 🙏
         alert('To add words with Google Lens:\n1. Install Google Lens app\n2. Capture text from books\n3. Copy and paste the words here');
       }
       
-      // Show authentication message
-      function showAuthMessage(message, type) {
-        authMessage.textContent = message;
-        authMessage.className = `form-message ${type}`;
-        authMessage.style.display = 'block';
-        
-        // Clear message after 3 seconds
-        setTimeout(() => {
-          authMessage.style.display = 'none';
-        }, 3000);
-      }
-      
       // Show general message
       function showMessage(message, type) {
-        // Create message element
         const messageEl = document.createElement('div');
         messageEl.className = `form-message ${type}`;
         messageEl.textContent = message;
@@ -2241,9 +1698,26 @@ Don't copy without permission 🙏
         messageEl.style.borderRadius = '50px';
         messageEl.style.fontWeight = '600';
         
+        if (type === 'error') {
+          messageEl.style.background = 'rgba(231, 76, 60, 0.2)';
+          messageEl.style.color = '#c0392b';
+        } else if (type === 'success') {
+          messageEl.style.background = 'rgba(46, 204, 113, 0.2)';
+          messageEl.style.color = '#27ae60';
+        }
+        
+        if (isDarkMode) {
+          if (type === 'error') {
+            messageEl.style.background = 'rgba(231, 76, 60, 0.3)';
+            messageEl.style.color = '#ff8a80';
+          } else if (type === 'success') {
+            messageEl.style.background = 'rgba(46, 204, 113, 0.3)';
+            messageEl.style.color = '#69f0ae';
+          }
+        }
+        
         document.body.appendChild(messageEl);
         
-        // Remove message after 3 seconds
         setTimeout(() => {
           messageEl.style.opacity = '0';
           setTimeout(() => {
@@ -2274,9 +1748,8 @@ Don't copy without permission 🙏
     });
   </script>
   <script>
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  document.addEventListener('selectstart', e => e.preventDefault());
-</script>
-
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('selectstart', e => e.preventDefault());
+  </script>
 </body>
 </html>

@@ -31,28 +31,38 @@
   </style>
 </head>
 <body>
+
+  <!-- Total Visitors -->
   <div class="card">
     <div class="title">Total Visitors</div>
     <div class="value" id="visitCount">Loading...</div>
   </div>
 
+  <!-- Past 7 Days Visitors -->
   <div class="card">
     <div class="title">Past 7 Days</div>
     <div class="value" id="weeklyCount">Loading...</div>
   </div>
 
+  <!-- Past 30 Days Visitors -->
   <div class="card">
     <div class="title">Past 30 Days</div>
     <div class="value" id="monthlyCount">Loading...</div>
   </div>
 
-  <!-- Hidden Visit Graphs -->
+  <!-- 📬 Feedback Viewer Section -->
+  <div class="card" style="margin-top: 30px;">
+    <div class="title">📬 User Feedbacks</div>
+    <div id="feedbackList" style="text-align: left; max-height: 300px; overflow-y: auto;"></div>
+  </div>
+
+  <!-- Daily Visit Graph -->
   <div class="chart-card">
     <div class="title">Daily Visit Graph (Last 30 Days)</div>
     <canvas id="dailyChart" width="100%" height="60"></canvas>
   </div>
 
-  <!-- Firebase and Chart.js -->
+  <!-- Firebase & Chart.js Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
     if (sessionStorage.getItem("loggedIn") !== "true") {
@@ -133,6 +143,27 @@
           }
         });
       }
+    });
+
+    // Load feedbacks
+    const feedbackRef = ref(db, 'feedbacks');
+    get(feedbackRef).then(snapshot => {
+      const listDiv = document.getElementById('feedbackList');
+      if (snapshot.exists()) {
+        const feedbacks = snapshot.val();
+        let allFeedback = '';
+
+        Object.values(feedbacks).reverse().forEach(entry => {
+          const date = new Date(entry.timestamp).toLocaleString('en-IN');
+          allFeedback += `<p style="margin-bottom: 10px;"><strong>•</strong> ${entry.text}<br><small style="color: gray;">${date}</small></p>`;
+        });
+
+        listDiv.innerHTML = allFeedback;
+      } else {
+        listDiv.innerText = "No feedbacks yet.";
+      }
+    }).catch(() => {
+      document.getElementById('feedbackList').innerText = "Error loading feedbacks.";
     });
   </script>
 </body>

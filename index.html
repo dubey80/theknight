@@ -1168,7 +1168,32 @@ Don't copy without permission 🙏
       width: 0%;
       transition: width 1s ease;
     }
-  </style>
+  
+@media only screen and (max-width: 600px) {
+  body {
+    font-size: 4vw;
+    padding: 10px;
+  }
+  h1 {
+    font-size: 6vw;
+    text-align: center;
+  }
+  .container {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  button, input {
+    font-size: 4vw;
+    padding: 10px 14px;
+  }
+  .main-content {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+</style>
 </head>
 <body>
   <div class="bg-animation">
@@ -1315,6 +1340,7 @@ Don't copy without permission 🙏
 
   <script>
     // Firebase configuration
+    
 const firebaseConfig = {
   apiKey: "AIzaSyBKZO_8CgrQfm7eBGcR9h8D6JxWY4MBaQ",
   authDomain: "hindi-english-dictation.firebaseapp.com",

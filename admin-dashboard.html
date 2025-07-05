@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 30px; text-align: center; }
+    .card { background: #f1f1f1; padding: 20px; max-width: 400px; margin: auto; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .title { font-size: 22px; margin-bottom: 10px; }
+    .value { font-size: 28px; font-weight: bold; color: #3498db; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">Total Visitors</div>
+    <div class="value" id="visitCount">Loading...</div>
+  </div>
+
+  <script type="module">
+    if (sessionStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "admin-login.html";
+    }
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBKZO_8CrgQfm7eBGcR9h8D6JxWY4MBaQ",
+      authDomain: "hindi-english-dictation.firebaseapp.com",
+      databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "hindi-english-dictation",
+      storageBucket: "hindi-english-dictation.appspot.com",
+      messagingSenderId: "186334580803",
+      appId: "1:186334580803:web:d7fdf8006d9da19a4cc4f6",
+      measurementId: "G-7LH1856B2W"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    get(ref(db, 'page_visits')).then(snapshot => {
+      if (snapshot.exists()) {
+        document.getElementById('visitCount').innerText = snapshot.val();
+      } else {
+        document.getElementById('visitCount').innerText = "0";
+      }
+    }).catch(() => {
+      document.getElementById('visitCount').innerText = "Error";
+    });
+  </script>
+</body>
+</html>

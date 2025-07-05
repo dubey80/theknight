@@ -1291,14 +1291,15 @@ Don't copy without permission 🙏
               <h4>Local Storage</h4>
               <p>Save your words locally in your browser for easy access</p>
             </div>
-            <div class="benefit-card">
-              <i class="fas fa-chart-line"></i>
-              <h4>Progress Tracking</h4>
-              <p>Track your learning progress with a visual progress bar</p>
-              <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-              </div>
-            </div>
+
+            <!-- Feedback Form -->
+<div style="max-width: 500px; margin: 50px auto; padding: 20px; background: #f4f4f4; border-radius: 10px;">
+  <h2 style="text-align: center;">Send Feedback</h2>
+  <textarea id="feedbackText" rows="5" style="width: 100%; padding: 10px; border-radius: 8px;" placeholder="Write your feedback here..."></textarea>
+  <button onclick="submitFeedback()" style="margin-top: 10px; width: 100%; padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 8px;">Submit</button>
+  <div id="feedbackMsg" style="margin-top: 10px; text-align: center; color: green;"></div>
+</div>
+
             <div class="benefit-card">
               <i class="fas fa-sync-alt"></i>
               <h4>Seamless Experience</h4>
@@ -1848,6 +1849,46 @@ const firebaseConfig = {
   });
 </script>
 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBKZO_8CgrQfm7eBGcR9h8D6JxWY4MBaQ",
+    authDomain: "hindi-english-dictation.firebaseapp.com",
+    databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "hindi-english-dictation",
+    storageBucket: "hindi-english-dictation.appspot.com",
+    messagingSenderId: "186334580803",
+    appId: "1:186334580803:web:7dfdf806d9da19a4cc4f6"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  window.submitFeedback = function () {
+    const text = document.getElementById("feedbackText").value.trim();
+    if (text === "") {
+      document.getElementById("feedbackMsg").innerText = "Please enter some feedback.";
+      return;
+    }
+
+    const feedbackRef = ref(db, "feedbacks");
+    const newEntry = {
+      text: text,
+      timestamp: new Date().toISOString()
+    };
+
+    push(feedbackRef, newEntry)
+      .then(() => {
+        document.getElementById("feedbackMsg").innerText = "Thank you for your feedback!";
+        document.getElementById("feedbackText").value = "";
+      })
+      .catch(() => {
+        document.getElementById("feedbackMsg").innerText = "Error submitting feedback.";
+      });
+  }
+</script>
 
 
 

@@ -1247,10 +1247,7 @@ Don't copy without permission 🙏
             <i class="fas fa-play-circle"></i> Play All Words
           </button>
           
-          <div class="visit-counter">
-            <i class="fas fa-eye"></i>
-            <span id="visitCount">0</span> Total Visits
-          </div>
+          
         </div>
         
         <div class="right-panel">
@@ -1810,5 +1807,18 @@ const firebaseConfig = {
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('selectstart', e => e.preventDefault());
   </script>
+
+<footer style="text-align: center; margin-top: 40px; padding: 20px; font-size: 1.1rem;">
+  <div style="margin-bottom: 10px;">
+    👁️‍🗨️ Total Visits: <span id="visitCount" style="font-weight: bold; color: #3498db;">0</span>
+  </div>
+  <div>
+    <a href="about.html">About Us</a> |
+    <a href="privacy.html">Privacy Policy</a> |
+    <a href="contact.html">Contact Us</a>
+  </div>
+</footer>
+
+
 </body>
 </html>

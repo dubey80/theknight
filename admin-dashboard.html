@@ -28,9 +28,23 @@
       color: #3498db;
       text-align: center;
     }
+    .logout-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Logout Button -->
+  <button onclick="logout()" class="logout-btn">Logout</button>
 
   <!-- Total Visitors -->
   <div class="card">
@@ -50,16 +64,22 @@
     <div class="value" id="monthlyCount">Loading...</div>
   </div>
 
-  <!-- 📬 Feedback Viewer Section -->
+  <!-- Feedback Viewer Section with Delete -->
   <div class="card" style="margin-top: 30px;">
     <div class="title">📬 User Feedbacks</div>
-    <div id="feedbackList" style="text-align: left; max-height: 300px; overflow-y: auto;"></div>
+    <div id="feedbackList" style="text-align: left; max-height: 400px; overflow-y: auto;"></div>
   </div>
 
   <!-- Daily Visit Graph -->
   <div class="chart-card">
     <div class="title">Daily Visit Graph (Last 30 Days)</div>
     <canvas id="dailyChart" width="100%" height="60"></canvas>
+  </div>
+
+  <!-- Ad Earnings Graph -->
+  <div class="chart-card">
+    <div class="title">📈 Ad Earnings (Last 30 Days)</div>
+    <canvas id="adsChart" width="100%" height="60"></canvas>
   </div>
 
   <!-- Firebase & Chart.js Scripts -->
@@ -70,7 +90,7 @@
     }
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+    import { getDatabase, ref, get, remove } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBKZO_8CgrQfm7eBGcR9h8D6JxWY4MBaQ",
@@ -86,32 +106,31 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Load total visitors
+    // Logout
+    window.logout = function () {
+      sessionStorage.removeItem("loggedIn");
+      window.location.href = "admin-login.html";
+    }
+
+    // Load Total Visitors
     get(ref(db, 'visitCount')).then(snapshot => {
       document.getElementById('visitCount').innerText = snapshot.exists() ? snapshot.val() : "0";
     });
 
-    // Load and process daily visits
+    // Load Daily Visits
     get(ref(db, 'visits_by_day')).then(snapshot => {
       if (snapshot.exists()) {
         const data = snapshot.val();
         const today = new Date();
-
-        let labels = [];
-        let values = [];
-
-        let weeklySum = 0;
-        let monthlySum = 0;
+        let labels = [], values = [], weeklySum = 0, monthlySum = 0;
 
         for (let i = 29; i >= 0; i--) {
           const date = new Date(today);
           date.setDate(today.getDate() - i);
           const key = date.toISOString().slice(0, 10);
           const count = data[key] || 0;
-
           labels.push(key);
           values.push(count);
-
           if (i < 7) weeklySum += count;
           monthlySum += count;
         }
@@ -119,23 +138,16 @@
         document.getElementById('weeklyCount').innerText = weeklySum;
         document.getElementById('monthlyCount').innerText = monthlySum;
 
-        // Draw Chart
         const ctx = document.getElementById("dailyChart").getContext("2d");
         new Chart(ctx, {
           type: 'bar',
           data: {
             labels: labels,
-            datasets: [{
-              label: "Visits",
-              data: values,
-              backgroundColor: "#3498db"
-            }]
+            datasets: [{ label: "Visits", data: values, backgroundColor: "#3498db" }]
           },
           options: {
             responsive: true,
-            plugins: {
-              legend: { display: false }
-            },
+            plugins: { legend: { display: false } },
             scales: {
               x: { ticks: { maxRotation: 90, minRotation: 45 } },
               y: { beginAtZero: true }
@@ -145,7 +157,43 @@
       }
     });
 
-    // Load feedbacks
+    // Load Ad Earnings
+    get(ref(db, 'ads_earnings')).then(snapshot => {
+      if (snapshot.exists()) {
+        const earnings = snapshot.val();
+        const today = new Date();
+        let labels = [], values = [];
+
+        for (let i = 29; i >= 0; i--) {
+          const date = new Date(today);
+          date.setDate(today.getDate() - i);
+          const key = date.toISOString().slice(0, 10);
+          labels.push(key);
+          values.push(earnings[key] || 0);
+        }
+
+        const ctx = document.getElementById("adsChart").getContext("2d");
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: "₹ Earnings",
+              data: values,
+              borderColor: "#2ecc71",
+              backgroundColor: "rgba(46, 204, 113, 0.1)",
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+      }
+    });
+
+    // Load Feedbacks
     const feedbackRef = ref(db, 'feedbacks');
     get(feedbackRef).then(snapshot => {
       const listDiv = document.getElementById('feedbackList');
@@ -153,9 +201,14 @@
         const feedbacks = snapshot.val();
         let allFeedback = '';
 
-        Object.values(feedbacks).reverse().forEach(entry => {
+        Object.entries(feedbacks).reverse().forEach(([key, entry]) => {
           const date = new Date(entry.timestamp).toLocaleString('en-IN');
-          allFeedback += `<p style="margin-bottom: 10px;"><strong>•</strong> ${entry.text}<br><small style="color: gray;">${date}</small></p>`;
+          allFeedback += `
+            <div style="margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #ddd;">
+              <strong>•</strong> ${entry.text}<br>
+              <small style="color: gray;">${date}</small><br>
+              <button onclick="deleteFeedback('${key}')" style="margin-top: 5px; background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 5px;">Delete</button>
+            </div>`;
         });
 
         listDiv.innerHTML = allFeedback;
@@ -165,6 +218,18 @@
     }).catch(() => {
       document.getElementById('feedbackList').innerText = "Error loading feedbacks.";
     });
+
+    // Delete Feedback
+    window.deleteFeedback = function (key) {
+      const confirmDelete = confirm("Are you sure you want to delete this feedback?");
+      if (!confirmDelete) return;
+      remove(ref(db, 'feedbacks/' + key)).then(() => {
+        alert("Deleted!");
+        location.reload();
+      }).catch(() => {
+        alert("Failed to delete.");
+      });
+    }
   </script>
 </body>
 </html>

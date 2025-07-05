@@ -7,25 +7,26 @@
     body {
       font-family: Arial, sans-serif;
       padding: 30px;
-      text-align: center;
       background-color: #f9f9f9;
     }
-    .card {
+    .card, .chart-card {
       background: #fff;
       padding: 20px;
-      max-width: 400px;
-      margin: auto;
+      max-width: 600px;
+      margin: 20px auto;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .title {
       font-size: 22px;
       margin-bottom: 10px;
+      text-align: center;
     }
     .value {
       font-size: 28px;
       font-weight: bold;
       color: #3498db;
+      text-align: center;
     }
   </style>
 </head>
@@ -35,8 +36,15 @@
     <div class="value" id="visitCount">Loading...</div>
   </div>
 
+  <!-- Hidden Visit Graphs -->
+  <div class="chart-card">
+    <div class="title">Daily Visit Graph (Last 30 Days)</div>
+    <canvas id="dailyChart" width="100%" height="60"></canvas>
+  </div>
+
+  <!-- Firebase and Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
-    // ✅ Redirect if not logged in
     if (sessionStorage.getItem("loggedIn") !== "true") {
       window.location.href = "admin-login.html";
     }
@@ -58,16 +66,55 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // ✅ Correct path: visitCount
+    // Load total visitors
     get(ref(db, 'visitCount')).then(snapshot => {
       if (snapshot.exists()) {
         document.getElementById('visitCount').innerText = snapshot.val();
       } else {
         document.getElementById('visitCount').innerText = "0";
       }
-    }).catch(error => {
-      document.getElementById('visitCount').innerText = "Error";
-      console.error("Error reading from Firebase:", error);
+    });
+
+    // Load daily visit data for last 30 days
+    get(ref(db, 'visits_by_day')).then(snapshot => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const today = new Date();
+        let labels = [];
+        let values = [];
+
+        for (let i = 29; i >= 0; i--) {
+          const date = new Date(today);
+          date.setDate(today.getDate() - i);
+          const yyyy_mm_dd = date.toISOString().slice(0, 10);
+          labels.push(yyyy_mm_dd);
+          values.push(data[yyyy_mm_dd] || 0);
+        }
+
+        // Draw Chart
+        const ctx = document.getElementById("dailyChart").getContext("2d");
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: "Visits",
+              data: values,
+              backgroundColor: "#3498db"
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              x: { ticks: { maxRotation: 90, minRotation: 45 } },
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      }
     });
   </script>
 </body>

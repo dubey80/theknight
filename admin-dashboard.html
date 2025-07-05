@@ -24,16 +24,17 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBKZO_8CrgQfm7eBGcR9h8D6JxWY4MBaQ",
-      authDomain: "hindi-english-dictation.firebaseapp.com",
-      databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "hindi-english-dictation",
-      storageBucket: "hindi-english-dictation.appspot.com",
-      messagingSenderId: "186334580803",
-      appId: "1:186334580803:web:d7fdf8006d9da19a4cc4f6",
-      measurementId: "G-7LH1856B2W"
-    };
+   const firebaseConfig = {
+  apiKey: "AIzaSyBKZO_8CrgQfm7eBGcR9h8D6JxWY4MBaQ",
+  authDomain: "hindi-english-dictation.firebaseapp.com",
+  databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hindi-english-dictation",
+  storageBucket: "hindi-english-dictation.appspot.com",
+  messagingSenderId: "186334580803",
+  appId: "1:186334580803:web:d7fdf8006d9da19a4cc4f6",
+  measurementId: "G-7LH1856B2W"
+};
+
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);

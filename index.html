@@ -1470,7 +1470,7 @@ const firebaseConfig = {
       // Initialize the app
       function initApp() {
         // Load words from local storage
-        words = JSON.parse(localStorage.getItem('localWords')) || [];
+        let savedDictation = JSON.parse(localStorage.getItem('dictationWords')) || []; let savedLocalWords = JSON.parse(localStorage.getItem('localWords')) || []; words = [...savedLocalWords, ...savedDictation];
         
         // Set up event listeners
         setupEventListeners();

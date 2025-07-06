@@ -881,26 +881,30 @@
         }
 
         // Function to add all words to dictation
-        function addAllToDictation() {
-            if (filteredWords.length === 0) {
-                showNotification("कोई शब्द नहीं मिले!");
-                return;
-            }
-            
-            let addedCount = 0;
-            filteredWords.forEach(item => {
-                if (!dictationList.includes(item.word)) {
-                    dictationList.push(item.word);
-                    addedCount++;
-                }
-            });
-            
-            if (addedCount === 0) {
-                showNotification("सभी शब्द पहले से डिक्टेशन में हैं!");
-            } else {
-                showNotification(`${addedCount} शब्द डिक्टेशन में जोड़े गए!`);
-            }
+function addAllToDictation() {
+    if (filteredWords.length === 0) {
+        showNotification("कोई शब्द नहीं मिले!");
+        return;
+    }
+
+    let addedCount = 0;
+    filteredWords.forEach(item => {
+        if (!dictationList.includes(item.word)) {
+            dictationList.push(item.word);
+            addedCount++;
         }
+    });
+
+    // ✅ Save to localStorage so home page can see
+    localStorage.setItem("dictationWords", JSON.stringify(dictationList));
+
+    if (addedCount === 0) {
+        showNotification("सभी शब्द पहले से डिक्टेशन में हैं!");
+    } else {
+        showNotification(`${addedCount} शब्द डिक्टेशन में जोड़े गए!`);
+    }
+}
+
 
         function renderTable() {
             const table = document.getElementById("wordTable");

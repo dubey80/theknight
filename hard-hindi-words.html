@@ -59,6 +59,7 @@
             justify-content: center;
             gap: 15px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         .nav-btn {
             background: #3498db;
@@ -71,6 +72,9 @@
             transition: all 0.3s;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .nav-btn:hover {
             background: #2980b9;
@@ -228,6 +232,7 @@
             height: 100%;
             background: transparent;
             z-index: 999;
+            pointer-events: none; /* FIX: Allow clicks to pass through */
         }
         .audio-controls {
             margin-top: 20px;
@@ -241,6 +246,7 @@
             font-size: 18px;
             margin-bottom: 15px;
             color: #2c3e50;
+            font-weight: 600;
         }
         .audio-btn {
             background: #e74c3c;
@@ -254,10 +260,23 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            margin: 5px;
         }
         .audio-btn:hover {
             background: #c0392b;
             transform: translateY(-2px);
+        }
+        .audio-btn.play {
+            background: #3498db;
+        }
+        .audio-btn.play:hover {
+            background: #2980b9;
+        }
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         @media (max-width: 768px) {
             th, td {
@@ -278,11 +297,34 @@
             .btn-container {
                 flex-direction: column;
             }
+            .audio-btn {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 2000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .notification.show {
+            transform: translateX(0);
         }
     </style>
 </head>
 <body>
-    <!-- Content protection overlay -->
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+    
+    <!-- Content protection overlay - FIXED with pointer-events: none -->
     <div class="protection-overlay" oncontextmenu="return false"></div>
     
     <!-- Watermark effect -->
@@ -296,17 +338,24 @@
         
         <div class="nav-buttons">
             <button class="nav-btn home" onclick="window.location.href='index.html'">
-                🏠 होम पेज पर वापस जाएं
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 22V12H15V22" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                होम पेज पर वापस जाएं
             </button>
             <button class="nav-btn" onclick="showDictation()">
-                📝 डिक्टेशन लिस्ट देखें
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5V19M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                डिक्टेशन लिस्ट देखें
             </button>
         </div>
         
         <!-- 🔍 Search Bar -->
         <input type="text" id="searchBox" onkeyup="filterTable()" placeholder="🔍 हिंदी शब्द या अर्थ खोजें..." autocomplete="off">
         
-        <div class="stats" id="stats">कुल शब्द: 500 | दिखाए जा रहे: 500</div>
+        <div class="stats" id="stats">कुल शब्द: 500 | दिखाए जा रहे: 500 | पृष्ठ: 1/10</div>
         
         <!-- 📄 Table with Hindi Words -->
         <table>
@@ -328,10 +377,21 @@
         </div>
         
         <div class="audio-controls">
-            <div class="audio-title">सभी शब्द सुनें:</div>
-            <button class="audio-btn" onclick="playAllWords()">
-                🔊 सभी शब्दों का उच्चारण सुनें
-            </button>
+            <div class="audio-title">बैच क्रियाएँ:</div>
+            <div class="buttons-container">
+                <button class="audio-btn play" onclick="playAllWords()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 20V4L19 12L5 20Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    सभी शब्द सुनें
+                </button>
+                <button class="audio-btn" onclick="addAllToDictation()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    सभी शब्द जोड़ें
+                </button>
+            </div>
         </div>
         
         <footer>
@@ -767,6 +827,17 @@
         let synth = window.speechSynthesis;
         let isSpeaking = false;
 
+        // Function to show notification
+        function showNotification(message) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.classList.add("show");
+            
+            setTimeout(() => {
+                notification.classList.remove("show");
+            }, 3000);
+        }
+
         // Function to speak a word
         function speakWord(word) {
             if (isSpeaking) {
@@ -790,6 +861,11 @@
 
         // Function to play all words
         function playAllWords() {
+            if (filteredWords.length === 0) {
+                showNotification("कोई शब्द नहीं मिले!");
+                return;
+            }
+            
             const wordsToPlay = filteredWords.map(item => item.word);
             let index = 0;
             
@@ -804,6 +880,28 @@
             playNext();
         }
 
+        // Function to add all words to dictation
+        function addAllToDictation() {
+            if (filteredWords.length === 0) {
+                showNotification("कोई शब्द नहीं मिले!");
+                return;
+            }
+            
+            let addedCount = 0;
+            filteredWords.forEach(item => {
+                if (!dictationList.includes(item.word)) {
+                    dictationList.push(item.word);
+                    addedCount++;
+                }
+            });
+            
+            if (addedCount === 0) {
+                showNotification("सभी शब्द पहले से डिक्टेशन में हैं!");
+            } else {
+                showNotification(`${addedCount} शब्द डिक्टेशन में जोड़े गए!`);
+            }
+        }
+
         function renderTable() {
             const table = document.getElementById("wordTable");
             table.innerHTML = "";
@@ -813,20 +911,20 @@
             const paginatedWords = filteredWords.slice(start, end);
             
             paginatedWords.forEach((item, index) => {
-                const actualIndex = words.findIndex(w => w.word === item.word);
+                const actualIndex = start + index + 1;
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                    <td>${actualIndex + 1}</td>
+                    <td>${actualIndex}</td>
                     <td>${item.word}</td>
                     <td>${item.meaning}</td>
                     <td class="btn-container">
-                        <button class="btn" onclick="addToDictation('${item.word}')">
+                        <button class="btn" onclick="addToDictation('${item.word.replace(/'/g, "\\'")}')">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 4V20M20 12H4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 5V19M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             जोड़ें
                         </button>
-                        <button class="btn audio" onclick="speakWord('${item.word}')">
+                        <button class="btn audio" onclick="speakWord('${item.word.replace(/'/g, "\\'")}')">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M3 18V12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12V18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M21 19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H18C17.4696 21 16.9609 20.7893 16.5858 20.4142C16.2107 20.0391 16 19.5304 16 19V16C16 15.4696 16.2107 14.9609 16.5858 14.5858C16.9609 14.2107 17.4696 14 18 14H21V19ZM3 19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H6C6.53043 21 7.03914 20.7893 7.41421 20.4142C7.78929 20.0391 8 19.5304 8 19V16C8 15.4696 7.78929 14.9609 7.41421 14.5858C7.03914 14.2107 6.53043 14 6 14H3V19Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -913,18 +1011,19 @@
             renderTable();
         }
 
+        // Function to add word to dictation
         function addToDictation(word) {
             if (!dictationList.includes(word)) {
                 dictationList.push(word);
-                alert(`"${word}" को डिक्टेशन में जोड़ा गया!`);
+                showNotification(`"${word}" को डिक्टेशन में जोड़ा गया!`);
             } else {
-                alert(`"${word}" पहले से डिक्टेशन में है!`);
+                showNotification(`"${word}" पहले से डिक्टेशन में है!`);
             }
         }
 
         function showDictation() {
             if (dictationList.length === 0) {
-                alert("आपकी डिक्टेशन सूची खाली है। कृपया कुछ शब्द जोड़ें।");
+                showNotification("आपकी डिक्टेशन सूची खाली है। कृपया कुछ शब्द जोड़ें।");
                 return;
             }
             
@@ -938,32 +1037,32 @@
         // Content protection
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
-            alert('दाएँ क्लिक अक्षम कर दिया गया है।');
+            showNotification('दाएँ क्लिक अक्षम कर दिया गया है।');
         });
 
         document.addEventListener('cut', function(e) {
             e.preventDefault();
-            alert('कट ऑपरेशन अक्षम कर दिया गया है।');
+            showNotification('कट ऑपरेशन अक्षम कर दिया गया है।');
         });
 
         document.addEventListener('copy', function(e) {
             e.preventDefault();
-            alert('कॉपी ऑपरेशन अक्षम कर दिया गया है।');
+            showNotification('कॉपी ऑपरेशन अक्षम कर दिया गया है।');
         });
 
         document.addEventListener('keydown', function(e) {
             // Disable Ctrl+Shift+I, Ctrl+U, Ctrl+S
             if (e.ctrlKey && e.shiftKey && e.key === 'I') {
                 e.preventDefault();
-                alert('डेवलपर टूल्स अक्षम कर दिए गए हैं।');
+                showNotification('डेवलपर टूल्स अक्षम कर दिए गए हैं।');
             }
             if (e.ctrlKey && e.key === 'u') {
                 e.preventDefault();
-                alert('पेज सोर्स देखना अक्षम कर दिया गया है।');
+                showNotification('पेज सोर्स देखना अक्षम कर दिया गया है।');
             }
             if (e.ctrlKey && e.key === 's') {
                 e.preventDefault();
-                alert('पेज सेव करना अक्षम कर दिया गया है।');
+                showNotification('पेज सेव करना अक्षम कर दिया गया है।');
             }
         });
 

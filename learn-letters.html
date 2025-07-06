@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Learn Hindi and English Letters</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f8ff;
+      line-height: 1.6;
+    }
+    h2, h3, h4 {
+      text-align: center;
+      color: green;
+      margin-top: 30px;
+    }
+    .letter-box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .letter {
+      background: #fff;
+      border: 2px solid #3498db;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+    .play-all-btn {
+      display: block;
+      margin: 10px auto;
+      background: green;
+      color: white;
+      border: 2px solid yellow;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🔡 English Alphabet (A to Z)</h2>
+  <button class="play-all-btn" onclick="playAll(eng, 'en-US')">🔊 Play All English Letters</button>
+  <div class="letter-box" id="englishLetters"></div>
+
+  <h2>🪔 हिंदी वर्णमाला (Hindi Alphabet)</h2>
+  <h4>ह्रस्व स्वर (Short Vowels)</h4>
+  <div class="letter-box" id="hindiSwarShort"></div>
+
+  <h4>दीर्घ स्वर (Long Vowels)</h4>
+  <div class="letter-box" id="hindiSwarLong"></div>
+
+  <h3>व्यंजन (Consonants)</h3>
+  <button class="play-all-btn" onclick="playAll(swarShort.concat(swarLong, vyanjan), 'hi-IN')">🔊 Play All Hindi Letters</button>
+  <div class="letter-box" id="hindiVyanjan"></div>
+
+  <script>
+    const eng = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    const swarShort = ["अ", "इ", "उ"];
+    const swarLong = ["आ", "ई", "ऊ", "ए", "ऐ", "ओ", "औ", "अं", "अः"];
+    const vyanjan = ["क","ख","ग","घ","ङ","च","छ","ज","झ","ञ","ट","ठ","ड","ढ","ण","त","थ","द","ध","न","प","फ","ब","भ","म","य","र","ल","व","श","ष","स","ह","क्ष","त्र","ज्ञ"];
+
+    const speak = (text, lang = "hi-IN", repeat = 3, delay = 600) => {
+      let count = 0;
+      const speakLoop = () => {
+        if (count < repeat) {
+          const msg = new SpeechSynthesisUtterance(text);
+          msg.lang = lang;
+          window.speechSynthesis.speak(msg);
+          count++;
+          setTimeout(speakLoop, delay);
+        }
+      };
+      speakLoop();
+    };
+
+    const createLetters = (arr, containerId, lang = "hi-IN") => {
+      const container = document.getElementById(containerId);
+      arr.forEach(letter => {
+        const div = document.createElement("div");
+        div.className = "letter";
+        div.innerText = letter;
+        div.onclick = () => speak(letter, lang);
+        container.appendChild(div);
+      });
+    };
+
+    const playAll = (array, lang) => {
+      let i = 0;
+      const playNext = () => {
+        if (i < array.length) {
+          const msg = new SpeechSynthesisUtterance(array[i]);
+          msg.lang = lang;
+          msg.onend = () => setTimeout(playNext, 400);
+          window.speechSynthesis.speak(msg);
+          i++;
+        }
+      };
+      playNext();
+    };
+
+    createLetters(eng, "englishLetters", "en-US");
+    createLetters(swarShort, "hindiSwarShort");
+    createLetters(swarLong, "hindiSwarLong");
+    createLetters(vyanjan, "hindiVyanjan");
+  </script>
+
+</body>
+</html>

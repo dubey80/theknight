@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hindi Vocabulary for Competitive Exams</title>
+    <title>हिंदी शब्दावली | Competitive Exams Vocabulary</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,27 +13,75 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
             padding: 20px;
             color: #333;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
         }
         header {
             text-align: center;
             margin-bottom: 30px;
             padding: 20px;
-            background: #2c3e50;
+            background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
             color: white;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.1;
         }
         h1 {
             margin: 0;
             font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
         .subtitle {
             font-size: 1.2rem;
             opacity: 0.9;
+            margin-top: 8px;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-weight: 600;
+        }
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .nav-btn.home {
+            background: #27ae60;
+        }
+        .nav-btn.home:hover {
+            background: #219653;
         }
         #searchBox {
             width: 100%;
@@ -56,6 +104,11 @@
             margin: 10px 0;
             font-size: 16px;
             color: #2c3e50;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: inline-block;
+            float: right;
         }
         table {
             width: 100%;
@@ -64,9 +117,10 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
         }
         th {
-            background: #3498db;
+            background: linear-gradient(to bottom, #3498db, #2980b9);
             color: white;
             padding: 18px 15px;
             text-align: left;
@@ -90,22 +144,36 @@
             background: #27ae60;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         .btn:hover {
             background: #219653;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
+        .btn.audio {
+            background: #9b59b6;
+        }
+        .btn.audio:hover {
+            background: #8e44ad;
+        }
+        .btn-container {
+            display: flex;
+            gap: 8px;
+        }
         .pagination {
             display: flex;
             justify-content: center;
             margin: 30px 0;
             flex-wrap: wrap;
+            gap: 5px;
         }
         .page-btn {
             margin: 5px;
@@ -132,6 +200,64 @@
             padding: 20px;
             color: #7f8c8d;
             font-size: 16px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .watermark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(255,255,255,0.05),
+                rgba(255,255,255,0.05) 15px,
+                rgba(0,0,0,0.02) 15px,
+                rgba(0,0,0,0.02) 30px
+            );
+            z-index: 1000;
+        }
+        .protection-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 999;
+        }
+        .audio-controls {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .audio-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .audio-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .audio-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
         }
         @media (max-width: 768px) {
             th, td {
@@ -139,21 +265,43 @@
                 font-size: 15px;
             }
             .btn {
-                padding: 8px 12px;
+                padding: 6px 10px;
                 font-size: 14px;
             }
             h1 {
                 font-size: 2rem;
             }
+            .nav-btn {
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+            .btn-container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Content protection overlay -->
+    <div class="protection-overlay" oncontextmenu="return false"></div>
+    
+    <!-- Watermark effect -->
+    <div class="watermark"></div>
+    
     <div class="container">
         <header>
             <h1>हिंदी शब्दावली</h1>
             <div class="subtitle">UPSC, UPPSC, BPSC और अन्य प्रतियोगी परीक्षाओं के लिए</div>
         </header>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn home" onclick="window.location.href='index.html'">
+                🏠 होम पेज पर वापस जाएं
+            </button>
+            <button class="nav-btn" onclick="showDictation()">
+                📝 डिक्टेशन लिस्ट देखें
+            </button>
+        </div>
         
         <!-- 🔍 Search Bar -->
         <input type="text" id="searchBox" onkeyup="filterTable()" placeholder="🔍 हिंदी शब्द या अर्थ खोजें..." autocomplete="off">
@@ -165,9 +313,9 @@
             <thead>
                 <tr>
                     <th width="10%">क्रमांक</th>
-                    <th width="30%">हिंदी शब्द</th>
-                    <th width="45%">हिंदी अर्थ</th>
-                    <th width="15%">क्रिया</th>
+                    <th width="25%">हिंदी शब्द</th>
+                    <th width="40%">हिंदी अर्थ</th>
+                    <th width="25%">क्रियाएँ</th>
                 </tr>
             </thead>
             <tbody id="wordTable">
@@ -177,6 +325,13 @@
         
         <div class="pagination" id="pagination">
             <!-- Pagination buttons will be added here -->
+        </div>
+        
+        <div class="audio-controls">
+            <div class="audio-title">सभी शब्द सुनें:</div>
+            <button class="audio-btn" onclick="playAllWords()">
+                🔊 सभी शब्दों का उच्चारण सुनें
+            </button>
         </div>
         
         <footer>
@@ -558,63 +713,6 @@
             { word: "निर्विकार", meaning: "इम्पार्शियल" },
             { word: "पर्यवेक्षी", meaning: "सुपरवाइजरी" },
             { word: "प्रतिमूर्ति", meaning: "आइकन" },
-            { word: "महाराज", meaning: "किंग" },
-            { word: "मौसमीय", meaning: "क्लाइमेटिक" },
-            { word: "रोक", meaning: "बैन" },
-            { word: "व्यापारिक", meaning: "बिजनेस" },
-            { word: "शिक्षित", meaning: "लिटरेट" },
-            { word: "संकेतित", meaning: "इंडिकेटेड" },
-            { word: "अनुपस्थित", meaning: "अब्सेंट" },
-            { word: "अस्वीकार करना", meaning: "डिनाय" },
-            { word: "आरक्षित", meaning: "रिजर्व्ड" },
-            { word: "उपजाऊ", meaning: "फर्टाइल" },
-            { word: "खोजी पत्रकारिता", meaning: "इन्वेस्टिगेटिव जर्नलिज्म" },
-            { word: "ग्राही देश", meaning: "रिसीविंग कंट्री" },
-            { word: "चुनौतीपूर्ण", meaning: "टफ" },
-            { word: "जनस्वास्थ्य", meaning: "पब्लिक हेल्थ" },
-            { word: "तर्कहीनता", meaning: "इरेशनैलिटी" },
-            { word: "दृष्टिपटल", meaning: "रेटिना" },
-            { word: "निर्विवाद", meaning: "अनडिस्प्यूटेड" },
-            { word: "पर्यवेक्षण", meaning: "मॉनिटरिंग" },
-            { word: "प्रतिमान परिवर्तन", meaning: "पैराडाइम शिफ्ट" },
-            { word: "महाविद्यालय", meaning: "कॉलेज" },
-            { word: "मौसम विज्ञान", meaning: "मेटियोरोलॉजी" },
-            { word: "रोगनिरोधी", meaning: "प्रोफिलैक्टिक" },
-            { word: "व्यापारिकीकरण", meaning: "कमर्शियलाइजेशन" },
-            { word: "शिक्षित", meaning: "एजुकेटेड" },
-            { word: "संकेतित करना", meaning: "इंडिकेट" },
-            { word: "अनुपयोग", meaning: "डिसयूज" },
-            { word: "अस्वीकार्यता", meaning: "अनएक्सेप्टेबिलिटी" },
-            { word: "आरक्षित सीट", meaning: "रिजर्व्ड सीट" },
-            { word: "उपजीविका", meaning: "लाइवलीहुड" },
-            { word: "खोजी प्रवृत्ति", meaning: "इन्क्वायरिंग नेचर" },
-            { word: "ग्राहीता", meaning: "रिसेप्टिविटी" },
-            { word: "चुनौतीपूर्ण", meaning: "चैलेंजिंग" },
-            { word: "जनसहयोग", meaning: "पब्लिक कोऑपरेशन" },
-            { word: "तर्कसंगत", meaning: "लॉजिकल" },
-            { word: "दृष्टिदोष", meaning: "आई डिफेक्ट" },
-            { word: "निर्विवाद", meaning: "अनकंट्रोवर्शियल" },
-            { word: "पर्याप्त", meaning: "एडिक्वेट" },
-            { word: "प्रतिमान", meaning: "मॉडल" },
-            { word: "महाविद्यालयीन", meaning: "कॉलेजिएट" },
-            { word: "मौसमी फल", meaning: "सीजनल फ्रूट" },
-            { word: "रोगमुक्त", meaning: "डिजीज फ्री" },
-            { word: "व्यापारी वर्ग", meaning: "मर्चेंट क्लास" },
-            { word: "शिक्षित करना", meaning: "एजुकेट" },
-            { word: "संकेतित", meaning: "सजेस्टेड" },
-            { word: "अनुपम", meaning: "इनकम्पेरेबल" },
-            { word: "अस्वीकार करने योग्य", meaning: "रिजेक्टेबल" },
-            { word: "आरामगृह", meaning: "रेस्ट हाउस" },
-            { word: "उपजाऊपन", meaning: "फर्टिलिटी" },
-            { word: "खोजी भावना", meaning: "इन्क्वायरिंग स्पिरिट" },
-            { word: "ग्राही संस्था", meaning: "रिसीविंग इंस्टीट्यूशन" },
-            { word: "चुनौतीपूर्ण", meaning: "डिफिकल्ट" },
-            { word: "जनसमर्थन", meaning: "पब्लिक सपोर्ट" },
-            { word: "तर्कपूर्ण", meaning: "रैशनल" },
-            { word: "दृष्टिबाधित", meaning: "विजुअली इम्पेयर्ड" },
-            { word: "निर्विरोध चुना गया", meaning: "यूनानिमसली इलेक्टेड" },
-            { word: "पर्यावरणविद्", meaning: "एनवायर्नमेंटलिस्ट" },
-            { word: "प्रतिमान", meaning: "आर्किटाइप" },
             { word: "महाशय", meaning: "मिस्टर" },
             { word: "मौसमी परिवर्तन", meaning: "सीजनल चेंज" },
             { word: "रोगाणु", meaning: "जर्म" },
@@ -665,6 +763,46 @@
         const rowsPerPage = 50;
         let currentPage = 1;
         let filteredWords = [...words];
+        let dictationList = [];
+        let synth = window.speechSynthesis;
+        let isSpeaking = false;
+
+        // Function to speak a word
+        function speakWord(word) {
+            if (isSpeaking) {
+                synth.cancel();
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'hi-IN'; // Hindi language
+            utterance.rate = 0.9;
+            
+            utterance.onstart = function() {
+                isSpeaking = true;
+            };
+            
+            utterance.onend = function() {
+                isSpeaking = false;
+            };
+            
+            synth.speak(utterance);
+        }
+
+        // Function to play all words
+        function playAllWords() {
+            const wordsToPlay = filteredWords.map(item => item.word);
+            let index = 0;
+            
+            function playNext() {
+                if (index < wordsToPlay.length) {
+                    speakWord(wordsToPlay[index]);
+                    index++;
+                    setTimeout(playNext, 1500);
+                }
+            }
+            
+            playNext();
+        }
 
         function renderTable() {
             const table = document.getElementById("wordTable");
@@ -681,7 +819,21 @@
                     <td>${actualIndex + 1}</td>
                     <td>${item.word}</td>
                     <td>${item.meaning}</td>
-                    <td><button class="btn" onclick="addToDictation('${item.word}')">जोड़ें</button></td>
+                    <td class="btn-container">
+                        <button class="btn" onclick="addToDictation('${item.word}')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 4V20M20 12H4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            जोड़ें
+                        </button>
+                        <button class="btn audio" onclick="speakWord('${item.word}')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 18V12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12V18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H18C17.4696 21 16.9609 20.7893 16.5858 20.4142C16.2107 20.0391 16 19.5304 16 19V16C16 15.4696 16.2107 14.9609 16.5858 14.5858C16.9609 14.2107 17.4696 14 18 14H21V19ZM3 19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H6C6.53043 21 7.03914 20.7893 7.41421 20.4142C7.78929 20.0391 8 19.5304 8 19V16C8 15.4696 7.78929 14.9609 7.41421 14.5858C7.03914 14.2107 6.53043 14 6 14H3V19Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            सुनें
+                        </button>
+                    </td>
                 `;
                 table.appendChild(row);
             });
@@ -762,12 +914,63 @@
         }
 
         function addToDictation(word) {
-            alert(`"${word}" को डिक्टेशन में जोड़ा गया!`);
-            // In a real app, you would add the word to a dictation list
+            if (!dictationList.includes(word)) {
+                dictationList.push(word);
+                alert(`"${word}" को डिक्टेशन में जोड़ा गया!`);
+            } else {
+                alert(`"${word}" पहले से डिक्टेशन में है!`);
+            }
+        }
+
+        function showDictation() {
+            if (dictationList.length === 0) {
+                alert("आपकी डिक्टेशन सूची खाली है। कृपया कुछ शब्द जोड़ें।");
+                return;
+            }
+            
+            const dictationContent = dictationList.join(", ");
+            alert(`आपकी डिक्टेशन सूची:\n\n${dictationContent}\n\nइन शब्दों को आप होम पेज पर अभ्यास कर सकते हैं।`);
         }
 
         // Initialize the table
         renderTable();
+
+        // Content protection
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('दाएँ क्लिक अक्षम कर दिया गया है।');
+        });
+
+        document.addEventListener('cut', function(e) {
+            e.preventDefault();
+            alert('कट ऑपरेशन अक्षम कर दिया गया है।');
+        });
+
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            alert('कॉपी ऑपरेशन अक्षम कर दिया गया है।');
+        });
+
+        document.addEventListener('keydown', function(e) {
+            // Disable Ctrl+Shift+I, Ctrl+U, Ctrl+S
+            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+                e.preventDefault();
+                alert('डेवलपर टूल्स अक्षम कर दिए गए हैं।');
+            }
+            if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+                alert('पेज सोर्स देखना अक्षम कर दिया गया है।');
+            }
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                alert('पेज सेव करना अक्षम कर दिया गया है।');
+            }
+        });
+
+        // Disable text selection
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+        });
     </script>
 </body>
 </html>

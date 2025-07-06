@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Learn Hindi and English Letters</title>
   <style>
     body {
@@ -9,16 +10,27 @@
       padding: 20px;
       background: #f0f8ff;
       line-height: 1.6;
+      margin: 0;
     }
     h2, h3, h4 {
       text-align: center;
       color: green;
       margin-top: 30px;
     }
+    .section {
+      margin-bottom: 40px;
+      padding: 15px;
+      border-radius: 12px;
+    }
+    .english { background: #e6f7ff; }
+    .hindi-vowel-short { background: #fffbe6; }
+    .hindi-vowel-long { background: #fff0f5; }
+    .hindi-consonants { background: #f9f0ff; }
+
     .letter-box {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: space-around;
       gap: 10px;
       margin: 20px 0;
     }
@@ -27,11 +39,19 @@
       border: 2px solid #3498db;
       padding: 10px 15px;
       border-radius: 8px;
-      font-size: 20px;
+      font-size: 18px;
+      text-align: center;
       cursor: pointer;
       box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+      width: 80px;
     }
-    .play-all-btn {
+    .letter small {
+      display: block;
+      color: #555;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    .play-all-btn, .stop-btn, .quiz-btn {
       display: block;
       margin: 10px auto;
       background: green;
@@ -41,76 +61,167 @@
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
+      max-width: 90%;
+    }
+    .stop-btn {
+      background: red;
+      border: none;
+      margin-top: 20px;
+    }
+    #quiz {
+      max-width: 400px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    #quiz-question {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    #quiz-options button {
+      margin: 5px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
+<div class="section english">
   <h2>🔡 English Alphabet (A to Z)</h2>
-  <button class="play-all-btn" onclick="playAll(eng, 'en-US')">🔊 Play All English Letters</button>
+  <button class="play-all-btn" onclick="playAll(Object.keys(eng), 'en-US')">🔊 Play All English Letters</button>
   <div class="letter-box" id="englishLetters"></div>
+</div>
 
+<div class="section hindi-vowel-short">
   <h2>🪔 हिंदी वर्णमाला (Hindi Alphabet)</h2>
   <h4>ह्रस्व स्वर (Short Vowels)</h4>
   <div class="letter-box" id="hindiSwarShort"></div>
+</div>
 
+<div class="section hindi-vowel-long">
   <h4>दीर्घ स्वर (Long Vowels)</h4>
   <div class="letter-box" id="hindiSwarLong"></div>
+</div>
 
+<div class="section hindi-consonants">
   <h3>व्यंजन (Consonants)</h3>
-  <button class="play-all-btn" onclick="playAll(swarShort.concat(swarLong, vyanjan), 'hi-IN')">🔊 Play All Hindi Letters</button>
+  <button class="play-all-btn" onclick="playAll(Object.keys(swarShort).concat(Object.keys(swarLong), Object.keys(vyanjan)), 'hi-IN')">🔊 Play All Hindi Letters</button>
   <div class="letter-box" id="hindiVyanjan"></div>
+</div>
 
-  <script>
-    const eng = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-    const swarShort = ["अ", "इ", "उ"];
-    const swarLong = ["आ", "ई", "ऊ", "ए", "ऐ", "ओ", "औ", "अं", "अः"];
-    const vyanjan = ["क","ख","ग","घ","ङ","च","छ","ज","झ","ञ","ट","ठ","ड","ढ","ण","त","थ","द","ध","न","प","फ","ब","भ","म","य","र","ल","व","श","ष","स","ह","क्ष","त्र","ज्ञ"];
+<button class="stop-btn" onclick="stopSpeaking()">🔇 Stop Audio</button>
 
-    const speak = (text, lang = "hi-IN", repeat = 3, delay = 600) => {
-      let count = 0;
-      const speakLoop = () => {
-        if (count < repeat) {
-          const msg = new SpeechSynthesisUtterance(text);
-          msg.lang = lang;
-          window.speechSynthesis.speak(msg);
-          count++;
-          setTimeout(speakLoop, delay);
-        }
+<div class="section" style="background:#e8ffe8;">
+  <h3>🧠 Quick Quiz</h3>
+  <div id="quiz">
+    <div id="quiz-question">Click below to start quiz</div>
+    <div id="quiz-options"></div>
+    <button class="quiz-btn" onclick="generateQuiz()">Start / Next</button>
+  </div>
+</div>
+
+<script>
+const eng = {
+  A: "Apple", B: "Ball", C: "Cat", D: "Dog", E: "Elephant", F: "Fish", G: "Goat", H: "Hat", I: "Ice", J: "Jug",
+  K: "Kite", L: "Lion", M: "Monkey", N: "Nest", O: "Orange", P: "Parrot", Q: "Queen", R: "Rat", S: "Sun",
+  T: "Tiger", U: "Umbrella", V: "Van", W: "Watch", X: "Xylophone", Y: "Yak", Z: "Zebra"
+};
+
+const swarShort = {
+  "अ": "अनार", "इ": "इमली", "उ": "उल्लू"
+};
+const swarLong = {
+  "आ": "आम", "ई": "ईख", "ऊ": "ऊंट", "ए": "एड़ी", "ऐ": "ऐनक", "ओ": "ओखली", "औ": "औरत", "अं": "अंगूर", "अः": "अः"
+};
+const vyanjan = {
+  "क": "कबूतर", "ख": "खरगोश", "ग": "गमला", "घ": "घड़ा", "ङ": "गंगा", "च": "चमचम", "छ": "छाता", "ज": "जहाज",
+  "झ": "झंडा", "ञ": "ज्ञान", "ट": "टमाटर", "ठ": "ठेला", "ड": "डमरू", "ढ": "ढक्कन", "ण": "कण", "त": "तरबूज", "थ": "थैला",
+  "द": "दरवाज़ा", "ध": "धागा", "न": "नल", "प": "पतंग", "फ": "फल", "ब": "बतख", "भ": "भालू", "म": "मक्खी",
+  "य": "यज्ञ", "र": "रस्सी", "ल": "लट्टू", "व": "विमान", "श": "शेर", "ष": "षट्कोण", "स": "सांप", "ह": "हाथी",
+  "क्ष": "क्षत्रिय", "त्र": "त्रिशूल", "ज्ञ": "ज्ञानी"
+};
+
+function stopSpeaking() {
+  window.speechSynthesis.cancel();
+}
+
+function speak(text, lang = "hi-IN", repeat = 3, delay = 600) {
+  stopSpeaking();
+  let count = 0;
+  const speakLoop = () => {
+    if (count < repeat) {
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.lang = lang;
+      msg.onend = () => {
+        count++;
+        setTimeout(speakLoop, delay);
       };
-      speakLoop();
-    };
+      window.speechSynthesis.speak(msg);
+    }
+  };
+  speakLoop();
+}
 
-    const createLetters = (arr, containerId, lang = "hi-IN") => {
-      const container = document.getElementById(containerId);
-      arr.forEach(letter => {
-        const div = document.createElement("div");
-        div.className = "letter";
-        div.innerText = letter;
-        div.onclick = () => speak(letter, lang);
-        container.appendChild(div);
-      });
-    };
+function createLetters(obj, containerId, lang = "hi-IN") {
+  const container = document.getElementById(containerId);
+  for (const [letter, example] of Object.entries(obj)) {
+    const div = document.createElement("div");
+    div.className = "letter";
+    div.innerHTML = `${letter}<small>${example}</small>`;
+    div.onclick = () => speak(letter, lang);
+    container.appendChild(div);
+  }
+}
 
-    const playAll = (array, lang) => {
-      let i = 0;
-      const playNext = () => {
-        if (i < array.length) {
-          const msg = new SpeechSynthesisUtterance(array[i]);
-          msg.lang = lang;
-          msg.onend = () => setTimeout(playNext, 400);
-          window.speechSynthesis.speak(msg);
-          i++;
-        }
-      };
-      playNext();
-    };
+function playAll(arr, lang) {
+  stopSpeaking();
+  let i = 0;
+  const playNext = () => {
+    if (i < arr.length) {
+      const msg = new SpeechSynthesisUtterance(arr[i]);
+      msg.lang = lang;
+      msg.onend = () => setTimeout(playNext, 600);
+      window.speechSynthesis.speak(msg);
+      i++;
+    }
+  };
+  playNext();
+}
 
-    createLetters(eng, "englishLetters", "en-US");
-    createLetters(swarShort, "hindiSwarShort");
-    createLetters(swarLong, "hindiSwarLong");
-    createLetters(vyanjan, "hindiVyanjan");
-  </script>
+createLetters(eng, "englishLetters", "en-US");
+createLetters(swarShort, "hindiSwarShort");
+createLetters(swarLong, "hindiSwarLong");
+createLetters(vyanjan, "hindiVyanjan");
+
+const allLetters = { ...eng, ...swarShort, ...swarLong, ...vyanjan };
+const allKeys = Object.keys(allLetters);
+
+function generateQuiz() {
+  const questionLetter = allKeys[Math.floor(Math.random() * allKeys.length)];
+  const correctAnswer = allLetters[questionLetter];
+  const options = new Set([correctAnswer]);
+  while (options.size < 4) {
+    const rand = allLetters[allKeys[Math.floor(Math.random() * allKeys.length)]];
+    options.add(rand);
+  }
+  const optionsArr = Array.from(options).sort(() => 0.5 - Math.random());
+  const qElem = document.getElementById("quiz-question");
+  const optElem = document.getElementById("quiz-options");
+  qElem.innerHTML = `What is an example for: <strong>${questionLetter}</strong>?`;
+  optElem.innerHTML = "";
+  optionsArr.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.innerText = opt;
+    btn.onclick = () => {
+      alert(opt === correctAnswer ? "✅ Correct!" : `❌ Incorrect! Correct answer is: ${correctAnswer}`);
+      generateQuiz();
+    };
+    optElem.appendChild(btn);
+  });
+}
+</script>
 
 </body>
 </html>

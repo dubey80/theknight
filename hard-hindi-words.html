@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>500 कठिन हिंदी शब्द | Dictation Practice</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    h2 { text-align: center; }
+    #searchBox { width: 100%; padding: 10px; font-size: 18px; margin-bottom: 20px; border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #3498db; color: white; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    tr:hover { background-color: #f1f1f1; }
+    button { padding: 5px 10px; background: #2ecc71; border: none; color: white; border-radius: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>🔥 500 कठिन हिंदी शब्द (UPSI, UPPSC, UPSC, RO/ARO)</h2>
+
+  <input type="text" id="searchBox" onkeyup="filterTable()" placeholder="🔍 Search Hindi Word or Meaning...">
+
+  <table>
+    <thead>
+      <tr>
+        <th>क्रमांक</th>
+        <th>हिंदी शब्द</th>
+        <th>हिंदी अर्थ</th>
+        <th>डिक्टेशन में जोड़ें</th>
+      </tr>
+    </thead>
+    <tbody id="wordTable">
+      <tr><td>1</td><td>आशंका</td><td>शंका या डर</td><td><button onclick="addToDictation('आशंका')">जोड़ें</button></td></tr>
+<tr><td>2</td><td>प्रत्याशा</td><td>उम्मीद या अपेक्षा</td><td><button onclick="addToDictation('प्रत्याशा')">जोड़ें</button></td></tr>
+<tr><td>3</td><td>निराकरण</td><td>समाधान करना</td><td><button onclick="addToDictation('निराकरण')">जोड़ें</button></td></tr>
+<tr><td>4</td><td>संतुलन</td><td>समानता या स्थिरता</td><td><button onclick="addToDictation('संतुलन')">जोड़ें</button></td></tr>
+<tr><td>5</td><td>प्रलोभन</td><td>लालच</td><td><button onclick="addToDictation('प्रलोभन')">जोड़ें</button></td></tr>
+<tr><td>6</td><td>संवेदनशील</td><td>भावुक या भावनाओं से प्रभावित</td><td><button onclick="addToDictation('संवेदनशील')">जोड़ें</button></td></tr>
+<tr><td>7</td><td>अधिपत्य</td><td>प्रभुत्व या नियंत्रण</td><td><button onclick="addToDictation('अधिपत्य')">जोड़ें</button></td></tr>
+<tr><td>8</td><td>परिप्रेक्ष्य</td><td>दृष्टिकोण या संदर्भ</td><td><button onclick="addToDictation('परिप्रेक्ष्य')">जोड़ें</button></td></tr>
+<tr><td>9</td><td>अनुमोदन</td><td>स्वीकृति देना</td><td><button onclick="addToDictation('अनुमोदन')">जोड़ें</button></td></tr>
+<tr><td>10</td><td>उद्भव</td><td>उत्पत्ति या आरंभ</td><td><button onclick="addToDictation('उद्भव')">जोड़ें</button></td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    function filterTable() {
+      const input = document.getElementById("searchBox").value.toLowerCase();
+      const rows = document.querySelectorAll("#wordTable tr");
+
+      rows.forEach(row => {
+        const word = row.children[1].innerText.toLowerCase();
+        const meaning = row.children[2].innerText.toLowerCase();
+        row.style.display = word.includes(input) || meaning.includes(input) ? "" : "none";
+      });
+    }
+
+    function addToDictation(word) {
+      alert(`"\${word}" को डिक्टेशन में जोड़ा गया! (Feature coming soon)`);
+    }
+  </script>
+</body>
+</html>

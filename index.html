@@ -1469,9 +1469,12 @@ const firebaseConfig = {
 
       // Initialize the app
       function initApp() {
-        // Load words from local storage
-        let savedDictation = JSON.parse(localStorage.getItem('dictationWords')) || []; let savedLocallet savedDictation = JSON.parse(localStorage.getItem('dictationWords')) || []; let savedLocallet savedDictation = JSON.parse(localStorage.getItem('dictationWords')) || []; let savedLocallet savedDictation = JSON.parse(localStorage.getItem('dictationWords')) || []; let savedLocal let savedDictation = JSON.parse(localStorage.getItem('dictationWords')) || []; let savedLocalWords = JSON.parse(localStorage.getItem('localWords')) || []; words = [...savedLocalWords, ...savedDictation]; localStorage.setItem('localWords', JSON.stringify(words)); words = [...savedLocalWords, ...savedDictation]; localStorage.setItem('localWords', JSON.stringify(words)); words = [...savedLocalWords, ...savedDictation]; localStorage.setItem('localWords', JSON.stringify(words)); words = [...savedLocalWords, ...savedDictation]; localStorage.setItem('localWords', JSON.stringify(words)); words = [...savedLocalWords, ...savedDictation];
-        
+       // Load words from local storage
+let savedDictation = JSON.parse(localStorage.getItem('dictationWords')) || [];
+let savedLocalWords = JSON.parse(localStorage.getItem('localWords')) || [];
+let words = [...new Set([...savedLocalWords, ...savedDictation])];
+localStorage.setItem('localWords', JSON.stringify(words));
+
         // Set up event listeners
         setupEventListeners();
         

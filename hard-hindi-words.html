@@ -1075,5 +1075,36 @@ function addAllToDictation() {
             e.preventDefault();
         });
     </script>
+<script>
+function addWordToDictation(wordObj) {
+    let dictationWords = JSON.parse(localStorage.getItem('dictationWords') || '[]');
+    // avoid duplicates
+    if (!dictationWords.find(w => w.word === wordObj.word)) {
+        dictationWords.push(wordObj);
+        localStorage.setItem('dictationWords', JSON.stringify(dictationWords));
+        showNotification(`"${wordObj.word}" शब्द जोड़ा गया!`);
+    } else {
+        showNotification(`"${wordObj.word}" पहले से जोड़ा गया है!`);
+    }
+}
+
+function addAllToDictation() {
+    const dictationWords = JSON.parse(localStorage.getItem('dictationWords') || '[]');
+    const newWords = words.filter(w => !dictationWords.find(dw => dw.word === w.word));
+    const updated = [...dictationWords, ...newWords];
+    localStorage.setItem('dictationWords', JSON.stringify(updated));
+    showNotification(`सभी शब्द डिक्टेशन में जोड़ दिए गए!`);
+}
+
+// Optional: show a small notification on screen
+function showNotification(message) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.classList.add('show');
+    setTimeout(() => notification.classList.remove('show'), 2000);
+}
+</script>
+
+    
 </body>
 </html>

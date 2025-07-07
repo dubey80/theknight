@@ -433,6 +433,47 @@
             width: 200px;
             height: 200px;
         }
+        .homepage-demo {
+            background: rgba(255,255,255,0.92);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        .homepage-demo h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .demo-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .demo-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .demo-btn {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .demo-words {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 100px;
+            border: 1px dashed #3498db;
+        }
     </style>
 </head>
 <body>
@@ -475,10 +516,6 @@
                 <i class="fas fa-home"></i>
                 होम पेज पर वापस जाएं
             </button>
-            <button class="nav-btn" onclick="showDictation()">
-                <i class="fas fa-list"></i>
-                डिक्टेशन लिस्ट देखें
-            </button>
         </div>
         
         <!-- 🔍 Search Bar -->
@@ -516,6 +553,19 @@
                     <i class="fas fa-plus-circle"></i>
                     सभी शब्द जोड़ें
                 </button>
+            </div>
+        </div>
+        
+        <!-- Homepage Demo -->
+        <div class="homepage-demo">
+            <h3><i class="fas fa-home"></i> होमपेज डिक्टेशन डेमो</h3>
+            <p>जब आप शब्द जोड़ते हैं, तो वे यहाँ दिखाई देंगे:</p>
+            <div class="demo-input">
+                <input type="text" id="inputBox" placeholder="No words added yet">
+                <button class="demo-btn" onclick="clearWords()">साफ़ करें</button>
+            </div>
+            <div class="demo-words" id="wordList">
+                कोई शब्द जोड़े नहीं गए हैं
             </div>
         </div>
         
@@ -1002,26 +1052,64 @@
             playNext();
         }
 
-        function addWordToDictation(wordObj) {
-            let dictationWords = JSON.parse(localStorage.getItem('dictationWords') || '[]');
-            // avoid duplicates
-            if (!dictationWords.find(w => w.word === wordObj.word)) {
-                dictationWords.push(wordObj);
-                localStorage.setItem('dictationWords', JSON.stringify(dictationWords));
-                showNotification(`"${wordObj.word}" को डिक्टेशन में जोड़ा गया!`);
+        // Function to add word to dictation
+        function addWordToDictation(word) {
+            const inputBox = document.getElementById("inputBox");
+            const wordList = document.getElementById("wordList");
+            
+            if (inputBox.value.trim() === "No words added yet" || inputBox.value.trim() === "") {
+                inputBox.value = word;
             } else {
-                showNotification(`"${wordObj.word}" पहले से डिक्टेशन में है!`);
+                inputBox.value += "," + word;
             }
+            
+            updateWords();
+            showNotification(`"${word}" को डिक्टेशन में जोड़ा गया!`);
         }
 
+        // Function to add all words to dictation
         function addAllToDictation() {
-            const dictationWords = JSON.parse(localStorage.getItem('dictationWords') || '[]');
-            const newWords = words.filter(w => !dictationWords.find(dw => dw.word === w.word));
-            const updated = [...dictationWords, ...newWords];
-            localStorage.setItem('dictationWords', JSON.stringify(updated));
-            showNotification(`${newWords.length} शब्द डिक्टेशन में जोड़े गए!`);
+            const inputBox = document.getElementById("inputBox");
+            const words = filteredWords.map(item => item.word);
+            
+            inputBox.value = words.join(",");
+            updateWords();
+            showNotification(`${words.length} शब्द डिक्टेशन में जोड़े गए!`);
         }
 
+        // Function to update word list display
+        function updateWords() {
+            const inputBox = document.getElementById("inputBox");
+            const wordList = document.getElementById("wordList");
+            
+            if (inputBox.value.trim() === "") {
+                wordList.innerHTML = "कोई शब्द जोड़े नहीं गए हैं";
+                return;
+            }
+            
+            const words = inputBox.value.split(",");
+            wordList.innerHTML = "";
+            
+            words.forEach((word, index) => {
+                if (word.trim() !== "") {
+                    const wordItem = document.createElement("div");
+                    wordItem.textContent = `${index + 1}. ${word.trim()}`;
+                    wordItem.style.padding = "5px 0";
+                    wordItem.style.borderBottom = "1px solid #eee";
+                    wordList.appendChild(wordItem);
+                }
+            });
+        }
+
+        // Function to clear words
+        function clearWords() {
+            const inputBox = document.getElementById("inputBox");
+            inputBox.value = "";
+            updateWords();
+            showNotification("सभी शब्द साफ़ कर दिए गए हैं!");
+        }
+
+        // Function to render table
         function renderTable() {
             const table = document.getElementById("wordTable");
             table.innerHTML = "";
@@ -1038,7 +1126,7 @@
                     <td>${item.word}</td>
                     <td>${item.meaning}</td>
                     <td class="btn-container">
-                        <button class="btn" onclick="addWordToDictation(${JSON.stringify(item)})">
+                        <button class="btn" onclick="addWordToDictation('${item.word}')">
                             <i class="fas fa-plus"></i>
                             जोड़ें
                         </button>
@@ -1055,11 +1143,7 @@
             updateStats();
         }
 
-        function updateStats() {
-            const stats = document.getElementById("stats");
-            stats.textContent = `कुल शब्द: ${words.length} | दिखाए जा रहे: ${filteredWords.length} | पृष्ठ: ${currentPage}/${Math.ceil(filteredWords.length / rowsPerPage)}`;
-        }
-
+        // Function to update pagination
         function updatePagination() {
             const pagination = document.getElementById("pagination");
             pagination.innerHTML = "";
@@ -1110,6 +1194,13 @@
             }
         }
 
+        // Function to update stats
+        function updateStats() {
+            const stats = document.getElementById("stats");
+            stats.textContent = `कुल शब्द: ${words.length} | दिखाए जा रहे: ${filteredWords.length} | पृष्ठ: ${currentPage}/${Math.ceil(filteredWords.length / rowsPerPage)}`;
+        }
+
+        // Function to filter table
         function filterTable() {
             const input = document.getElementById("searchBox").value.toLowerCase();
             
@@ -1124,17 +1215,6 @@
             
             currentPage = 1;
             renderTable();
-        }
-
-        function showDictation() {
-            const dictationWords = JSON.parse(localStorage.getItem('dictationWords') || '[]');
-            if (dictationWords.length === 0) {
-                showNotification("आपकी डिक्टेशन सूची खाली है। कृपया कुछ शब्द जोड़ें।");
-                return;
-            }
-            
-            const dictationContent = dictationWords.map(item => item.word).join(", ");
-            alert(`आपकी डिक्टेशन सूची:\n\n${dictationContent}\n\nइन शब्दों को आप होम पेज पर अभ्यास कर सकते हैं।`);
         }
 
         // Initialize the table
@@ -1177,43 +1257,5 @@
             e.preventDefault();
         });
     </script>
-<script>
-  // Function to add single word to homepage box
-  function addWordToDictation(word) {
-    if (window.opener && !window.opener.closed) {
-      const inputBox = window.opener.document.getElementById("inputBox");
-      if (inputBox) {
-        if (inputBox.value.trim() === "No words added yet" || inputBox.value.trim() === "") {
-          inputBox.value = word;
-        } else {
-          inputBox.value += "," + word;
-        }
-        window.opener.updateWords(); // Refresh word list
-      } else {
-        alert("Dictation box not found on homepage.");
-      }
-    } else {
-      alert("Please open this page from homepage.");
-    }
-  }
-
-  // Function to add all words to homepage box
-  function addAllWordsToDictation() {
-    const words = Array.from(document.querySelectorAll(".word")).map(el => el.textContent.trim());
-    if (window.opener && !window.opener.closed) {
-      const inputBox = window.opener.document.getElementById("inputBox");
-      if (inputBox) {
-        inputBox.value = words.join(",");
-        window.opener.updateWords();
-      } else {
-        alert("Dictation box not found.");
-      }
-    } else {
-      alert("Please open this page from homepage.");
-    }
-  }
-</script>
-
-    
 </body>
 </html>

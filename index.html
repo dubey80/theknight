@@ -1971,7 +1971,24 @@ localStorage.setItem('localWords', JSON.stringify(words));
   };
 </script>
 
-
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const dictationWords = JSON.parse(localStorage.getItem('dictationWords') || '[]');
+    // Render dictationWords in your word list container
+    const container = document.querySelector('.words-container');
+    if (dictationWords.length) {
+        container.innerHTML = '';
+        dictationWords.forEach(wordObj => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.innerHTML = `<div class="word-text hindi-font">${wordObj.word}</div>
+                              <div class="word-meaning">${wordObj.meaning}</div>`;
+            container.appendChild(card);
+        });
+    }
+});
+</script>
+  
 
 
 </body>

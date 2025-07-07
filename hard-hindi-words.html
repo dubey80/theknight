@@ -1014,13 +1014,14 @@
             }
         }
 
-        function addAllToDictation() {
-            const dictationWords = JSON.parse(localStorage.getItem('dictationWords') || '[]');
-            const newWords = words.filter(w => !dictationWords.find(dw => dw.word === w.word));
-            const updated = [...dictationWords, ...newWords];
-            localStorage.setItem('dictationWords', JSON.stringify(updated));
-            showNotification(`${newWords.length} शब्द डिक्टेशन में जोड़े गए!`);
-        }
+       // REPLACE THIS ENTIRE FUNCTION
+function addAllToDictation() {
+    let dictationWords = JSON.parse(localStorage.getItem('dictationWords') || '[]';
+    const newWords = words.filter(w => !dictationWords.some(dw => dw.word === w.word));
+    dictationWords = [...dictationWords, ...newWords];
+    localStorage.setItem('dictationWords', JSON.stringify(dictationWords));
+    showNotification(`${newWords.length} शब्द डिक्टेशन में जोड़े गए!`);
+}
 
         function renderTable() {
             const table = document.getElementById("wordTable");
@@ -1038,10 +1039,19 @@
                     <td>${item.word}</td>
                     <td>${item.meaning}</td>
                     <td class="btn-container">
-                        <button class="btn" onclick="addWordToDictation(${JSON.stringify(item)})">
-                            <i class="fas fa-plus"></i>
-                            जोड़ें
-                        </button>
+                        // REPLACE THIS ENTIRE FUNCTION
+function addWordToDictation(wordObj) {
+    let dictationWords = JSON.parse(localStorage.getItem('dictationWords') || '[]';
+    
+    // Check if word already exists
+    if (!dictationWords.some(w => w.word === wordObj.word)) {
+        dictationWords.push(wordObj);
+        localStorage.setItem('dictationWords', JSON.stringify(dictationWords));
+        showNotification(`"${wordObj.word}" को डिक्टेशन में जोड़ा गया!`);
+    } else {
+        showNotification(`"${wordObj.word}" पहले से डिक्टेशन में है!`);
+    }
+}
                         <button class="btn audio" onclick="speakWord('${item.word.replace(/'/g, "\\'")}')">
                             <i class="fas fa-volume-up"></i>
                             सुनें

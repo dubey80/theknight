@@ -1468,27 +1468,43 @@ const firebaseConfig = {
       let isDarkMode = false;
 
       // Initialize the app
-      function initApp() {
-       // Load words from local storage
-let savedDictation = JSON.parse(localStorage.getItem('dictationWords')) || [];
-let savedLocalWords = JSON.parse(localStorage.getItem('localWords')) || [];
-let words = [...new Set([...savedLocalWords, ...savedDictation])];
-localStorage.setItem('localWords', JSON.stringify(words));
-
-        // Set up event listeners
-        setupEventListeners();
-        
-        // Render initial word list
-        renderWordsList();
-        
-        // Set initial language
-        setLanguage('hindi');
-        
-        // Load theme preference
-        const savedTheme = localStorage.getItem('darkMode');
-        if (savedTheme === 'true') {
-          toggleTheme();
+    // REPLACE THIS ENTIRE FUNCTION
+function initApp() {
+    // Load words from multiple sources
+    const savedDictation = JSON.parse(localStorage.getItem('dictationWords')) || [];
+    const savedLocalWords = JSON.parse(localStorage.getItem('localWords')) || [];
+    
+    // Combine all words, remove duplicates
+    words = [...savedLocalWords];
+    savedDictation.forEach(word => {
+        if (!words.some(w => w.text === word.word)) {
+            words.push({
+                text: word.word,
+                language: 'hindi',
+                mastered: false,
+                addedDate: new Date().toISOString()
+            });
         }
+    });
+    
+    // Save back to local storage
+    localStorage.setItem('localWords', JSON.stringify(words));
+    localStorage.removeItem('dictationWords'); // Clear after loading
+
+    // Rest of the function
+    setupEventListeners();
+    renderWordsList();
+    setLanguage('hindi');
+    
+    // Load theme preference
+    const savedTheme = localStorage.getItem('darkMode');
+    if (savedTheme === 'true') {
+        toggleTheme();
+    }
+    
+    updateGlobalVisitCounter();
+    updateProgress();
+}
         
         // Update visit counter
         updateGlobalVisitCounter();
@@ -1727,84 +1743,88 @@ localStorage.setItem('localWords', JSON.stringify(words));
       }
       
       // Speak a single word
-      function speakWord(word, index) {
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-          
-          const utterance = new SpeechSynthesisUtterance(word.text);
-          utterance.lang = word.language === 'hindi' ? 'hi-IN' : 'en-US';
-          utterance.rate = speechRate;
-          
-          isSpeaking = true;
-          currentSpeakingIndex = index;
-          renderWordsList();
-          
-          utterance.onstart = function() {
+     // REPLACE THIS ENTIRE FUNCTION
+function speakWord(word, index) {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(word.text);
+        
+        // FIXED: Proper Hindi/English detection
+        utterance.lang = word.language === 'hindi' ? 'hi-IN' : 'en-US';
+        utterance.rate = speechRate;
+        
+        isSpeaking = true;
+        currentSpeakingIndex = index;
+        renderWordsList();
+        
+        utterance.onstart = function() {
             currentSpeakingIndex = index;
             renderWordsList();
-          };
-          
-          utterance.onend = function() {
+        };
+        
+        utterance.onend = function() {
             isSpeaking = false;
             currentSpeakingIndex = -1;
             renderWordsList();
-          };
-          
-          utterance.onerror = function() {
+        };
+        
+        utterance.onerror = function() {
             isSpeaking = false;
             currentSpeakingIndex = -1;
             renderWordsList();
             showMessage('Error pronouncing the word. Please try again or use a different browser.', 'error');
-          };
-          
-          window.speechSynthesis.speak(utterance);
-        } else {
-          showMessage('Text-to-speech is not supported in your browser. Try using Chrome or Edge.', 'error');
-        }
-      }
+        };
+        
+        window.speechSynthesis.speak(utterance);
+    } else {
+        showMessage('Text-to-speech is not supported in your browser. Try using Chrome or Edge.', 'error');
+    }
+}
       
       // Play all words in sequence
-      function playAllWords() {
-        if (words.length === 0) {
-          showMessage('Please add some words first!', 'error');
-          return;
-        }
-        
-        if (isSpeaking) {
-          window.speechSynthesis.cancel();
-          isSpeaking = false;
-          currentSpeakingIndex = -1;
-          renderWordsList();
-          playAllBtn.innerHTML = '<i class="fas fa-play-circle"></i> Play All Words';
-          return;
-        }
-        
-        let index = 0;
-        
-        function playNextWord() {
-          if (index >= words.length) {
+     // REPLACE THIS ENTIRE FUNCTION
+function playAllWords() {
+    if (words.length === 0) {
+        showMessage('Please add some words first!', 'error');
+        return;
+    }
+    
+    if (isSpeaking) {
+        window.speechSynthesis.cancel();
+        isSpeaking = false;
+        currentSpeakingIndex = -1;
+        renderWordsList();
+        playAllBtn.innerHTML = '<i class="fas fa-play-circle"></i> Play All Words';
+        return;
+    }
+    
+    let index = 0;
+    playAllBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Playback';
+    
+    function playNext() {
+        if (index >= words.length) {
             isSpeaking = false;
             currentSpeakingIndex = -1;
             renderWordsList();
             playAllBtn.innerHTML = '<i class="fas fa-play-circle"></i> Play All Words';
             return;
-          }
-          
-          speakWord(words[index], index);
-          index++;
-          
-          const checkEnd = setInterval(() => {
-            if (!isSpeaking) {
-              clearInterval(checkEnd);
-              setTimeout(playNextWord, 500);
-            }
-          }, 100);
         }
         
-        playAllBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Playback';
-        playNextWord();
-      }
-      
+        speakWord(words[index], index);
+        index++;
+        
+        // Check when the current word finishes
+        const checkEnd = setInterval(() => {
+            if (!isSpeaking) {
+                clearInterval(checkEnd);
+                playNext();
+            }
+        }, 100);
+    }
+    
+    playNext();
+}
       // Toggle dark/light mode
       function toggleTheme() {
         isDarkMode = !isDarkMode;

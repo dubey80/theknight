@@ -1177,5 +1177,43 @@
             e.preventDefault();
         });
     </script>
+<script>
+  // Function to add single word to homepage box
+  function addWordToDictation(word) {
+    if (window.opener && !window.opener.closed) {
+      const inputBox = window.opener.document.getElementById("inputBox");
+      if (inputBox) {
+        if (inputBox.value.trim() === "No words added yet" || inputBox.value.trim() === "") {
+          inputBox.value = word;
+        } else {
+          inputBox.value += "," + word;
+        }
+        window.opener.updateWords(); // Refresh word list
+      } else {
+        alert("Dictation box not found on homepage.");
+      }
+    } else {
+      alert("Please open this page from homepage.");
+    }
+  }
+
+  // Function to add all words to homepage box
+  function addAllWordsToDictation() {
+    const words = Array.from(document.querySelectorAll(".word")).map(el => el.textContent.trim());
+    if (window.opener && !window.opener.closed) {
+      const inputBox = window.opener.document.getElementById("inputBox");
+      if (inputBox) {
+        inputBox.value = words.join(",");
+        window.opener.updateWords();
+      } else {
+        alert("Dictation box not found.");
+      }
+    } else {
+      alert("Please open this page from homepage.");
+    }
+  }
+</script>
+
+    
 </body>
 </html>

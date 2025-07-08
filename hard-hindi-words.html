@@ -549,7 +549,7 @@
                     <i class="fas fa-play"></i>
                     सभी शब्द सुनें
                 </button>
-                <button class="audio-btn" onclick="addAllToDictation()">
+                <button class="audio-btn" onclick="addAllWords()">
                     <i class="fas fa-plus-circle"></i>
                     सभी शब्द जोड़ें
                 </button>
@@ -575,6 +575,20 @@
     </div>
 
     <script>
+        const selectedWords = [];
+
+        function addToDictation(word) {
+            selectedWords.push(word);
+            localStorage.setItem("dictationWords", JSON.stringify(selectedWords));
+            alert(`"${word}" added to dictation list`);
+        }
+
+        function addAllWords() {
+            const allWords = Array.from(document.querySelectorAll(".word")).map(div => div.textContent.trim());
+            localStorage.setItem("dictationWords", JSON.stringify(allWords));
+            alert("All words added to dictation list");
+        }
+
         // Comprehensive list of 500+ Hindi words important for competitive exams
         const words = [
             { word: "आशंका", meaning: "शंका या डर" },
@@ -912,7 +926,7 @@
             { word: "रोचकता", meaning: "इंटरेस्ट" },
             { word: "व्यापारी", meaning: "मर्चेंट" },
             { word: "शिक्षा", meaning: "एजुकेशन" },
-            { word: "संकल्प", meaning: "रिजॉल्यूशन" },
+            { word: "संकल्प", meaning: "रिजॉल्यूशン" },
             { word: "अनुपयुक्त", meaning: "इनएप्रोप्रिएट" },
             { word: "अस्वाभाविक", meaning: "अननैचुरल" },
             { word: "आरामगाह", meaning: "रिसॉर्ट" },
@@ -1052,55 +1066,6 @@
             playNext();
         }
 
-        // Function to add word to dictation
-        function addWordToDictation(word) {
-            const inputBox = document.getElementById("inputBox");
-            const wordList = document.getElementById("wordList");
-            
-            if (inputBox.value.trim() === "No words added yet" || inputBox.value.trim() === "") {
-                inputBox.value = word;
-            } else {
-                inputBox.value += "," + word;
-            }
-            
-            updateWords();
-            showNotification(`"${word}" को डिक्टेशन में जोड़ा गया!`);
-        }
-
-        // Function to add all words to dictation
-        function addAllToDictation() {
-            const inputBox = document.getElementById("inputBox");
-            const words = filteredWords.map(item => item.word);
-            
-            inputBox.value = words.join(",");
-            updateWords();
-            showNotification(`${words.length} शब्द डिक्टेशन में जोड़े गए!`);
-        }
-
-        // Function to update word list display
-        function updateWords() {
-            const inputBox = document.getElementById("inputBox");
-            const wordList = document.getElementById("wordList");
-            
-            if (inputBox.value.trim() === "") {
-                wordList.innerHTML = "कोई शब्द जोड़े नहीं गए हैं";
-                return;
-            }
-            
-            const words = inputBox.value.split(",");
-            wordList.innerHTML = "";
-            
-            words.forEach((word, index) => {
-                if (word.trim() !== "") {
-                    const wordItem = document.createElement("div");
-                    wordItem.textContent = `${index + 1}. ${word.trim()}`;
-                    wordItem.style.padding = "5px 0";
-                    wordItem.style.borderBottom = "1px solid #eee";
-                    wordList.appendChild(wordItem);
-                }
-            });
-        }
-
         // Function to clear words
         function clearWords() {
             const inputBox = document.getElementById("inputBox");
@@ -1123,10 +1088,10 @@
                 const row = document.createElement("tr");
                 row.innerHTML = `
                     <td>${actualIndex}</td>
-                    <td>${item.word}</td>
+                    <td><div class="word">${item.word}</div></td>
                     <td>${item.meaning}</td>
                     <td class="btn-container">
-                        <button class="btn" onclick="addWordToDictation('${item.word}')">
+                        <button class="btn" onclick="addToDictation('${item.word}')">
                             <i class="fas fa-plus"></i>
                             जोड़ें
                         </button>

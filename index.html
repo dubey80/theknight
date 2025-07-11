@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hindi-English Dictation Master</title>
@@ -1445,6 +1447,112 @@
       }
     }
   </style>
+
+
+
+<!-- Firebase App (Core SDK) -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+<!-- Firebase Visit Tracking Script -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBKZO_8CgrQfm7eBGcR9h8D6JxWY4MBaQ",
+    authDomain: "hindi-english-dictation.firebaseapp.com",
+    databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "hindi-english-dictation",
+    storageBucket: "hindi-english-dictation.appspot.com",
+    messagingSenderId: "186334580803",
+    appId: "1:186334580803:web:7dfdf806d9da19a4cc4f6",
+    measurementId: "G-7LH1856B2W"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const today = new Date().toISOString().slice(0, 10); // format: YYYY-MM-DD
+
+  // Update total visit count
+  const totalRef = ref(db, 'visitCount');
+  get(totalRef).then((snapshot) => {
+    const current = snapshot.exists() ? snapshot.val() : 0;
+    set(totalRef, current + 1);
+  });
+
+  // Update daily visit count
+  const dailyRef = ref(db, `visits_by_day/${today}`);
+  get(dailyRef).then((snapshot) => {
+    const count = snapshot.exists() ? snapshot.val() : 0;
+    set(dailyRef, count + 1);
+  });
+</script>
+
+
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBKZO_8CgrQfm7eBGcR9h8D6JxWY4MBaQ",
+    authDomain: "hindi-english-dictation.firebaseapp.com",
+    databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "hindi-english-dictation",
+    storageBucket: "hindi-english-dictation.appspot.com",
+    messagingSenderId: "186334580803",
+    appId: "1:186334580803:web:7dfdf806d9da19a4cc4f6",
+    measurementId: "G-7LH1856B2W"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  window.submitFeedback = function () {
+    const text = document.getElementById("feedbackText").value.trim();
+    const msg = document.getElementById("feedbackMsg");
+
+    if (!text) {
+      msg.style.color = "red";
+      msg.innerText = "❗ कृपया फीडबैक लिखें।";
+      return;
+    }
+
+    const feedbackRef = ref(db, 'feedbacks');
+    push(feedbackRef, {
+      text: text,
+      timestamp: Date.now()
+    }).then(() => {
+      msg.style.color = "green";
+      msg.innerText = "✅ आपका फीडबैक भेजा गया!";
+      document.getElementById("feedbackText").value = "";
+    }).catch(() => {
+      msg.style.color = "red";
+      msg.innerText = "❌ कुछ त्रुटि हुई। बाद में पुनः प्रयास करें।";
+    });
+  };
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const dictationWords = JSON.parse(localStorage.getItem('dictationWords') || '[]');
+    // Render dictationWords in your word list container
+    const container = document.querySelector('.words-container');
+    if (dictationWords.length) {
+        container.innerHTML = '';
+        dictationWords.forEach(wordObj => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.innerHTML = `<div class="word-text hindi-font">${wordObj.word}</div>
+                              <div class="word-meaning">${wordObj.meaning}</div>`;
+            container.appendChild(card);
+        });
+    }
+});
+</script>
+  
 </head>
 <body>
   <div class="bg-animation">

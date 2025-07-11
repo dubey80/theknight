@@ -1,21 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!--
-Made by THE KNIGHTS
-Website: www.theknight.info
-Don't copy without permission 🙏
--->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hindi-English Dictation Master</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-
-
-
-
-
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -159,6 +148,73 @@ Don't copy without permission 🙏
       color: #b0b8c0;
     }
     
+    /* Navigation Buttons */
+    .nav-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    .nav-btn {
+      background: linear-gradient(to right, #27ae60, #219653);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 17px;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      text-decoration: none;
+    }
+    
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, #219653, #27ae60);
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: -1;
+    }
+    
+    .nav-btn:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+    
+    .nav-btn:hover::before {
+      opacity: 1;
+    }
+    
+    .nav-btn.secondary {
+      background: linear-gradient(to right, #3498db, #2c80c0);
+    }
+    
+    .nav-btn.secondary::before {
+      background: linear-gradient(to right, #2c80c0, #3498db);
+    }
+    
+    .nav-btn.important {
+      background: linear-gradient(to right, #9b59b6, #8e44ad);
+    }
+    
+    .nav-btn.important::before {
+      background: linear-gradient(to right, #8e44ad, #9b59b6);
+    }
+    
     /* Content Layout */
     .content-container {
       display: flex;
@@ -181,9 +237,6 @@ Don't copy without permission 🙏
       display: flex;
       flex-direction: column;
     }
-
-
-
     
     /* Language Selector */
     .language-selector {
@@ -1091,6 +1144,11 @@ Don't copy without permission 🙏
         padding: 15px;
         font-size: 1rem;
       }
+      
+      .nav-btn {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+      }
     }
     
     .visit-counter-container {
@@ -1178,78 +1236,216 @@ Don't copy without permission 🙏
       transition: width 1s ease;
     }
   
-@media only screen and (max-width: 600px) {
-  body {
-    font-size: 3.5vw;
-    padding: 10px;
-  }
+    /* Table Styles */
+    .word-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    
+    .word-table th {
+      background: linear-gradient(to bottom, #3498db, #2c3e50);
+      color: white;
+      padding: 15px;
+      text-align: left;
+    }
+    
+    .word-table td {
+      padding: 15px;
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .word-table tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+    
+    body.dark-mode .word-table tr:nth-child(even) {
+      background-color: #2a2a3a;
+    }
+    
+    /* Page Navigation */
+    .page-navigation {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .page-btn {
+      padding: 10px 20px;
+      background: linear-gradient(to right, #3498db, #2980b9);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+      min-width: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .page-btn:hover:not(:disabled) {
+      background: linear-gradient(to right, #2980b9, #2471a3);
+      transform: translateY(-2px);
+    }
+    
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .page-btn.active {
+      background: linear-gradient(to right, #9b59b6, #8e44ad);
+      box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.5);
+    }
+    
+    .page-number {
+      min-width: 40px;
+      padding: 10px 15px;
+    }
+    
+    .page-ellipsis {
+      background: transparent;
+      color: #2c3e50;
+      cursor: default;
+      min-width: 20px;
+      padding: 10px 5px;
+    }
+    
+    body.dark-mode .page-ellipsis {
+      color: #e0e0f0;
+    }
+    
+    /* Stats */
+    .stats {
+      text-align: right;
+      margin: 15px 0;
+      font-size: 17px;
+      color: white;
+      background: rgba(0,0,0,0.25);
+      padding: 12px 20px;
+      border-radius: 30px;
+      display: inline-block;
+      float: right;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    /* Content Sections */
+    .content-section {
+      display: none;
+    }
+    
+    .section-active {
+      display: block;
+    }
+    
+    /* Add All Button */
+    .add-all-btn {
+      padding: 12px 25px;
+      border-radius: 50px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: none;
+      margin-bottom: 15px;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto 20px;
+      background: linear-gradient(to right, #9b59b6, #8e44ad);
+    }
+    
+    .add-all-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    
+    .add-all-btn.blue {
+      background: linear-gradient(to right, #3498db, #2980b9);
+    }
+    
+    .add-all-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      body {
+        font-size: 3.5vw;
+        padding: 10px;
+      }
 
-  h1 {
-    font-size: 5vw;
-    text-align: center;
-  }
+      h1 {
+        font-size: 5vw;
+        text-align: center;
+      }
 
-  .container {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-  }
+      .container {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+      }
 
-  button, input {
-    font-size: 4vw;
-    padding: 10px 14px;
-  }
+      button, input, .nav-btn {
+        font-size: 3.8vw;
+        padding: 10px 14px;
+      }
 
-  .main-content {
-    flex-direction: column;
-    align-items: center;
-  }
+      .main-content {
+        flex-direction: column;
+        align-items: center;
+      }
 
-  .input-section input,
-  .input-section .btn {
-    width: 100%;
-    margin-top: 10px;
-  }
+      .input-section input,
+      .input-section .btn {
+        width: 100%;
+        margin-top: 10px;
+      }
 
-  .visit-counter-container {
-    bottom: 80px;
-  }
-}
-  h1 {
-    font-size: 6vw;
-    text-align: center;
-  }
-  .container {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  button, input {
-    font-size: 4vw;
-    padding: 10px 14px;
-  }
-  .main-content {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-</style>
-
-
-
-
-
-
-
+      .visit-counter-container {
+        bottom: 80px;
+      }
+      
+      .nav-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .nav-btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      
+      .word-table td, .word-table th {
+        padding: 8px;
+        font-size: 3vw;
+      }
+      
+      .add-all-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+      
+      .page-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
-
-
-
-
-
-
-
 <body>
   <div class="bg-animation">
     <div class="bg-element" style="width: 300px; height: 300px; background: #3498db; top: 10%; left: 5%; animation-duration: 25s;"></div>
@@ -1270,122 +1466,184 @@ Don't copy without permission 🙏
       <p>Master difficult words for competitive exams like IAS, PCS, UPSI and more</p>
     </div>
 
-<!-- 🔗 Green Buttons with Yellow Border -->
-<div style="text-align: center; margin: 20px 0;">
+    <!-- Navigation Container -->
+    <div class="nav-container">
+      <button class="nav-btn" id="homeNavBtn">
+        <i class="fas fa-home"></i> Home
+      </button>
+      <button class="nav-btn secondary" id="hindiNavBtn">
+        <i class="fas fa-book"></i> Hindi Hard Words
+      </button>
+      <button class="nav-btn secondary" id="englishNavBtn">
+        <i class="fas fa-book"></i> English Hard Words
+      </button>
+      <a href="#" class="nav-btn important">
+        <i class="fas fa-font"></i> Learn Letters
+      </a>
+      <a href="#" class="nav-btn important">
+        <i class="fab fa-youtube"></i> Learn via YouTube
+      </a>
+    </div>
     
-  <a href="hard-hindi-words.html" style="margin: 5px; padding: 10px 20px; background: green; border: 2px solid yellow; color: white; text-decoration: none; border-radius: 8px;">📘 Hindi Hard Words</a>
+    <hr style="border: 2px solid #f1c40f; width: 90%; margin: 0 auto 30px;">
 
-  <a href="hard-english-words.html" style="margin: 5px; padding: 10px 20px; background: green; border: 2px solid yellow; color: white; text-decoration: none; border-radius: 8px;">📗 English Hard Words</a>
-
-  <a href="learn-letters.html" style="margin: 5px; padding: 10px 20px; background: green; border: 2px solid yellow; color: white; text-decoration: none; border-radius: 8px;">🔤 Learn Letters</a>
-
- <a href="learn-Language.html" style="background-color: green; color: white; border: 2px solid yellow; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;">🎥 Learn via YouTube</a>
-
-
-<hr style="border: 2px solid #f1c40f; width: 90%; margin: 20px auto;">
-
-
-</div>
-<P> </P>
-    
-    <div class="content-container">
-      <div class="main-content">
-        <div class="left-panel">
-          <button class="lens-btn" id="lensBtn">
-            <i class="fas fa-camera"></i> Add Words with Google Lens
-          </button>
-          
-          <div class="language-selector">
-            <button class="lang-btn active" id="hindiBtn"><span>Hindi</span></button>
-            <button class="lang-btn" id="englishBtn"><span>English</span></button>
-          </div>
-          
-          <div class="input-section" id="inputSection">
-            <input type="text" id="wordInput" placeholder="Enter a difficult word...">
-            <button class="btn" id="addWordBtn">
-              <i class="fas fa-plus"></i> Add Word
-            </button>
-            <div class="breath-indicator" id="breathIndicator"></div>
-          </div>
-          
-          <div class="words-container" id="wordsList">
-            <div class="empty-state">
-              <i class="fas fa-book-open"></i>
-              <p>No words added yet</p>
-              <div class="subtext">Add some words to get started on your learning journey!</div>
-            </div>
-          </div>
-          
-          <button class="btn btn-play-all" id="playAllBtn">
-            <i class="fas fa-play-circle"></i> Play All Words
-          </button>
-          
-          
+    <!-- Home Content -->
+    <div id="homeContent" class="content-section section-active">
+      <button class="lens-btn" id="lensBtn">
+        <i class="fas fa-camera"></i> Add Words with Google Lens
+      </button>
+      
+      <div class="language-selector">
+        <button class="lang-btn active" id="hindiBtn"><span>Hindi</span></button>
+        <button class="lang-btn" id="englishBtn"><span>English</span></button>
+      </div>
+      
+      <div class="input-section" id="inputSection">
+        <input type="text" id="wordInput" placeholder="Enter a difficult word...">
+        <button class="btn" id="addWordBtn">
+          <i class="fas fa-plus"></i> Add Word
+        </button>
+        <div class="breath-indicator" id="breathIndicator"></div>
+      </div>
+      
+      <div class="words-container" id="wordsList">
+        <div class="empty-state">
+          <i class="fas fa-book-open"></i>
+          <p>No words added yet</p>
+          <div class="subtext">Add some words to get started on your learning journey!</div>
+        </div>
+      </div>
+      
+      <button class="btn btn-play-all" id="playAllBtn">
+        <i class="fas fa-play-circle"></i> Play All Words
+      </button>
+      
+      <button class="btn" id="clearWordsBtn" style="margin-top: 20px; background: linear-gradient(to right, #e74c3c, #c0392b);">
+        <i class="fas fa-trash"></i> Clear All Words
+      </button>
+      
+      <div class="controls">
+        <div class="speed-label">
+          <i class="fas fa-tachometer-alt"></i> SPEED
         </div>
         
-        <div class="right-panel">
-          <div class="speed-label">
-            <i class="fas fa-tachometer-alt"></i> SPEED
+        <div class="speed-control">
+          <label for="speedControl"><i class="fas fa-sliders-h"></i> Adjustment:</label>
+          <input type="range" id="speedControl" min="0.5" max="2" step="0.1" value="1">
+          <span id="speedValue">1.0x</span>
+        </div>
+        <div class="preset-speeds">
+          <button class="preset-btn" data-speed="0.156">25 WPM</button>
+          <button class="preset-btn" data-speed="0.125">20 WPM</button>
+          <button class="preset-btn" data-speed="0.187">30 WPM</button>
+          <button class="preset-btn" data-speed="0.219">35 WPM</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hindi Words Content -->
+    <div id="hindiWordsContent" class="content-section">
+      <div class="stats" id="hindiStats">Total Words: 200 | Showing: 20 | Page: 1/10</div>
+      
+      <div class="add-all-container">
+        <button class="add-all-btn" id="addAllHindiPageBtn">
+          <i class="fas fa-plus-circle"></i> Add This Page
+        </button>
+        <button class="add-all-btn blue" id="addAllHindiBtn">
+          <i class="fas fa-layer-group"></i> Add All Hindi Words
+        </button>
+      </div>
+      
+      <table class="word-table">
+        <thead>
+          <tr>
+            <th width="10%">No.</th>
+            <th width="25%">Hindi Word</th>
+            <th width="40%">Meaning</th>
+            <th width="25%">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="hindiWordTable">
+          <!-- Will be populated by JavaScript -->
+        </tbody>
+      </table>
+      
+      <div class="page-navigation" id="hindiPagination">
+        <!-- Will be populated by JavaScript -->
+      </div>
+    </div>
+
+    <!-- English Words Content -->
+    <div id="englishWordsContent" class="content-section">
+      <div class="stats" id="englishStats">Total Words: 964 | Showing: 20 | Page: 1/49</div>
+      
+      <div class="add-all-container">
+        <button class="add-all-btn" id="addAllEnglishPageBtn">
+          <i class="fas fa-plus-circle"></i> Add This Page
+        </button>
+        <button class="add-all-btn blue" id="addAllEnglishBtn">
+          <i class="fas fa-layer-group"></i> Add All English Words
+        </button>
+      </div>
+      
+      <table class="word-table">
+        <thead>
+          <tr>
+            <th width="10%">No.</th>
+            <th width="25%">English Word</th>
+            <th width="40%">Meaning</th>
+            <th width="25%">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="englishWordTable">
+          <!-- Will be populated by JavaScript -->
+        </tbody>
+      </table>
+      
+      <div class="page-navigation" id="englishPagination">
+        <!-- Will be populated by JavaScript -->
+      </div>
+    </div>
+
+    <div class="instructions">
+      <h3><i class="fas fa-graduation-cap"></i> Exam Preparation Guide:</h3>
+      <ul>
+        <li><strong>Add challenging words</strong> in your selected language (Hindi or English)</li>
+        <li><strong>Click the play button</strong> next to each word to hear it pronounced</li>
+        <li><strong>Adjust the speed</strong> to make words easier or more challenging</li>
+        <li><strong>Use preset buttons</strong> for specific speeds (25, 20, 30, 35 WPM)</li>
+        <li><strong>Practice writing</strong> the words as you hear them</li>
+        <li><strong>Delete words</strong> once you've mastered them</li>
+        <li><strong>Explore hard words</strong> sections for exam-specific vocabulary</li>
+      </ul>
+      
+      <div class="benefits-container">
+        <h3 style="color: inherit;"><i class="fas fa-crown"></i> Benefits of Using Dictation Master</h3>
+        <div class="benefits-list">
+          <div class="benefit-card">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <h4>Local Storage</h4>
+            <p>Save your words locally in your browser for easy access</p>
           </div>
-          
-          <div class="controls">
-            <div class="speed-control">
-              <label for="speedControl"><i class="fas fa-sliders-h"></i> Adjustment:</label>
-              <input type="range" id="speedControl" min="0.5" max="2" step="0.1" value="1">
-              <span id="speedValue">1.0x</span>
-            </div>
-            <div class="preset-speeds">
-              <button class="preset-btn" data-speed="0.156">25 WPM</button>
-              <button class="preset-btn" data-speed="0.125">20 WPM</button>
-              <button class="preset-btn" data-speed="0.187">30 WPM</button>
-              <button class="preset-btn" data-speed="0.219">35 WPM</button>
-            </div>
+          <div class="benefit-card">
+            <i class="fas fa-sync-alt"></i>
+            <h4>Seamless Experience</h4>
+            <p>Continue your learning without needing an account</p>
+          </div>
+          <div class="benefit-card">
+            <i class="fas fa-shield-alt"></i>
+            <h4>Secure Interface</h4>
+            <p>Protected against unauthorized copying or printing</p>
           </div>
         </div>
       </div>
       
-      <div class="instructions">
-        <h3><i class="fas fa-graduation-cap"></i> Exam Preparation Guide:</h3>
-        <ul>
-          <li><strong>Add challenging words</strong> in your selected language (Hindi or English)</li>
-          <li><strong>Click the play button</strong> next to each word to hear it pronounced</li>
-          <li><strong>Adjust the speed</strong> to make words easier or more challenging</li>
-          <li><strong>Use preset buttons</strong> for specific speeds (25, 20, 30, 35 WPM)</li>
-          <li><strong>Practice writing</strong> the words as you hear them</li>
-          <li><strong>Delete words</strong> once you've mastered them</li>
-          <li><strong>Try adding "BOX"</strong> to see a special breathing animation</li>
-        </ul>
-        
-        <div class="benefits-container">
-          <h3 style="color: inherit;"><i class="fas fa-crown"></i> Benefits of Using Dictation Master</h3>
-          <div class="benefits-list">
-            <div class="benefit-card">
-              <i class="fas fa-cloud-upload-alt"></i>
-              <h4>Local Storage</h4>
-              <p>Save your words locally in your browser for easy access</p>
-            </div>
-
-            <!-- Feedback Form -->
-<!-- Feedback Form -->
-<div style="max-width: 500px; margin: 50px auto; padding: 20px; background: #f4f4f4; border-radius: 10px;">
-  <h2 style="text-align: center;">Send Feedback</h2>
-  <textarea id="feedbackText" rows="5" style="width: 100%; padding: 10px; border-radius: 8px;" placeholder="Write your feedback here..."></textarea>
-  <button onclick="submitFeedback()" style="margin-top: 10px; width: 100%; padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 8px;">Submit</button>
-  <div id="feedbackMsg" style="margin-top: 10px; text-align: center;"></div>
-</div>
-
-            <div class="benefit-card">
-              <i class="fas fa-sync-alt"></i>
-              <h4>Seamless Experience</h4>
-              <p>Continue your learning without needing an account</p>
-            </div>
-            <div class="benefit-card">
-              <i class="fas fa-shield-alt"></i>
-              <h4>Secure Interface</h4>
-              <p>Protected against unauthorized copying or printing</p>
-            </div>
-          </div>
-        </div>
+      <!-- Feedback Form -->
+      <div style="max-width: 500px; margin: 50px auto; padding: 20px; background: #f4f4f4; border-radius: 10px;">
+        <h2 style="text-align: center;">Send Feedback</h2>
+        <textarea id="feedbackText" rows="5" style="width: 100%; padding: 10px; border-radius: 8px;" placeholder="Write your feedback here..."></textarea>
+        <button onclick="submitFeedback()" style="margin-top: 10px; width: 100%; padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 8px;">Submit</button>
+        <div id="feedbackMsg" style="margin-top: 10px; text-align: center;"></div>
       </div>
     </div>
     
@@ -1399,46 +1657,1261 @@ Don't copy without permission 🙏
     </footer>
 
     <footer style="width: 100%; padding: 20px 10px; text-align: center; font-size: 1rem; background-color: #f9f9f9; margin-top: 60px;">
-  <div style="margin-bottom: 10px;">
-    <a href="about.html">About Us</a> |
-    <a href="privacy.html">Privacy Policy</a> |
-    <a href="contact.html">Contact Us</a>
+      <div style="margin-bottom: 10px;">
+        <a href="about.html">About Us</a> |
+        <a href="privacy.html">Privacy Policy</a> |
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div style="font-weight: bold; color: #2c3e50;">
+        👁️‍🗨️ Total Visits: <span id="visitCount" style="color: #3498db;">0</span>
+      </div>
+    </footer>
   </div>
-  <div style="font-weight: bold; color: #2c3e50;">
-    👁️‍🗨️ Total Visits: <span id="visitCount" style="color: #3498db;">0</span>
-  </div>
-</footer>
-
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
-    // Firebase configuration
+    // Hindi words data (200 words)
+    const hindiWords = [
+      { word: "आशंका", meaning: "शंका या डर" },
+      { word: "प्रत्याशा", meaning: "उम्मीद या अपेक्षा" },
+      { word: "निराकरण", meaning: "समाधान करना" },
+      { word: "संतुलन", meaning: "समानता या स्थिरता" },
+      { word: "प्रलोभन", meaning: "लालच" },
+      { word: "संवेदनशील", meaning: "भावुक या भावनाओं से प्रभावित" },
+      { word: "अधिपत्य", meaning: "प्रभुत्व या नियंत्रण" },
+      { word: "परिप्रेक्ष्य", meaning: "दृष्टिकोण या संदर्भ" },
+      { word: "अनुमोदन", meaning: "स्वीकृति देना" },
+      { word: "उद्भव", meaning: "उत्पत्ति या आरंभ" },
+      { word: "अभिनव", meaning: "नया या नवीन" },
+      { word: "अपरिहार्य", meaning: "जिसे टाला न जा सके" },
+      { word: "अवरोध", meaning: "बाधा या रुकावट" },
+      { word: "आकांक्षा", meaning: "इच्छा या अभिलाषा" },
+      { word: "उत्कृष्ट", meaning: "श्रेष्ठ या बेहतरीन" },
+      { word: "कठोर", meaning: "सख्त या निर्दयी" },
+      { word: "गरिमा", meaning: "महत्ता या प्रतिष्ठा" },
+      { word: "चिंतन", meaning: "विचार या मनन" },
+      { word: "जटिल", meaning: "कठिन या पेचीदा" },
+      { word: "तत्पर", meaning: "तैयार या सजग" },
+      { word: "दुर्गम", meaning: "जहाँ पहुँचना कठिन हो" },
+      { word: "धैर्य", meaning: "सहनशीलता" },
+      { word: "निर्दयी", meaning: "जिसमें दया न हो" },
+      { word: "परिश्रम", meaning: "मेहनत" },
+      { word: "प्रतिबद्ध", meaning: "वचनबद्ध" },
+      { word: "भव्य", meaning: "शानदार" },
+      { word: "मर्म", meaning: "रहस्य या भेद" },
+      { word: "यथार्थ", meaning: "वास्तविक" },
+      { word: "विवेक", meaning: "समझदारी" },
+      { word: "शालीन", meaning: "सभ्य" },
+      { word: "सहज", meaning: "सरल" },
+      { word: "असाधारण", meaning: "विशेष" },
+      { word: "आदर्श", meaning: "आदर्श रूप" },
+      { word: "उदार", meaning: "दानशील" },
+      { word: "क्रांति", meaning: "परिवर्तन" },
+      { word: "गौरव", meaning: "सम्मान" },
+      { word: "चुनौती", meaning: "ललकार" },
+      { word: "जिज्ञासा", meaning: "जानने की इच्छा" },
+      { word: "तर्क", meaning: "विचार" },
+      { word: "दायित्व", meaning: "जिम्मेदारी" },
+      { word: "प्रगति", meaning: "तरक्की" },
+      { word: "भूमि", meaning: "जमीन" },
+      { word: "मानसिक", meaning: "दिमागी" },
+      { word: "राष्ट्र", meaning: "देश" },
+      { word: "व्यक्तित्व", meaning: "शख्सियत" },
+      { word: "शोषण", meaning: "जुल्म" },
+      { word: "सुझाव", meaning: "राय" },
+      { word: "अनुशासन", meaning: "डिसिप्लिन" },
+      { word: "अस्थिर", meaning: "डगमग" },
+      { word: "आपत्ति", meaning: "एतराज" },
+      { word: "उपेक्षा", meaning: "नजरअंदाज" },
+      { word: "खंडन", meaning: "अस्वीकार" },
+      { word: "गोपनीय", meaning: "गुप्त" },
+      { word: "चिंताजनक", meaning: "फिक्रमंद" },
+      { word: "जनसंख्या", meaning: "आबादी" },
+      { word: "तटस्थता", meaning: "निरपेक्षता" },
+      { word: "दुर्लभ", meaning: "कम मिलने वाला" },
+      { word: "निर्भर", meaning: "आश्रित" },
+      { word: "परिभाषा", meaning: "डेफिनेशन" },
+      { word: "प्रतिनिधि", meaning: "नुमाइंदा" },
+      { word: "भ्रष्टाचार", meaning: "करप्शन" },
+      { word: "मानचित्र", meaning: "नक्शा" },
+      { word: "रोकथाम", meaning: "बचाव" },
+      { word: "व्यवसाय", meaning: "धंधा" },
+      { word: "शर्त", meaning: "कंडीशन" },
+      { word: "संकट", meaning: "मुसीबत" },
+      { word: "अनुकूलन", meaning: "अडॉप्टेशन" },
+      { word: "अस्तित्व", meaning: "मौजूदगी" },
+      { word: "आक्रमण", meaning: "हमला" },
+      { word: "उपलब्ध", meaning: "मौजूद" },
+      { word: "खोज", meaning: "तलाश" },
+      { word: "गुण", meaning: "भलाई" },
+      { word: "चुनौतीपूर्ण", meaning: "चैलेंजिंग" },
+      { word: "जागरूक", meaning: "अवेयर" },
+      { word: "तत्काल", meaning: "फौरन" },
+      { word: "दृढ़ता", meaning: "जिद" },
+      { word: "निर्माण", meaning: "बनाना" },
+      { word: "परिस्थिति", meaning: "हालात" },
+      { word: "प्रतिष्ठा", meaning: "इज्जत" },
+      { word: "मदद", meaning: "सहायता" },
+      { word: "मानवता", meaning: "इंसानियत" },
+      { word: "रोजगार", meaning: "एम्प्लॉयमेंट" },
+      { word: "व्याख्या", meaning: "तफसीर" },
+      { word: "शिक्षण", meaning: "तालीम" },
+      { word: "संचार", meaning: "कम्युनिकेशन" },
+      { word: "अनुरूप", meaning: "अनुसार" },
+      { word: "अहंकार", meaning: "घमंड" },
+      { word: "आधुनिक", meaning: "मॉडर्न" },
+      { word: "उत्पादन", meaning: "प्रॉडक्शन" },
+      { word: "क्षेत्र", meaning: "फील्ड" },
+      { word: "गतिरोध", meaning: "रुकावट" },
+      { word: "चिंतनशील", meaning: "थिंकिंग" },
+      { word: "जनमत", meaning: "पब्लिक ओपिनियन" },
+      { word: "तालमेल", meaning: "कोऑर्डिनेशन" },
+      { word: "देशभक्ति", meaning: "पैट्रियटिज्म" },
+      { word: "निर्णायक", meaning: "डिसिसिव" },
+      { word: "पर्याप्त", meaning: "काफी" },
+      { word: "प्रतिभा", meaning: "टैलेंट" },
+      { word: "महत्वाकांक्षी", meaning: "अम्बिशस" },
+      { word: "मुख्यधारा", meaning: "मेनस्ट्रीम" },
+      { word: "रोचक", meaning: "इंटरेस्टिंग" },
+      { word: "व्यवहार", meaning: "बर्ताव" },
+      { word: "शिकायत", meaning: "कंप्लेंट" },
+      { word: "संघर्ष", meaning: "जद्दोजहद" },
+      { word: "अनुक्रम", meaning: "क्रम" },
+      { word: "असहमति", meaning: "डिसएग्रीमेंट" },
+      { word: "आरोप", meaning: "इल्जाम" },
+      { word: "उपहार", meaning: "गिफ्ट" },
+      { word: "खतरनाक", meaning: "डेंजरस" },
+      { word: "गुणात्मक", meaning: "क्वालिटेटिव" },
+      { word: "चेतावनी", meaning: "वार्निंग" },
+      { word: "जनकल्याण", meaning: "पब्लिक वेलफेयर" },
+      { word: "तर्कसंगत", meaning: "रैशनल" },
+      { word: "दायित्व", meaning: "लायबिलिटी" },
+      { word: "निर्धन", meaning: "गरीब" },
+      { word: "परिवर्तन", meaning: "बदलाव" },
+      { word: "प्रतिरोध", meaning: "विरोध" },
+      { word: "महत्वपूर्ण", meaning: "इम्पॉर्टेंट" },
+      { word: "मूलभूत", meaning: "फंडामेंटल" },
+      { word: "रोक", meaning: "बंद" },
+      { word: "व्याप्त", meaning: "फैला हुआ" },
+      { word: "शिष्टाचार", meaning: "एटिकेट" },
+      { word: "संकल्प", meaning: "प्रण" },
+      { word: "अनुचित", meaning: "गलत" },
+      { word: "असाध्य", meaning: "लाइलाज" },
+      { word: "आरक्षण", meaning: "रिजर्वेशन" },
+      { word: "उपयोगिता", meaning: "यूटिलिटी" },
+      { word: "क्षमा", meaning: "माफी" },
+      { word: "गोपनीयता", meaning: "प्राइवेसी" },
+      { word: "चिंतामुक्त", meaning: "केयरफ्री" },
+      { word: "जनसंपर्क", meaning: "पीआर" },
+      { word: "तत्व", meaning: "एलिमेंट" },
+      { word: "दीर्घकालीन", meaning: "लॉन्ग टर्म" },
+      { word: "निर्वाचन", meaning: "इलेक्शन" },
+      { word: "पर्यटन", meaning: "टूरिज्म" },
+      { word: "प्रतिबिंब", meaning: "रिफ्लेक्शन" },
+      { word: "महावीर", meaning: "वीर" },
+      { word: "मूल्यवान", meaning: "वैल्यूएबल" },
+      { word: "रोकने", meaning: "स्टॉप" },
+      { word: "व्यवस्थापन", meaning: "मैनेजमेंट" },
+      { word: "शिकार", meaning: "हंट" },
+      { word: "संकुचित", meaning: "कॉन्ट्रैक्टेड" },
+      { word: "अनुशंसा", meaning: "रिकमेंडेशन" },
+      { word: "अस्वीकार", meaning: "रिजेक्ट" },
+      { word: "आराम", meaning: "कम्फर्ट" },
+      { word: "उपाय", meaning: "इलाज" },
+      { word: "ख्याति", meaning: "फेम" },
+      { word: "गोष्ठी", meaning: "सेमिनार" },
+      { word: "चिरस्थायी", meaning: "परमानेंट" },
+      { word: "जनहित", meaning: "पब्लिक गुड" },
+      { word: "तथ्यात्मक", meaning: "फैक्चुअल" },
+      { word: "दृष्टिकोण", meaning: "व्यू पॉइंट" },
+      { word: "निर्वाह", meaning: "जीविका" },
+      { word: "पर्यवेक्षण", meaning: "सुपरविजन" },
+      { word: "प्रतिभूति", meaning: "सिक्योरिटी" },
+      { word: "महासागर", meaning: "ओशन" },
+      { word: "मूल्य", meaning: "कीमत" },
+      { word: "रोजगार", meaning: "एम्प्लॉयमेंट" },
+      { word: "व्यवसायिक", meaning: "प्रोफेशनल" },
+      { word: "शिक्षक", meaning: "टीचर" },
+      { word: "संकेत", meaning: "सिग्नल" },
+      { word: "अनुसरण", meaning: "फॉलो" },
+      { word: "अस्वाभाविक", meaning: "अननैचुरल" },
+      { word: "आर्थिक", meaning: "इकोनॉमिक" },
+      { word: "उपलब्धता", meaning: "अवेलेबिलिटी" },
+      { word: "ख्यातिप्राप्त", meaning: "फेमस" },
+      { word: "गौण", meaning: "सेकेंडरी" },
+      { word: "चुनौती", meaning: "चैलेंज" },
+      { word: "जनसाधारण", meaning: "जनता" },
+      { word: "तनाव", meaning: "टेंशन" },
+      { word: "दुर्भाग्य", meaning: "बदकिस्मती" },
+      { word: "निर्विवाद", meaning: "अनकंटेस्टेड" },
+      { word: "पर्याप्तता", meaning: "एडिक्वेसी" },
+      { word: "प्रतिरक्षा", meaning: "इम्यूनिटी" },
+      { word: "महिला", meaning: "वुमन" },
+      { word: "मृदु", meaning: "सॉफ्ट" },
+      { word: "रोमांचक", meaning: "एक्साइटिंग" },
+      { word: "व्यवस्थित", meaning: "ऑर्गनाइज्ड" },
+      { word: "शिक्षार्थी", meaning: "लर्नर" },
+      { word: "संकल्पना", meaning: "कॉन्सेप्ट" },
+      { word: "अनुकूलता", meaning: "कम्पैटिबिलिटी" },
+      { word: "अस्वीकृति", meaning: "डिनायल" },
+      { word: "आरंभ", meaning: "शुरुआत" },
+      { word: "उपासना", meaning: "पूजा" },
+      { word: "खिलाफ", meaning: "अगेंस्ट" },
+      { word: "ग्रहण", meaning: "एक्लिप्स" },
+      { word: "चुनौतीपूर्ण", meaning: "चैलेंजिंग" },
+      { word: "जनसेवा", meaning: "पब्लिक सर्विस" },
+      { word: "तबाही", meaning: "डिस्ट्रक्शन" },
+      { word: "दृश्य", meaning: "सीन" },
+      { word: "निर्वाचक", meaning: "इलेक्टोरल" },
+      { word: "पर्यावरणीय", meaning: "एनवायर्नमेंटल" },
+      { word: "प्रतिष्ठान", meaning: "इंस्टीट्यूशन" },
+      { word: "महत्व", meaning: "इम्पॉर्टेंस" },
+      { word: "मृत्यु", meaning: "डेथ" },
+      { word: "रोशनी", meaning: "लाइट" },
+      { word: "व्यापार", meaning: "ट्रेड" },
+      { word: "शिक्षित", meaning: "एजुकेटेड" },
+      { word: "संकीर्ण", meaning: "नैरो" },
+      { word: "अनुच्छेद", meaning: "आर्टिकल" },
+      { word: "अस्वस्थ", meaning: "अनवेल" },
+      { word: "आरामदायक", meaning: "कम्फर्टेबल" },
+      { word: "उपोत्पाद", meaning: "बाय-प्रोडक्ट" },
+      { word: "खुशी", meaning: "हैप्पीनेस" },
+      { word: "ग्राहक", meaning: "कस्टमर" },
+      { word: "चुनौतीकारी", meaning: "चैलेंजिंग" },
+      { word: "जन्मदिन", meaning: "बर्थडे" },
+      { word: "तरक्की", meaning: "प्रोग्रेस" },
+      { word: "दृष्टिहीन", meaning: "ब्लाइंड" },
+      { word: "निर्वाह", meaning: "लाइवलीहुड" },
+      { word: "पर्याप्तता", meaning: "सफिशिएंसी" },
+      { word: "प्रतिभागी", meaning: "पार्टिसिपेंट" },
+      { word: "महत्त्वपूर्ण", meaning: "क्रिटिकल" },
+      { word: "मौसम", meaning: "वेदर" },
+      { word: "रोग", meaning: "डिजीज" },
+      { word: "व्यापारिक", meaning: "कमर्शियल" },
+      { word: "शिक्षाशास्त्र", meaning: "पेडागोजी" },
+      { word: "संक्रमण", meaning: "इन्फेक्शन" },
+      { word: "अनुत्पादक", meaning: "अनप्रोडक्टिव" },
+      { word: "अस्वीकार्य", meaning: "अनएक्सेप्टेबल" },
+      { word: "आरामदेह", meaning: "कम्फर्टेबल" },
+      { word: "उपकरण", meaning: "टूल" },
+      { word: "खोजी", meaning: "इन्वेस्टिगेटिव" },
+      { word: "ग्रामीण", meaning: "रूरल" },
+      { word: "चुनौती", meaning: "डिफिकल्टी" },
+      { word: "जन्मजात", meaning: "इनबोर्न" },
+      { word: "तर्कहीन", meaning: "इरेशनल" },
+      { word: "दृष्टिकोण", meaning: "पर्सपेक्टिव" },
+      { word: "निर्वाचित", meaning: "इलेक्टेड" },
+      { word: "पर्यवेक्षक", meaning: "सुपरवाइजर" },
+      { word: "प्रतिभाशाली", meaning: "टैलेंटेड" },
+      { word: "महामारी", meaning: "एपिडेमिक" },
+      { word: "मौलिकता", meaning: "ओरिजिनैलिटी" },
+      { word: "रोगी", meaning: "पेशेंट" },
+      { word: "व्यापकता", meaning: "एक्सटेंट" },
+      { word: "शिक्षाविद्", meaning: "एजुकेशनिस्ट" },
+      { word: "संकुचन", meaning: "कॉन्ट्रैक्शन" },
+      { word: "अनुपालन", meaning: "कंप्लायंस" },
+      { word: "अस्वस्थता", meaning: "अनवेलनेस" },
+      { word: "आराम", meaning: "रिलैक्सेशन" },
+      { word: "उपक्रम", meaning: "वेंचर" },
+      { word: "खोजबीन", meaning: "इन्वेस्टिगेशन" },
+      { word: "ग्राह्य", meaning: "एक्सेप्टेबल" },
+      { word: "चुनौती", meaning: "प्रॉब्लम" },
+      { word: "जनशक्ति", meaning: "मैनपावर" },
+      { word: "तर्कशक्ति", meaning: "रिजनिंग" },
+      { word: "दृष्टिवैषम्य", meaning: "एस्टिग्मैटिज्म" },
+      { word: "निर्विरोध", meaning: "अनऑपोज्ड" },
+      { word: "पर्याप्ततम", meaning: "ऑप्टिमम" },
+      { word: "प्रतिभू", meaning: "गारंटर" },
+      { word: "महान", meaning: "ग्रेट" },
+      { word: "मौखिक", meaning: "ओरल" },
+      { word: "रोचकता", meaning: "इंटरेस्ट" },
+      { word: "व्यापारी", meaning: "मर्चेंट" },
+      { word: "शिक्षा", meaning: "एजुकेशन" },
+      { word: "संकल्प", meaning: "रिजॉल्यूशन" },
+      { word: "अनुपयुक्त", meaning: "इनएप्रोप्रिएट" },
+      { word: "अस्वाभाविक", meaning: "अननैचुरल" },
+      { word: "आरामगाह", meaning: "रिसॉर्ट" },
+      { word: "उपचार", meaning: "ट्रीटमेंट" },
+      { word: "खोजी पत्रकार", meaning: "इन्वेस्टिगेटिव जर्नलिस्ट" },
+      { word: "ग्राह्यता", meaning: "एक्सेप्टेंस" },
+      { word: "चुनौती", meaning: "कॉल" },
+      { word: "जनसमूह", meaning: "क्राउड" },
+      { word: "तर्कसंगतता", meaning: "रैशनलिटी" },
+      { word: "दृष्टिदोष", meaning: "विजन डिफेक्ट" },
+      { word: "निर्विवादित", meaning: "अनकंटेस्टेड" },
+      { word: "पर्यटक", meaning: "टूरिस्ट" },
+      { word: "प्रतिमान", meaning: "पैराडाइम" },
+      { word: "महापुरुष", meaning: "ग्रेट मैन" },
+      { word: "मौसमी", meaning: "सीजनल" },
+      { word: "रोकथाम", meaning: "प्रिवेंशन" },
+      { word: "व्यापारिकीकरण", meaning: "कमर्शियलाइजेशन" },
+      { word: "शिक्षिता", meaning: "एजुकेटेड वूमन" },
+      { word: "संकेतक", meaning: "इंडिकेटर" },
+      { word: "अनुपयोगी", meaning: "यूजलेस" },
+      { word: "अस्वीकरण", meaning: "डिस्क्लेमर" },
+      { word: "आरामकुर्सी", meaning: "आर्मचेयर" },
+      { word: "उपज", meaning: "यील्ड" },
+      { word: "खोजी दृष्टिकोण", meaning: "इन्क्वायरी एप्रोच" },
+      { word: "ग्राही", meaning: "रिसीवर" },
+      { word: "चुनौतीपूर्ण", meaning: "डिमांडिंग" },
+      { word: "जनसुनवाई", meaning: "पब्लिक हियरिंग" },
+      { word: "तर्कवाद", meaning: "रैशनलिज्म" },
+      { word: "दृष्टिगत", meaning: "विजिबल" },
+      { word: "निर्विकार", meaning: "इम्पार्शियल" },
+      { word: "पर्यवेक्षी", meaning: "सुपरवाइजरी" },
+      { word: "प्रतिमूर्ति", meaning: "आइकन" },
+      { word: "महाशय", meaning: "मिस्टर" },
+      { word: "मौसमी परिवर्तन", meaning: "सीजनल चेंज" },
+      { word: "रोगाणु", meaning: "जर्म" },
+      { word: "व्यापारिक समझौता", meaning: "कमर्शियल एग्रीमेंट" },
+      { word: "शिक्षित महिला", meaning: "एजुकेटेड वूमन" },
+      { word: "संकेतित अर्थ", meaning: "इम्प्लाइड मीनिंग" }
+    ];
     
-const firebaseConfig = {
-  apiKey: "AIzaSyBKZO_8CgrQfm7eBGcR9h8D6JxWY4MBaQ",
-  authDomain: "hindi-english-dictation.firebaseapp.com",
-  databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "hindi-english-dictation",
-  storageBucket: "hindi-english-dictation.appspot.com",
-  messagingSenderId: "186334580803",
-  appId: "1:186334580803:web:7dfdf806d9da19a4cc4f6",
-  measurementId: "G-7LH1856B2W"
-};
-
-
-    // Initialize Firebase
-    let database;
-    try {
-      firebase.initializeApp(firebaseConfig);
-      database = firebase.database();
-      console.log('Firebase initialized successfully');
-    } catch (error) {
-      console.error('Firebase initialization failed:', error);
-      showMessage('Failed to connect to server. Visit count may not update.', 'error');
-    }
+    // English words data (964 words)
+    const englishWords = [
+      { word: "Abrogate", meaning: "Cancel, Repeal, Revoke, Rescind, Repudiate, Annul, Nullify, Invalidate, Negate, Exterminate, Quash", difficulty: "hard" },
+      { word: "Adulation", meaning: "Flattery, Coax, Cajolery, Boot licking, Wheedle, Obsequiousness, Sycophancy, (Lip Service-Idiom)", difficulty: "medium" },
+      { word: "Amicable", meaning: "Friendly, Gregarious, Amiable, Affable, Courteous, Genial, Polite, Harmonious, Cordial", difficulty: "easy" },
+      { word: "Ablution", meaning: "Religious washing, Cleansing, Purification, Purgation, Baptism", difficulty: "hard" },
+      { word: "Assertive", meaning: "Domineering, Authoritative", difficulty: "medium" },
+      { word: "Alert", meaning: "Watchful, Cautious, Careful, Meticulous", difficulty: "easy" },
+      { word: "Accede", meaning: "Consent, Agree", difficulty: "medium" },
+      { word: "Acumen", meaning: "Expert, Adroit, Dextrous, Afficinado, Maestro, Doyen, Perspicuity", difficulty: "hard" },
+      { word: "Accused", meaning: "Indicted, Impeached", difficulty: "easy" },
+      { word: "Avarice", meaning: "Greed, Cupidity, Voracity, Covetousness, Rapacious, Avid, Grasping", difficulty: "hard" },
+      { word: "August", meaning: "Majestic, Regal, Grand, Majestic, Kingly, Courtly, Dignified", difficulty: "medium" },
+      { word: "Apposite", meaning: "Appropriate, Apt, Related, Relevant, Pertained, Germane", difficulty: "hard" },
+      { word: "Accoutrement", meaning: "Equipment, Tools, Paraphernalia, Apparatus", difficulty: "hard" },
+      { word: "Antipathy", meaning: "Dislike, Disdain, Detestation, Abomination, Abhorrence, Loathsome, Aversion, Anathema (Curse), Hatred, Repugnance", difficulty: "medium" },
+      { word: "Abysmal", meaning: "Bottomless, Depthless, Immeasure, Unfathomable", difficulty: "hard" },
+      { word: "Artful", meaning: "Cunning, Sly, Canny, Crafty, Willy, Scheming, Foxine, Vulpine, Clever, Shrewd, Insidious", difficulty: "medium" },
+      { word: "Ancestors", meaning: "Forefathers", difficulty: "easy" },
+      { word: "Appraise", meaning: "Judge", difficulty: "medium" },
+      { word: "Accrue", meaning: "Gather, Accumulate, Assimilate, Store, Hoard, Pileup, Amass, Stock", difficulty: "medium" },
+      { word: "Audacious", meaning: "Bold, Temerity, Heroic, Candid", difficulty: "medium" },
+      { word: "Affluence", meaning: "Richness, Prosperity", difficulty: "easy" },
+      { word: "Abstain", meaning: "Refrain from", difficulty: "medium" },
+      { word: "Aversion", meaning: "Dislike", difficulty: "easy" },
+      { word: "Autocratic", meaning: "Dictatorial", difficulty: "medium" },
+      { word: "Atrocity", meaning: "Violence, Brutality", difficulty: "medium" },
+      { word: "Appear", meaning: "Seem", difficulty: "easy" },
+      { word: "Abuse", meaning: "Scorn, Insult, Despise, Debase, Affront", difficulty: "easy" },
+      { word: "Adorn", meaning: "Beautify, Decorate, Garnish, Embellish, Ornate", difficulty: "medium" },
+      { word: "Abundant", meaning: "Plentiful, Dime-a-Dozen, Copious, Plethora, Lush", difficulty: "easy" },
+      { word: "Anticipate", meaning: "Hope", difficulty: "easy" },
+      { word: "Adverse", meaning: "Unfavourable", difficulty: "medium" },
+      { word: "Apex", meaning: "Top, Pinnacle, Acme, Supreme, Summit, Zenith, Culmination, Apotheosis, Paramount Apogee", difficulty: "hard" },
+      { word: "Absurd", meaning: "Ridiculous", difficulty: "easy" },
+      { word: "Adversity", meaning: "Misfortune, Mishap, Tragedy, Calamity, Sufferings, Hardships, Affliction", difficulty: "medium" },
+      { word: "Antagonist", meaning: "Opponent, Rival, Contender", difficulty: "medium" },
+      { word: "Absolve", meaning: "Exonerate, Acquit, Exculpate", difficulty: "hard" },
+      { word: "Ascription", meaning: "Attribution", difficulty: "hard" },
+      { word: "Advocate", meaning: "Support, Encourage", difficulty: "medium" },
+      { word: "Affection", meaning: "Penchant, Liking, Admiration, Propensity, Fondness, Affinity", difficulty: "easy" },
+      { word: "Affectation", meaning: "Show off, Sham, Flaunt, Ostentation, Hypocrisy", difficulty: "hard" },
+      { word: "Assuage", meaning: "Pacify, Placate, Alleviate, Mitigate, Appease, Mollify, Propitiate, Tranquilize", difficulty: "hard" },
+      { word: "Adamant", meaning: "Obdurate, Stubborn, Obstinate, Pig-headed, Mulish, Perverse, Intransigent, Refractory", difficulty: "medium" },
+      { word: "Arable", meaning: "Fertile", difficulty: "easy" },
+      { word: "Acerbic", meaning: "Bitter, Acrid, Acrimonious, Vitriol Acidic", difficulty: "hard" },
+      { word: "Affable", meaning: "Friendly, Genial", difficulty: "medium" },
+      { word: "Benevolent", meaning: "Kind", difficulty: "medium" },
+      { word: "Blister", meaning: "Wound", difficulty: "easy" },
+      { word: "Battered", meaning: "Destroyed, Damaged", difficulty: "easy" },
+      { word: "Baleful", meaning: "Harmful, Detrimental, Parlous, Perilous, Menacing, Jeopardy, Deleterious, Hazardous, Lethal, Noxious, Noisome", difficulty: "hard" },
+      { word: "Bondage", meaning: "Captivity, Hostage, Confinement, Imprisonment, Serfdom, Internment, Incarceration, Slavery", difficulty: "medium" },
+      { word: "Blaze", meaning: "Fire", difficulty: "easy" },
+      { word: "Boast", meaning: "Brag, Egotist, Swagger, Exaggerate, Overstate", difficulty: "easy" },
+      { word: "Benediction", meaning: "Blessing, Benison", difficulty: "medium" },
+      { word: "Barren", meaning: "Nugatory, Infertile, Unproductive, Sterile, Futile, Arid", difficulty: "medium" },
+      { word: "Benefactor", meaning: "Helper", difficulty: "medium" },
+      { word: "Bliss", meaning: "Happiness, Ecstasy, Euphoria, Mirth, Delight", difficulty: "easy" },
+      { word: "Bucolic", meaning: "Rural, Uncivilised, Bumpkin, Oaf, Yokel, Countryside, Uncultured", difficulty: "hard" },
+      { word: "Behaviour", meaning: "Conduct, Decorum", difficulty: "easy" },
+      { word: "Barbaric", meaning: "Savage, Uncivilised, Rustic, Uncouth", difficulty: "medium" },
+      { word: "Brutalize", meaning: "Coarsen, Dehumanize", difficulty: "hard" },
+      { word: "Board", meaning: "Food, Wooden Plank, Furniture", difficulty: "easy" },
+      { word: "Bane", meaning: "Curse, Threat, Intimidate, Extort", difficulty: "medium" },
+      { word: "Beckoned", meaning: "Called", difficulty: "easy" },
+      { word: "Bifurcated", meaning: "Divided into two", difficulty: "hard" },
+      { word: "Boisterous", meaning: "Noisy, Clamorous, Vociferous, Unruly, Obstreperous", difficulty: "hard" },
+      { word: "Brisk", meaning: "Quick", difficulty: "easy" },
+      { word: "Blunder", meaning: "Mistake", difficulty: "easy" },
+      { word: "Baffle", meaning: "Puzzle, Nonplussed, Bewilder", difficulty: "medium" },
+      { word: "Belligerent", meaning: "Bellicose, Pugnacious, Quarrelsome, Choleric, Grouchy, Contentious, Fractious, Peevish", difficulty: "hard" },
+      { word: "Bashful", meaning: "Shy, Coy, Diffident, Demure, Meek", difficulty: "medium" },
+      { word: "Brittle", meaning: "Fragile, Delicate, Frail, Weak", difficulty: "medium" },
+      { word: "Brutal", meaning: "Savage", difficulty: "medium" },
+      { word: "Badger", meaning: "Annoy, Irritate, Vex, Heckle, Tease, Banter, Persecute, Gadfly", difficulty: "hard" },
+      { word: "Burgeon", meaning: "Grow, Mushroom, Flourish, Proliferate", difficulty: "hard" },
+      { word: "Buoyant", meaning: "Cheerful", difficulty: "medium" },
+      { word: "Bizarre", meaning: "Outlandish, Absurd, Weird, Atypical, Abnormal, Eccentric, Ludicrous, Grotesque, Ridiculous, Uncommon, Preposterous", difficulty: "medium" },
+      { word: "Beseech", meaning: "Plead, Request, Entreat, Supplicate, Entreat, Implore", difficulty: "hard" },
+      { word: "Banal", meaning: "Common, Dull, Boring, Platitude, Cliché, Hoary, Quotidian, Prosaic, Mundane, Trite, Humdrum, Monotonous, Ennui", difficulty: "medium" },
+      { word: "Blithe", meaning: "Sprightly, Cheerful, Exuberant, Jaunty", difficulty: "hard" },
+      { word: "Blandishment", meaning: "Obsequiousness", difficulty: "hard" },
+      { word: "Banter", meaning: "Tease", difficulty: "medium" },
+      { word: "Benison", meaning: "Blessing", difficulty: "hard" },
+      { word: "Bigoted", meaning: "Intolerant", difficulty: "medium" },
+      { word: "Brash", meaning: "Rude, Impudent, Saucy, Insolent, Cheeky", difficulty: "medium" },
+      { word: "Babble", meaning: "Chatter", difficulty: "easy" },
+      { word: "Bawdy", meaning: "Corrupt, Licentious, Illegal, Ribald, Salacious, Nefarious, Libidinous, Profane", difficulty: "hard" },
+      { word: "Brevity", meaning: "Brief, Short, Concision, Succinct, Pithy", difficulty: "medium" },
+      { word: "Brazen", meaning: "Rude, Impudent", difficulty: "medium" },
+      { word: "Bumptious", meaning: "Arrogant, Haughty, Imperious, Supercilious, Fustian, Hauteur", difficulty: "hard" },
+      { word: "Bewail", meaning: "Regret, Mourn, Regret, Lament", difficulty: "hard" },
+      { word: "Beguile", meaning: "Deceive, Hoodwink, Swindle, Bamboozle", difficulty: "hard" },
+      { word: "Belittle", meaning: "Debase, Disparage", difficulty: "medium" },
+      { word: "Browbeat", meaning: "To bully, Tease", difficulty: "hard" },
+      { word: "Covenant", meaning: "Contract, Bond, Agreement", difficulty: "hard" },
+      { word: "Colossal", meaning: "Huge, Enormous, Mammoth, Massive, Behemoth, Giant, Gigantic, Titanic, Elephantine, Gargantuan", difficulty: "medium" },
+      { word: "Censure", meaning: "Criticize, Denigrate, Lambast, Pillory, Ridicule, Denounce, Humiliate", difficulty: "medium" },
+      { word: "Contemplation", meaning: "Meditation, Thoughtful", difficulty: "medium" },
+      { word: "Coherent", meaning: "Comprehensible, Orderly", difficulty: "medium" },
+      { word: "Commotion", meaning: "Disturbance, Chaos, Turmoil, Turbulence, Upheaval, Pandemonium, Agitation, Uproar, Hullabaloo", difficulty: "medium" },
+      { word: "Considerate", meaning: "Thoughtful, Careful, Heedful, Mindful, Attentive", difficulty: "easy" },
+      { word: "Change", meaning: "Alter, Transform, Metamorphosize", difficulty: "easy" },
+      { word: "Coarse", meaning: "Rough, Uneven", difficulty: "easy" },
+      { word: "Candid", meaning: "Bold, Frank, Honest", difficulty: "medium" },
+      { word: "Cajole", meaning: "Flatter, Persuade, Coax, Wheedle", difficulty: "hard" },
+      { word: "Cerebal", meaning: "Scholarly, Eggheaded, Inkhorn", difficulty: "hard" },
+      { word: "Crude", meaning: "Unrefined", difficulty: "easy" },
+      { word: "Collusion", meaning: "Secret Agreement, Conspiracy, Intrigue", difficulty: "hard" },
+      { word: "Crass", meaning: "Unrefined, Uncivilised, Foolish, Vacuous", difficulty: "hard" },
+      { word: "Cursory", meaning: "Quick and careless, Perfunctory", difficulty: "medium" },
+      { word: "Clandestine", meaning: "Secret, Covert, Furtive, Sly, Hidden, Latent, Hideous, Surreptitious, Conceal, Mysterious, Disguise", difficulty: "hard" },
+      { word: "Culmination", meaning: "Climax, Apex, Peak, Acme, Apogee", difficulty: "hard" },
+      { word: "Condemn", meaning: "Censure", difficulty: "medium" },
+      { word: "Credible", meaning: "Believable", difficulty: "medium" },
+      { word: "Consensus", meaning: "General Agreement", difficulty: "medium" },
+      { word: "Caption", meaning: "Title", difficulty: "easy" },
+      { word: "Camouflage", meaning: "Conceal, Hide, Disguise", difficulty: "medium" },
+      { word: "Corroborate", meaning: "Justify, Validate, Prove, Substantiate", difficulty: "hard" },
+      { word: "Catharsis", meaning: "Purgation, Evacuation", difficulty: "hard" },
+      { word: "Concealed", meaning: "Hidden", difficulty: "medium" },
+      { word: "Coax", meaning: "Flatter", difficulty: "medium" },
+      { word: "Chivalrous", meaning: "Gallant, Heroic", difficulty: "hard" },
+      { word: "Command", meaning: "Instruct", difficulty: "easy" },
+      { word: "Capricious", meaning: "Whimsical", difficulty: "hard" },
+      { word: "Conservation", meaning: "Preservation", difficulty: "medium" },
+      { word: "Coddle", meaning: "Protect", difficulty: "medium" },
+      { word: "Cantankerous", meaning: "Quarrelsome, Belligerent", difficulty: "hard" },
+      { word: "Conjurer", meaning: "Magician", difficulty: "medium" },
+      { word: "Confidential", meaning: "Unofficial", difficulty: "medium" },
+      { word: "Contiguous", meaning: "Very near, In proximity, adjoining, Adjacent", difficulty: "hard" },
+      { word: "Crafty", meaning: "Very Clever, Cunning, Canny, Willy", difficulty: "medium" },
+      { word: "Charisma", meaning: "Charm, Talent", difficulty: "medium" },
+      { word: "Consternation", meaning: "Nervousness, Dismay, worry, Dismay, Overstrung", difficulty: "hard" },
+      { word: "Concocted", meaning: "Doubtful, Dubious, (Cock & Bull Story)", difficulty: "hard" },
+      { word: "Crabby", meaning: "Quarrelsome", difficulty: "medium" },
+      { word: "Connoisseur", meaning: "Discerning Judge", difficulty: "hard" },
+      { word: "Concise", meaning: "Abridge", difficulty: "medium" },
+      { word: "Cavort", meaning: "Jump/Dance", difficulty: "hard" },
+      { word: "Chimerical", meaning: "Imaginary", difficulty: "hard" },
+      { word: "Congregation", meaning: "Religious assembly", difficulty: "medium" },
+      { word: "Callous", meaning: "Merciless, Ruthless", difficulty: "medium" },
+      { word: "Congenial", meaning: "Cheerful, Lively, Cordial", difficulty: "medium" },
+      { word: "Carouse", meaning: "Fun, Frolic", difficulty: "hard" },
+      { word: "Deluge", meaning: "Deception", difficulty: "medium" },
+      { word: "Dilapidated", meaning: "Damaged, Destroyed, Ramshackled, Battered (Especially roads & buildings)", difficulty: "hard" },
+      { word: "Dissentious", meaning: "Disagree, protest, contentious, petulant, peevish", difficulty: "hard" },
+      { word: "Dissolute", meaning: "Immoral, Licentious, Corrupt, Profligate", difficulty: "hard" },
+      { word: "Dilate", meaning: "Widen", difficulty: "medium" },
+      { word: "Doltish", meaning: "Foolish, Simpleton, Inane, Insane", difficulty: "hard" },
+      { word: "Dexterity", meaning: "Adroitness, Expertise, Efficiency, Proficiency", difficulty: "hard" },
+      { word: "Demented", meaning: "Deranged, Lunatic, Insane, Mad, Crazy", difficulty: "hard" },
+      { word: "Decrepitude", meaning: "Feebleness, Weakness, Decrepit", difficulty: "hard" },
+      { word: "Decimated", meaning: "Destroyed, Battered, Ramshackled", difficulty: "medium" },
+      { word: "Detrimental", meaning: "Harmful", difficulty: "medium" },
+      { word: "Dulcet", meaning: "Pleasant (Voice), Mellifluous, Euphonious, Sweet", difficulty: "hard" },
+      { word: "Dubious", meaning: "Doubtful, Ambiguous", difficulty: "medium" },
+      { word: "Decamp", meaning: "Flee, Run away, Escape", difficulty: "hard" },
+      { word: "Derision", meaning: "Ridicule, Mockery, Insult", difficulty: "hard" },
+      { word: "Debacle", meaning: "Degeneration, Decay, Downfall, Decline", difficulty: "hard" },
+      { word: "Dangerous", meaning: "Hazardous, Noxious, Menacing", difficulty: "easy" },
+      { word: "Delude", meaning: "Deception", difficulty: "medium" },
+      { word: "Deliberately", meaning: "Intentionally, Knowingly, Advertently, Purposefully", difficulty: "medium" },
+      { word: "Despondent", meaning: "Dejected, Sad", difficulty: "medium" },
+      { word: "Desperation", meaning: "Hopelessness", difficulty: "medium" },
+      { word: "Daring", meaning: "Courageous", difficulty: "medium" },
+      { word: "Demonstrate", meaning: "Show, Display", difficulty: "easy" },
+      { word: "Dissipate", meaning: "Fritter, Dissipate, Misuse, Squander", difficulty: "hard" },
+      { word: "Disparity", meaning: "Difference", difficulty: "medium" },
+      { word: "Dearth", meaning: "Scarcity, Lack, Deprived, Devoid, Scarce, Scanty, Paucity, Meagre, Exiguous", difficulty: "hard" },
+      { word: "Discriminate", meaning: "Distinguish, Differentiate", difficulty: "medium" },
+      { word: "Deny", meaning: "Refute, Confute", difficulty: "easy" },
+      { word: "Docile", meaning: "Submissive, Servile, Subservient", difficulty: "medium" },
+      { word: "Diligent", meaning: "Hardworking, Assiduous, Industrious", difficulty: "medium" },
+      { word: "Disaster", meaning: "Misfortune", difficulty: "easy" },
+      { word: "Dissuade", meaning: "Discourage, Persuade, Convince", difficulty: "medium" },
+      { word: "Digress", meaning: "Meander, Ramble, Stroll", difficulty: "hard" },
+      { word: "Dunce", meaning: "Foolish, Dolish", difficulty: "medium" },
+      { word: "Deter", meaning: "Stop, Hinder", difficulty: "medium" },
+      { word: "Derive", meaning: "Contain, Consist, Stop", difficulty: "medium" },
+      { word: "Delusion", meaning: "Illusion", difficulty: "medium" },
+      { word: "Diffident", meaning: "Bashful, Shy, Coy, Meek", difficulty: "hard" },
+      { word: "Defile", meaning: "Besmirch, Insult, Debase", difficulty: "hard" },
+      { word: "Dwindle", meaning: "Decrease, Deplete, Diminish", difficulty: "medium" },
+      { word: "Devout", meaning: "Pious", difficulty: "medium" },
+      { word: "Evoke", meaning: "Call forth, to bring in mind, echo", difficulty: "medium" },
+      { word: "Exorbitant", meaning: "Excessive, Costly", difficulty: "hard" },
+      { word: "Encomium", meaning: "Eulogy, To praise", difficulty: "hard" },
+      { word: "Envisage", meaning: "Visualize, Imagine", difficulty: "medium" },
+      { word: "Expanse", meaning: "Range, Area, Scope", difficulty: "medium" },
+      { word: "Elan", meaning: "Flair, Talent         (Like Elan Musk)", difficulty: "hard" },
+      { word: "Effrontery", meaning: "Rudeness, Impudence, Impertinence", difficulty: "hard" },
+      { word: "Exiguous", meaning: "Paltry", difficulty: "hard" },
+      { word: "Elegant", meaning: "Stylish, Graceful, refined, civilised", difficulty: "medium" },
+      { word: "Emergence", meaning: "Rise, Develop, arrival", difficulty: "medium" },
+      { word: "Eulogize", meaning: "Praise, Panegyrise, Exhort", difficulty: "hard" },
+      { word: "Extinct", meaning: "Non Existent", difficulty: "medium" },
+      { word: "Eradicate", meaning: "Abolish, Eliminate", difficulty: "medium" },
+      { word: "Equipoise", meaning: "Balance, Pose, Aplomb", difficulty: "hard" },
+      { word: "Entrench", meaning: "Establish firmly", difficulty: "medium" },
+      { word: "Elusive", meaning: "Confusing, Baffling, Perplexing", difficulty: "hard" },
+      { word: "Exodus", meaning: "Mass Departure, Diaspora", difficulty: "hard" },
+      { word: "Extravagant", meaning: "Wasteful, Spendthrift", difficulty: "medium" },
+      { word: "Evident", meaning: "Clear, Conspicuous, Lucid, Intelligible, Unequivocal", difficulty: "medium" },
+      { word: "Effect", meaning: "Aftermath, Result, Repercussion, Ramification, Consequence", difficulty: "easy" },
+      { word: "Elude", meaning: "Avoid, Evade, Dodge", difficulty: "hard" },
+      { word: "Exaggerate", meaning: "Overstate", difficulty: "medium" },
+      { word: "Endurance", meaning: "Toleration", difficulty: "medium" },
+      { word: "Eschew", meaning: "Dismiss, Reject, Despise", difficulty: "hard" },
+      { word: "Explicit", meaning: "Clear, Explain (IMPLICIT – Not Clear, Not explained)", difficulty: "medium" },
+      { word: "Emulate", meaning: "Copy", difficulty: "medium" },
+      { word: "Erudite", meaning: "Scholarly, Cerebral, Inkhorn, Eggheaded, Academic, Renaissance man, Bluestocking", difficulty: "hard" },
+      { word: "Evince", meaning: "Show, Display", difficulty: "hard" },
+      { word: "Ensconce", meaning: "Hide, Conceal, Settle, Comfortably", difficulty: "hard" },
+      { word: "Epaulette", meaning: "Shoulder Ornament", difficulty: "hard" },
+      { word: "Expiation", meaning: "Compensation, Atonement (Ex. You have to atone your misdeeds)", difficulty: "hard" },
+      { word: "Extirpate", meaning: "Remove, Wash out, Expunge, Abolish, Annihilate, Exterminate, Raze, Root out", difficulty: "hard" },
+      { word: "Eloquent", meaning: "Fluent speaker", difficulty: "medium" },
+      { word: "Engender", meaning: "Produce, Beget, Generate", difficulty: "hard" },
+      { word: "Emphasise", meaning: "Insist on", difficulty: "medium" },
+      { word: "Estranged", meaning: "Separated, Alienated, Sequestered", difficulty: "hard" },
+      { word: "Evocative", meaning: "Reminiscent", difficulty: "hard" },
+      { word: "Expeditious", meaning: "Prompt and efficient, Expediate, Accelerate", difficulty: "hard" },
+      { word: "Efficacious", meaning: "Effective", difficulty: "hard" },
+      { word: "Engulf", meaning: "Surround, Submerged, Inundate", difficulty: "medium" },
+      { word: "Exasperate", meaning: "Infuriate", difficulty: "hard" },
+      { word: "Endeavour", meaning: "Efforts, Attempts", difficulty: "medium" },
+      { word: "Exalt", meaning: "Praise", difficulty: "medium" },
+      { word: "Exempt", meaning: "Exclude", difficulty: "medium" },
+      { word: "Entice", meaning: "Allure, Entrap, Hoodwink", difficulty: "hard" },
+      { word: "Enrage", meaning: "Infuriate", difficulty: "medium" },
+      { word: "Entail", meaning: "Involves, Include", difficulty: "medium" },
+      { word: "Ensure", meaning: "Follow, Arise, Emerge, Originate", difficulty: "easy" },
+      { word: "Evidence", meaning: "Corroboration, Justification, Validation", difficulty: "easy" },
+      { word: "Epidemic", meaning: "Widespread", difficulty: "medium" },
+      { word: "Furlough", meaning: "Soldiers’ Holiday", difficulty: "hard" },
+      { word: "Fiasco", meaning: "Failure, Downfall, (Ended in fiasco), Fall flat", difficulty: "medium" },
+      { word: "Foment", meaning: "Instigate, Provoke, Infuriate, Incite, Embroil, Egg on", difficulty: "hard" },
+      { word: "Facile", meaning: "Superficial, Shallow", difficulty: "hard" },
+      { word: "Fad", meaning: "In vogue, In fashion", difficulty: "medium" },
+      { word: "Feign", meaning: "Pretend", difficulty: "hard" },
+      { word: "Feasible", meaning: "Possible", difficulty: "medium" },
+      { word: "Fluctuation", meaning: "Change", difficulty: "hard" },
+      { word: "Folly", meaning: "Foolishness", difficulty: "medium" },
+      { word: "Feat", meaning: "Skills, Talents", difficulty: "medium" },
+      { word: "Fidelity", meaning: "Loyalty, Faithfulness, Obeisance, Fealty", difficulty: "medium" },
+      { word: "Feel", meaning: "Perceive", difficulty: "easy" },
+      { word: "Fractious", meaning: "Bad Tempered, Peevish, Irritable", difficulty: "hard" },
+      { word: "Frugality", meaning: "Economical", difficulty: "medium" },
+      { word: "Flinching", meaning: "Withdraw, Winching", difficulty: "hard" },
+      { word: "Foster", meaning: "Promote, Propel, Encourage", difficulty: "medium" },
+      { word: "Forge", meaning: "Counterfeit, Fake, Spurious, Apocryphal", difficulty: "hard" },
+      { word: "Fetid", meaning: "Bad smell, Rotten, Stale, Putrid, Stinking, Rancid", difficulty: "hard" },
+      { word: "Fortitude", meaning: "Courage, Bravery", difficulty: "medium" },
+      { word: "Fortification", meaning: "Strengthen", difficulty: "hard" },
+      { word: "Formulate", meaning: "Devise", difficulty: "medium" },
+      { word: "Fiscal", meaning: "Financial", difficulty: "medium" },
+      { word: "Finicky", meaning: "Difficult to please, Fastidiousness, Fussy, Dinty, Choosy", difficulty: "hard" },
+      { word: "Flooded", meaning: "Deluged, Inundated", difficulty: "easy" },
+      { word: "Familiar", meaning: "Conversant, Aware, Well-Versed, Palsy-Walsy (Clos Friends)", difficulty: "easy" },
+      { word: "Firmly", meaning: "Strongly, Tightly", difficulty: "easy" },
+      { word: "Fatuous", meaning: "Silly, Foolish, Obtuse, Dunce, Ignorance", difficulty: "hard" },
+      { word: "Felony", meaning: "Crime", difficulty: "medium" },
+      { word: "Fascination", meaning: "Attraction, Appeal", difficulty: "medium" },
+      { word: "Fillip", meaning: "Boost, Encourage", difficulty: "hard" },
+      { word: "Fleeting", meaning: "Transient, Temporary, Ephemeral, Evanescent, Transitory", difficulty: "hard" },
+      { word: "Flagrant", meaning: "Vicious, Corrupt", difficulty: "hard" },
+      { word: "Friable", meaning: "Fragile, Delicate, Brittle, Weak, Flimsy, Flaccid", difficulty: "hard" },
+      { word: "Fervid", meaning: "Ardent, Enthusiastic, Fervent, Spirit", difficulty: "hard" },
+      { word: "Feverish", meaning: "Related to fever, Over Excited, Crazy, Frenzied, Chagrined", difficulty: "medium" },
+      { word: "Fumble", meaning: "To do something, Clumsily", difficulty: "medium" },
+      { word: "Fledgling", meaning: "Novice, Beginner, Apprentice, Greenhorn", difficulty: "hard" },
+      { word: "Fetid", meaning: "Putrid, Rotten, Stale, Stinky", difficulty: "hard" },
+      { word: "Fealty", meaning: "Loyalty, Faithfulness, Fidelity, Allegiance, Obeisance", difficulty: "hard" },
+      { word: "Foretaste", meaning: "Anticipation", difficulty: "hard" },
+      { word: "Fecund", meaning: "Fruitful, Arable, Productive, Fertile", difficulty: "hard" },
+      { word: "Fiesta", meaning: "Festival, Carnival", difficulty: "medium" },
+      { word: "Ferret", meaning: "Search, Hunt", difficulty: "hard" },
+      { word: "Flux", meaning: "Continuous change (Influx – Arrival)", difficulty: "medium" },
+      { word: "Forthwith", meaning: "Immediately", difficulty: "hard" },
+      { word: "Frenetic", meaning: "Measures, Step", difficulty: "hard" },
+      { word: "Fortuitous", meaning: "Lucky", difficulty: "hard" },
+      { word: "Felicitous", meaning: "Appropriate, Relevant, Related, Apt Germane, Pertinent", difficulty: "hard" },
+      { word: "Grip", meaning: "Clutch, Hold, Clasp, Grasp", difficulty: "easy" },
+      { word: "Gimmick", meaning: "Trick, Tactics, Gambit", difficulty: "medium" },
+      { word: "Gauche", meaning: "Awkward, Clumsy, All thumbs", difficulty: "hard" },
+      { word: "Garnish", meaning: "Decorate, Adorn, Ornate, Embellish, Beautify", difficulty: "medium" },
+      { word: "Gist", meaning: "Summary, Essence, Substance", difficulty: "medium" },
+      { word: "Grit", meaning: "Courage", difficulty: "medium" },
+      { word: "Gruff", meaning: "Rough, Not smooth, Hoarse, Uneven", difficulty: "hard" },
+      { word: "Grandeur", meaning: "Magnificence, Grand", difficulty: "medium" },
+      { word: "Grievous", meaning: "Severe, Serious, Acute, Dire, Grim", difficulty: "hard" },
+      { word: "Gainsay", meaning: "Repudiate, Deny, Reject, Refute, Refuse", difficulty: "hard" },
+      { word: "Gratify", meaning: "Please, Satisfy", difficulty: "medium" },
+      { word: "Gape", meaning: "Stare, Ogle, Leech, Leer", difficulty: "medium" },
+      { word: "Gloomy", meaning: "Woebegone, Sad, Morose, Doleful", difficulty: "medium" },
+      { word: "Gadfly", meaning: "Irritation, Annoyance", difficulty: "hard" },
+      { word: "Grandiose", meaning: "Imposing, Magnificent, Splendid", difficulty: "hard" },
+      { word: "Grotesque", meaning: "Bizarre, Peculiar, Awkward, Ludicrous", difficulty: "hard" },
+      { word: "Guile", meaning: "Chicanery, Falsehood, Sophistry, Fallacy, Deception, Insidious", difficulty: "hard" },
+      { word: "Garrulity", meaning: "Loquaciousness, Garrulous", difficulty: "hard" },
+      { word: "Goad", meaning: "Annoy, Irritate", difficulty: "hard" },
+      { word: "Germane", meaning: "Relevant, Related, Pertinent", difficulty: "hard" },
+      { word: "Glorious", meaning: "Splendid, Excellent", difficulty: "medium" },
+      { word: "Ghastly", meaning: "Frightful, Fearful", difficulty: "medium" },
+      { word: "Gullibility", meaning: "Simplicity, Innocence", difficulty: "hard" },
+      { word: "Genial", meaning: "Friendly, Cordial, Amicable, Amiable, Affable, Courteous, Gregarious, Sociable", difficulty: "medium" },
+      { word: "Galvanise", meaning: "Stimulate, Promote, Encourage", difficulty: "hard" },
+      { word: "Garble", meaning: "Confuse", difficulty: "medium" },
+      { word: "Generic", meaning: "General, Common", difficulty: "medium" },
+      { word: "Grumble", meaning: "Scold, Reprimand, Rebuke (Give a piece of mind)", difficulty: "medium" },
+      { word: "Gargantuan", meaning: "Mammoth, Huge, Elephantine, Colossal, Behemoth", difficulty: "hard" },
+      { word: "Guarded", meaning: "Carful", difficulty: "medium" },
+      { word: "Grave", meaning: "Serious, Dire, Grim", difficulty: "medium" },
+      { word: "Gnome", meaning: "Dwarf, Elf", difficulty: "medium" },
+      { word: "Gallant", meaning: "Brave, Valiant, Heroic, Chivalrous, Knightly, Doughty", difficulty: "medium" },
+      { word: "Gruesome", meaning: "Appalling, Very bad, Shocking, Heinous", difficulty: "hard" },
+      { word: "Gaol", meaning: "Jail (In old times, Jail was called JAOL)", difficulty: "hard" },
+      { word: "Glum", meaning: "Sad", difficulty: "medium" },
+      { word: "Genuine", meaning: "Veracious, Authentic", difficulty: "medium" },
+      { word: "Gracious", meaning: "Courteous, Polite", difficulty: "medium" },
+      { word: "Grapple", meaning: "Struggle", difficulty: "medium" },
+      { word: "Glare", meaning: "Scowl, Shout angrily", difficulty: "easy" },
+      { word: "Grumpy", meaning: "Testy, Irritable, Grouchy", difficulty: "medium" },
+      { word: "Gaudy", meaning: "Flashy, Lurid, Attractive, Bright)", difficulty: "medium" },
+      { word: "Handled", meaning: "Tackled, Grapple", difficulty: "easy" },
+      { word: "Hiatus", meaning: "Gap, Fissure, Right, Lacuna, Cleavage", difficulty: "hard" },
+      { word: "Hauteur", meaning: "Arrogance, Conceit, Vanity", difficulty: "hard" },
+      { word: "Hoard", meaning: "Store, Collect, Amass, Assimilate, Marshal", difficulty: "medium" },
+      { word: "Heinous", meaning: "Abominable, Hateful, Disdainful, Abhorrent, Despicable", difficulty: "hard" },
+      { word: "Hindrance", meaning: "Obstruction, Embargo, Encumbrance, Obstacle, Impediment, Deterrent", difficulty: "medium" },
+      { word: "Hackneyed", meaning: "Common, Dull, Cliche, Platitude, Prosaic, Ennui", difficulty: "hard" },
+      { word: "Harangue", meaning: "Criticism, Censure, Diatribe, Pejorative, Jeremiad, Calumny, Rant, Tirade", difficulty: "hard" },
+      { word: "Hostility", meaning: "Enmity, Malice, Spite, Rancour, ill-will, Bitterness", difficulty: "medium" },
+      { word: "Herald", meaning: "Announce, Declare, Profess, Proclaim, Aver, Promulgate", difficulty: "hard" },
+      { word: "Hoarse", meaning: "Rough, Throaty", difficulty: "medium" },
+      { word: "Haggle", meaning: "Bargain, Negotiate", difficulty: "medium" },
+      { word: "Homogenise", meaning: "Make uniform", difficulty: "hard" },
+      { word: "Homily", meaning: "Sermon, Teachings, Preaching", difficulty: "hard" },
+      { word: "Homely", meaning: "Comfortable, Cosy", difficulty: "medium" },
+      { word: "Hoary", meaning: "Prosaic, Dull, Dreary, Monotonous, Humdrum, Mundane", difficulty: "hard" },
+      { word: "Hew", meaning: "Chop, Cut", difficulty: "hard" },
+      { word: "Hefty", meaning: "Heavy", difficulty: "medium" },
+      { word: "Hassle", meaning: "Altercation, Barriers, Obstacle, Fight, Challenge", difficulty: "medium" },
+      { word: "Humiliation", meaning: "Mortification, Embarrassment, Insult", difficulty: "medium" },
+      { word: "Humility", meaning: "Politeness", difficulty: "medium" },
+      { word: "Humane", meaning: "Sympathetic, very kind, Compassionate", difficulty: "medium" },
+      { word: "Honest", meaning: "Upright, Ethical, Scrupulous, Puritanical, Conscientious", difficulty: "easy" },
+      { word: "Hallucination", meaning: "Delusion, Imagination, Illusion", difficulty: "hard" },
+      { word: "Harsh", meaning: "Strident, Inclement, Strict", difficulty: "medium" },
+      { word: "Humorous", meaning: "Witty, Comical", difficulty: "easy" },
+      { word: "Hurdle", meaning: "Obstacle", difficulty: "medium" },
+      { word: "Hustle", meaning: "Hurry, Hustle-Bustle", difficulty: "medium" },
+      { word: "Hinder", meaning: "Impede, Stop, Thwart, Hamper, Obstruct", difficulty: "medium" },
+      { word: "Heed", meaning: "Attention, All ears, Lend me your ears", difficulty: "medium" },
+      { word: "Hypochondriac", meaning: "Neurotic", difficulty: "hard" },
+      { word: "Hinterland", meaning: "Remote areas, Wilderness", difficulty: "hard" },
+      { word: "Hallow", meaning: "Holly, Pious", difficulty: "hard" },
+      { word: "Hale", meaning: "Healthy, Fit & Fine", difficulty: "hard" },
+      { word: "Hypocritical", meaning: "Insincere, Dishonest, Deceitful, Duplicitous", difficulty: "hard" },
+      { word: "Hysteria", meaning: "Delirium, Panic, Phrenzy, Emotional, Excitement", difficulty: "hard" },
+      { word: "Hypothetical", meaning: "Theoretical, Not practical, Imaginary", difficulty: "hard" },
+      { word: "Invidious", meaning: "Hateful, Abominable, Disdainful, Despicable, Abhorrent, Loathsome", difficulty: "hard" },
+      { word: "Imposture", meaning: "Deceive, Deception", difficulty: "hard" },
+      { word: "Inextricably", meaning: "Inevitably, Unavoidably, Ineluctable", difficulty: "hard" },
+      { word: "Insidious", meaning: "Cunning, Shrewd", difficulty: "hard" },
+      { word: "Indemnity", meaning: "Compensation, Assurance, Security", difficulty: "hard" },
+      { word: "Incessant", meaning: "Continuous, Interminable, Perpetual, Persistent", difficulty: "hard" },
+      { word: "Insolent", meaning: "Insulting, Rude, Saucy, Impudent, Pertinent, Cheeky", difficulty: "hard" },
+      { word: "Idiosyncrasy", meaning: "Eccentricity", difficulty: "hard" },
+      { word: "Idiosyncratic", meaning: "Eccentric, Absurd, Offbeat, Peculiar", difficulty: "hard" },
+      { word: "Insipid", meaning: "Tasteless, Dull, Unpalatable, Bland", difficulty: "hard" },
+      { word: "Infructuous", meaning: "Fruitless, Unproductive, Barren, Nugatory, Sterile, Infecund, Futile", difficulty: "hard" },
+      { word: "Inimical", meaning: "Can be copied/Imitated", difficulty: "hard" },
+      { word: "Inflicting", meaning: "Imposing, Forcefully", difficulty: "hard" },
+      { word: "Indolence", meaning: "Slothful, Dullness, Lazy, Inactive, Indolent, Regressive, Dormant", difficulty: "hard" },
+      { word: "Instigate", meaning: "Provoke, Incite, Ferment, Embroil, Inflame, Foment, Aggravate, Egg on, Enrage, Outrage, Infuriate", difficulty: "hard" },
+      { word: "Innocuous", meaning: "Harmless, Innocent", difficulty: "hard" },
+      { word: "Ignominy", meaning: "Disgrace, Criticism, Insult, Tirade, Rant, Jeremiad, Pejorative, Harangue, Calumny, Diatribe", difficulty: "hard" },
+      { word: "Irascible", meaning: "Envious, Jealous", difficulty: "hard" },
+      { word: "Indifferent", meaning: "Unconcerned, Apathetic, Stoic", difficulty: "medium" },
+      { word: "Imbecile", meaning: "Stupid, Foolish, Nincompoop, Obtuse, Inane, Asinine, Dunce, Doltish, Oaf, Bucolic, Yokel", difficulty: "hard" },
+      { word: "Incentive", meaning: "Motivation", difficulty: "medium" },
+      { word: "Indict", meaning: "Accuse", difficulty: "medium" },
+      { word: "Interdict", meaning: "Ban, Prohibit, Proscribe", difficulty: "hard" },
+      { word: "Incoherent", meaning: "Illogical, Unreasonable", difficulty: "medium" },
+      { word: "Imitate", meaning: "Mimic, Emulate, Copy, Ape, Impersonate", difficulty: "medium" },
+      { word: "Innate", meaning: "Inborn, Inherent, Congenital, Inveterate, Deep Rooted, Chronic, Inborn", difficulty: "hard" },
+      { word: "Inane", meaning: "Foolish, Stupid", difficulty: "hard" },
+      { word: "Insane", meaning: "Crazy, Lunatic", difficulty: "easy" },
+      { word: "Inebriate", meaning: "Intoxicate, Drunk", difficulty: "hard" },
+      { word: "Interdict", meaning: "Officially prohibit", difficulty: "hard" },
+      { word: "Imperial", meaning: "Regal, August, Kingly, Courtly, Royal, Majestic", difficulty: "hard" },
+      { word: "Incisive", meaning: "Sharp, Bitter", difficulty: "hard" },
+      { word: "Impetuous", meaning: "Careless", difficulty: "hard" },
+      { word: "Impetus", meaning: "Urge, Desire", difficulty: "hard" },
+      { word: "Indolent", meaning: "Inactive, Lazy", difficulty: "hard" },
+      { word: "Imperious", meaning: "Arrogant, Conceited, Boy, Officious, Vanity, Uppish, Chesty, Haughty, Supercilious, Fustian, Egoist", difficulty: "hard" },
+      { word: "Indecorous", meaning: "Improper", difficulty: "hard" },
+      { word: "Impertinent", meaning: "Disrespectful, Rude", difficulty: "hard" },
+      { word: "Irrevocable", meaning: "Irreversible", difficulty: "hard" },
+      { word: "Inveterate", meaning: "Incurable, Inborn, Deep Rooted, Chronic", difficulty: "hard" },
+      { word: "Instill", meaning: "Inculcate, Fix", difficulty: "hard" },
+      { word: "Inponderable", meaning: "Unclear, Incomprehensible", difficulty: "hard" },
+      { word: "Incognito", meaning: "Disguised", difficulty: "medium" },
+      { word: "Indigenous", meaning: "Native", difficulty: "medium" },
+      { word: "Insouciance", meaning: "Unconcerned", difficulty: "hard" },
+      { word: "Interpolate", meaning: "Insert", difficulty: "hard" },
+      { word: "Impugn", meaning: "Raise a question, Doubt", difficulty: "hard" },
+      { word: "Impend", meaning: "Threaten", difficulty: "hard" },
+      { word: "Immerse", meaning: "Plunge", difficulty: "medium" },
+      { word: "Impoverish", meaning: "Make Poor", difficulty: "hard" },
+      { word: "Impound", meaning: "Seize, Confiscate", difficulty: "hard" },
+      { word: "Ineluctable", meaning: "Inevitable", difficulty: "hard" },
+      { word: "Indigence", meaning: "Poverty", difficulty: "hard" },
+      { word: "Impudent", meaning: "Rude, Cheeky", difficulty: "hard" },
+      { word: "Imperishable", meaning: "Permanent, Perennial, Constant", difficulty: "hard" },
+      { word: "Inchoate", meaning: "Undeveloped, Growing, Developing, Nascent, Embroynic", difficulty: "hard" },
+      { word: "Ingenious", meaning: "Very clever", difficulty: "medium" },
+      { word: "Ingenuous", meaning: "Gullible", difficulty: "hard" },
+      { word: "Jeopardy", meaning: "Peril, Danger, Hazar, Threat, Menace", difficulty: "medium" },
+      { word: "Jovial", meaning: "Exuberant, Enthusiastic, Energetic", difficulty: "medium" },
+      { word: "Jaded", meaning: "Enervated, Tired", difficulty: "hard" },
+      { word: "Juvenile", meaning: "Childish, Immature, Youthful, Boyish", difficulty: "medium" },
+      { word: "Jubilant", meaning: "Ecstatic, Happy, Euphoric, Gleeful, Delightful, Beatitude", difficulty: "medium" },
+      { word: "Jabber", meaning: "Blather, Prattle, Babble", difficulty: "hard" },
+      { word: "Juncture", meaning: "Critical moment, Important", difficulty: "medium" },
+      { word: "Jargon", meaning: "Slang, Special way of talking", difficulty: "medium" },
+      { word: "Jejune", meaning: "Youthful, Juvenile", difficulty: "hard" },
+      { word: "Jeremiad", meaning: "Harangue, Criticism, Tirade, Rant, Diatribe", difficulty: "hard" },
+      { word: "Jaunt", meaning: "A pleasure trip", difficulty: "medium" },
+      { word: "Jaunty", meaning: "Perky", difficulty: "hard" },
+      { word: "Jeer", meaning: "Scoff, insult, Mock", difficulty: "medium" },
+      { word: "Jest", meaning: "Pun, Humorous, Comical, Jesting, Witty", difficulty: "medium" },
+      { word: "Jettison", meaning: "Evacuation, Eject", difficulty: "hard" },
+      { word: "Jibe", meaning: "Jeer, Mock", difficulty: "hard" },
+      { word: "Jocular", meaning: "Jesting, Comical", difficulty: "hard" },
+      { word: "Judicious", meaning: "Wise, Prudent, Sagacious", difficulty: "hard" },
+      { word: "Juggernaut", meaning: "Powerhouse", difficulty: "hard" },
+      { word: "Junta", meaning: "Faction, Group, Coterie, Clique, Cabal", difficulty: "hard" },
+      { word: "Jurisdiction", meaning: "Authority, Power", difficulty: "medium" },
+      { word: "Just", meaning: "Honest, Fair, Unbiased", difficulty: "easy" },
+      { word: "Justify", meaning: "Validate, Rationalize", difficulty: "medium" },
+      { word: "Juxtaposed", meaning: "Adjacent, Near, Neighbouring", difficulty: "hard" },
+      { word: "Knack", meaning: "Dexterity, Skill, Talent, Flair, Expertise, All thumbs", difficulty: "medium" },
+      { word: "Knave", meaning: "Scoundrel, Racal, Villain", difficulty: "hard" },
+      { word: "Kiosk", meaning: "Booth, Counter, Stall", difficulty: "medium" },
+      { word: "Kudos", meaning: "Commendation, Praise, Eulogy, Encomium", difficulty: "hard" },
+      { word: "Knell", meaning: "Ring, Sound          (Death knell)", difficulty: "hard" },
+      { word: "Ken", meaning: "Awareness, Knowledge, Cognizance", difficulty: "hard" },
+      { word: "Knead", meaning: "Baffle, Confuse, Confound, Perplex", difficulty: "hard" },
+      { word: "Kleptomaniac", meaning: "Stealer, Irresistible urge to steel", difficulty: "hard" },
+      { word: "Kindered", meaning: "Relatives, Kith & Kin", difficulty: "medium" },
+      { word: "Kindle", meaning: "Inflame, Agitate, Provoke, Insight", difficulty: "medium" },
+      { word: "Kempt", meaning: "Neat, Clean, Tidy, Orderly, Spick & span", difficulty: "hard" },
+      { word: "Kernel", meaning: "Fundamental, Main Part", difficulty: "hard" },
+      { word: "Knit", meaning: "Unify", difficulty: "easy" },
+      { word: "Kinetic", meaning: "Active", difficulty: "medium" },
+      { word: "Kinship", meaning: "Family, Relatives, (Liking, Affinity)", difficulty: "medium" },
+      { word: "Knoll", meaning: "Small hills, hillock, Mount", difficulty: "hard" },
+      { word: "Knotty", meaning: "Convoluted, Complex, Complicated", difficulty: "hard" },
+      { word: "Kickoff", meaning: "Start    (Start a quarrel)", difficulty: "medium" },
+      { word: "Knowledge", meaning: "Cognizance", difficulty: "easy" },
+      { word: "Kvell", meaning: "Happy", difficulty: "hard" },
+      { word: "Knightly", meaning: "Chivalrous, Brave", difficulty: "hard" },
+      { word: "Kicky", meaning: "Fashionable, Trend, In vogue, Fad", difficulty: "hard" },
+      { word: "Kith", meaning: "Consanguinity, Blood relationship, Family", difficulty: "hard" },
+      { word: "Knuckle", meaning: "Bow, Surrender, Capitulate", difficulty: "hard" },
+      { word: "Loyal", meaning: "Devoted, Faithful, Fidel", difficulty: "easy" },
+      { word: "Lethal", meaning: "Fatal, Noxious, Dangerous, Harmful, obnoxious, Deadly, Detrimental", difficulty: "medium" },
+      { word: "Lament", meaning: "Mourn, Regret", difficulty: "medium" },
+      { word: "Livid", meaning: "Furious, Angry", difficulty: "medium" },
+      { word: "Laborious", meaning: "Arduous, Hardworking, Assiduous, Strenuous, Diligent, Painstaking, Toilsome, Industrious", difficulty: "hard" },
+      { word: "Lugubrious", meaning: "Mournful, Sad, Morose, Crestfallen, Doleful", difficulty: "hard" },
+      { word: "Limpid", meaning: "Lucid, Clear, Obvious, Unequivocal, Conspicuous, Perspicuous, Intelligible, Transparent, Pellucid", difficulty: "hard" },
+      { word: "Lionize", meaning: "Idolize, Praise, Glorify, Magnify, Eulogise, Panegyrise", difficulty: "hard" },
+      { word: "Luscious", meaning: "Scrumptious, Very tasty, Delicious, Palatable", difficulty: "medium" },
+      { word: "Leviathan", meaning: "Huge, Monstrous, Colossal, Tremendous, Elephantine, Mammoth, Behemoth, Titanic", difficulty: "hard" },
+      { word: "Languid", meaning: "Lethargic, Lazy, Inactive, Passive, Dormant, Torpid, Indolent, Inert, Lackadaisical, Sluggish, Slothful", difficulty: "hard" },
+      { word: "Lush", meaning: "Luxuriant, Verdant, Abundant", difficulty: "medium" },
+      { word: "Loquacious", meaning: "Voluble, Talkative, Gabby, Wordy, Garrulous", difficulty: "hard" },
+      { word: "Liability", meaning: "Responsibility, Debt", difficulty: "medium" },
+      { word: "Laud", meaning: "Praise, Applaud", difficulty: "medium" },
+      { word: "Lurid", meaning: "Shocking", difficulty: "hard" },
+      { word: "Labyrinth", meaning: "Quagmire, Maze", difficulty: "hard" },
+      { word: "Latent", meaning: "Hidden, Concealed, Clandestine, Ulterior, Veiled, Surreptitious", difficulty: "hard" },
+      { word: "Loathing", meaning: "Hateful, Hateful", difficulty: "hard" },
+      { word: "Lassitude", meaning: "Sluggishness, Laziness, Dullness", difficulty: "hard" },
+      { word: "Lewd", meaning: "Salacious, Corrupt, Immoral, Libertine, Profligate, Libidinous, Licentious", difficulty: "hard" },
+      { word: "Mandatory", meaning: "Necessary, Imperative, Obligatory, Compulsory, Requisite, Incumbent", difficulty: "medium" },
+      { word: "Malignant", meaning: "Vicious, Harmful, Malicious", difficulty: "hard" },
+      { word: "Murky", meaning: "Gloomy, Dark, Sad", difficulty: "medium" },
+      { word: "Mutinous", meaning: "Rebellious, Protestant", difficulty: "hard" },
+      { word: "Monotonous", meaning: "Tedious, Boring, Dull, Stereotype, Hackneyed, Prosaic, Platitude, Humdrum, Mundane", difficulty: "medium" },
+      { word: "Maestro", meaning: "Veteran, Expert, Adroit, Dextrous, Skillful, Afficinado, Virtuoso, Adept, Doyen, Ept", difficulty: "hard" },
+      { word: "Munificent", meaning: "Bighearted, Magnanimous, Selfless, Divvy, Generous, Largesse, Samaritan", difficulty: "hard" },
+      { word: "Mounted", meaning: "Ascended, Increasing, Surging, Skyrocketing", difficulty: "medium" },
+      { word: "Moribund", meaning: "Dying, Decaying, Weakening, Shrivelling", difficulty: "hard" },
+      { word: "Magniloquent", meaning: "Boastful, Swagger, Exaggerated, Pompous", difficulty: "hard" },
+      { word: "Mispize", meaning: "Despise, Defame, Denigrate, Detest", difficulty: "hard" },
+      { word: "Mere", meaning: "Only, Just", difficulty: "easy" },
+      { word: "Mores", meaning: "Customs", difficulty: "medium" },
+      { word: "Magnitude", meaning: "Extent", difficulty: "medium" },
+      { word: "Momentous", meaning: "Temporary, Transitory, Fleeting, Ephemeral, Evashescent (In other sense – Important, Historic)", difficulty: "hard" },
+      { word: "Mercurial", meaning: "Capricious, Fickle, Unstable, Whimsical, erratic", difficulty: "hard" },
+      { word: "Metamorphosis", meaning: "Change, Transition, Alteration", difficulty: "hard" },
+      { word: "Masticate", meaning: "Chew", difficulty: "hard" },
+      { word: "Mawkish", meaning: "Over sentimental, Full of emotions", difficulty: "hard" },
+      { word: "Manifest", meaning: "Show", difficulty: "medium" },
+      { word: "Muster", meaning: "Collate, Collect, Gather, assemble, Marshall, Accrue, Garner", difficulty: "medium" },
+      { word: "Mercenary", meaning: "Love for money", difficulty: "hard" },
+      { word: "Manacles", meaning: "Handcuffs, Chains, Fetters, Shackles", difficulty: "hard" },
+      { word: "Mordant", meaning: "Sarcastic, Bitter, Incisive, Caustic", difficulty: "hard" },
+      { word: "Mellifluous", meaning: "Sweet, Dulcet, Melodious, Euphonious", difficulty: "hard" },
+      { word: "Myriad", meaning: "Abundant, Umpteen, Plethora, Luxuriant, Surfeit, Surplus", difficulty: "medium" },
+      { word: "Mollify", meaning: "Soothe, Calm down, Appease, Placate, Propitiate, Tranquilise, Lull", difficulty: "hard" },
+      { word: "Modify", meaning: "Alter", difficulty: "easy" },
+      { word: "Moot", meaning: "Controversial, Disputable, Argumentative", difficulty: "hard" },
+      { word: "Menace", meaning: "Danger, Peril, Threat", difficulty: "medium" },
+      { word: "Morass", meaning: "Quagmire, Confusion, Muddle, Imbroglio", difficulty: "hard" },
+      { word: "Meagre", meaning: "Less, Trivial, Paltry", difficulty: "medium" },
+      { word: "Morose", meaning: "Sullen, Sad", difficulty: "medium" },
+      { word: "Mammoth", meaning: "Colossal, Huge, Elephantine", difficulty: "medium" },
+      { word: "Melancholy", meaning: "Dismal, Sad", difficulty: "medium" },
+      { word: "Masterly", meaning: "Skillful", difficulty: "medium" },
+      { word: "Mettle", meaning: "Fortitude, Courage", difficulty: "medium" },
+      { word: "Multitude", meaning: "Mass", difficulty: "medium" },
+      { word: "Memoir", meaning: "Record, Diary", difficulty: "medium" },
+      { word: "Nimble", meaning: "Agile, Quick, Brisk, Hasty, Alacritous, Celerity, Accelerate", difficulty: "medium" },
+      { word: "Nurtured", meaning: "Developed", difficulty: "medium" },
+      { word: "Negligent", meaning: "Careless, Slipshod, Remiss, Lax, Slowly, Reckless, Rash, Headless, Inconsiderate", difficulty: "medium" },
+      { word: "Neophyte", meaning: "Beginner, Rookie, Maladroit, Tyro, Dabbler, Inexpert, Apprentice, Noob, Novice, Novice, Green-Horn, Fledgling", difficulty: "hard" },
+      { word: "Nugatory", meaning: "Barren, Infertile, Dry, Futile, Sterile, Infecund, Parched", difficulty: "hard" },
+      { word: "Nonplussed", meaning: "Puzzled, Confused, Baffled, Confounded, Flummoxed, Perplexed", difficulty: "hard" },
+      { word: "Nebulous", meaning: "Uncertain, Unclear, Equivocal, Vague, Incomprehensive, Inarticulate, Opaque, Obstruse", difficulty: "hard" },
+      { word: "Niggardly", meaning: "Miserly, Parsimonious, Closefisted, Thrifty, Stingy, Economical, Mean", difficulty: "hard" },
+      { word: "Nasty", meaning: "Unpleasant, Bad", difficulty: "easy" },
+      { word: "Noisily", meaning: "Loudly, Vociferously, Boisterously, Clamorously", difficulty: "medium" },
+      { word: "Naïve", meaning: "Innocent, Credulous, Childish", difficulty: "medium" },
+      { word: "Narrative", meaning: "Tale, Story", difficulty: "medium" },
+      { word: "Noob", meaning: "Beginner, Novice, Neophyte", difficulty: "medium" },
+      { word: "Natty", meaning: "Dapper, Smart, Spruce, Prim, Debonair, Adonis", difficulty: "hard" },
+      { word: "Nauseous", meaning: "Sick", difficulty: "medium" },
+      { word: "Navigate", meaning: "Direct, Guide", difficulty: "medium" },
+      { word: "Novelty", meaning: "Newness", difficulty: "medium" },
+      { word: "Nincompoop", meaning: "Fool", difficulty: "medium" },
+      { word: "Nectar", meaning: "Ambrosia, Elixir", difficulty: "hard" },
+      { word: "Negate", meaning: "Rebut, Refuse, Abnegate, Reject, Repudiate", difficulty: "medium" },
+      { word: "Nullify", meaning: "Annul, Abrogate, Reject, Revoke, Repeal, Rescind, Quash", difficulty: "hard" },
+      { word: "Nefarious", meaning: "Reprehensible, Wicked, Villainous", difficulty: "hard" },
+      { word: "Neglect", meaning: "Disregard, Ignore, Overlook", difficulty: "easy" },
+      { word: "Negligible", meaning: "Minimal", difficulty: "medium" },
+      { word: "Negotiable", meaning: "Flexible", difficulty: "medium" },
+      { word: "Nuance", meaning: "Minor Difference, Subtlety", difficulty: "hard" },
+      { word: "Nemesis", meaning: "Punishment", difficulty: "hard" },
+      { word: "Narcissism", meaning: "Self praise, Egotistic", difficulty: "hard" },
+      { word: "Naught", meaning: "Nothingness, Zero", difficulty: "hard" },
+      { word: "Numb", meaning: "Insensitive", difficulty: "medium" },
+      { word: "Nestle", meaning: "Protect, Snuggle, Huddle, Cuddle", difficulty: "medium" },
+      { word: "Nettle", meaning: "Heckle, Irritate, Vex, Annoy", difficulty: "hard" },
+      { word: "Nonchalant", meaning: "Apathetic, Stolid, Stoic, Unconcerned", difficulty: "hard" },
+      { word: "Neutral", meaning: "Unbiased, Impartial", difficulty: "medium" },
+      { word: "Neutralize", meaning: "Equate, Counterpoise", difficulty: "hard" },
+      { word: "Neighbourhood", meaning: "Proximity, Nearness, Abut, Propinquity, Vicinity, Contiguous, Juxtapose", difficulty: "medium" },
+      { word: "Noisome", meaning: "Abominable, Bad, Unpleasant", difficulty: "hard" },
+      { word: "Ominous", meaning: "Threatening, Dangerous, Warning, Menacing", difficulty: "medium" },
+      { word: "Onerous", meaning: "Responsibility, Burdensome, Onus", difficulty: "hard" },
+      { word: "Obsolete", meaning: "Outmoded, Archaic, Out of fashion", difficulty: "medium" },
+      { word: "Obtuse", meaning: "Stupid, Dull, Nincompoop, Simpleton", difficulty: "hard" },
+      { word: "Originate", meaning: "Arise from, Begin, Emanate from, Stem from Spring from", difficulty: "medium" },
+      { word: "Occult", meaning: "Supernatural, Mystical, Magical", difficulty: "hard" },
+      { word: "Obscure", meaning: "Unknown, Unclear", difficulty: "medium" },
+      { word: "Obscene", meaning: "Indecent, Insulting", difficulty: "medium" },
+      { word: "Obstinate", meaning: "Stubborn, Adamant, Headstrong, Mulish, Intransigent, Recalcitrant, Inexorable, Obdurate, Unyielding, Inflexible, Ossified, Steadfast, Stiffnecked, Unflinching, Relentless, Tenacious, Perverse, Intrackable", difficulty: "medium" },
+      { word: "Obdurate", meaning: "Adamant, Inflexible, Unyielding, Unbending", difficulty: "hard" },
+      { word: "Overturn", meaning: "Countermand, Revoke, Annul, Cancel, Quash, Rescind, Nullify, Abrogate, Exterminate, Abolish", difficulty: "medium" },
+      { word: "Onslaught", meaning: "Attack, Assault", difficulty: "hard" },
+      { word: "Odd", meaning: "Queer, Bizarre, Strange, Weird, Ludicrous, Preposterous, Eccentric, Outlandish, Offbeat, Awkward, Anomalous, Abnormal", difficulty: "easy" },
+      { word: "Oasis", meaning: "Haven, Shelter, Refuge", difficulty: "medium" },
+      { word: "Obstreperous", meaning: "Boisterous, Noisy, Clamorous, Vociferous", difficulty: "hard" },
+      { word: "Obedient", meaning: "Dutiful", difficulty: "easy" },
+      { word: "Obeisance", meaning: "Faithfulness, Allegiance, Fidelity, Fealty, Homage", difficulty: "hard" },
+      { word: "Obfuscate", meaning: "Confuse, Baffle, Flummox, Perplex", difficulty: "hard" },
+      { word: "Objective", meaning: "Goal, Aim, Impartial, Disinterested", difficulty: "medium" },
+      { word: "Obligation", meaning: "Incumbency, Responsibility, Obligatory, Compulsory, Mandatory, Imperative", difficulty: "medium" },
+      { word: "Oblique", meaning: "Indirect, Unclear, Inexplicit", difficulty: "hard" },
+      { word: "Oblivious", meaning: "Unmindful, Unclear", difficulty: "medium" },
+      { word: "Obloquy", meaning: "Defamation, Criticism", difficulty: "hard" },
+      { word: "Obnoxious", meaning: "Unpleasant", difficulty: "medium" },
+      { word: "Obsequious", meaning: "Fawning, Blandishment, Flattery", difficulty: "hard" },
+      { word: "Oracular", meaning: "(Enigmatic – Puzzling), Complicated, Mysterious, Arcane, Unclear, Uncanny", difficulty: "hard" },
+      { word: "Outlandish", meaning: "Bizarre, Strange", difficulty: "hard" },
+      { word: "Obstruct", meaning: "Hinder, Impede, Hamper", difficulty: "medium" },
+      { word: "Obtain", meaning: "Elicit, Get Extract", difficulty: "medium" },
+      { word: "Obtrusive", meaning: "Highlighted, Noticeable, Prominent", difficulty: "hard" },
+      { word: "Odious", meaning: "Unpleasant", difficulty: "hard" },
+      { word: "Obviate", meaning: "Avoid, Avert, Dodge, Evade", difficulty: "hard" },
+      { word: "Occlude", meaning: "Block, Hinder, Obstruct, Deter", difficulty: "hard" },
+      { word: "Opulence", meaning: "Sumptuousness, Abundance, Richness", difficulty: "hard" },
+      { word: "Obligatory", meaning: "Imperative, Necessary, Mandatory, Incumbent", difficulty: "medium" },
+      { word: "Odoriferous", meaning: "Aromatic, Strong smell", difficulty: "hard" },
+      { word: "Offend", meaning: "Irritate, Insult, Affront, Displease", difficulty: "medium" },
+      { word: "Officious", meaning: "Bossy, Authoritative, Domineering, Meddlesome", difficulty: "hard" },
+      { word: "Omen", meaning: "Indication, Sign, Inkling", difficulty: "medium" },
+      { word: "Ogle", meaning: "To look in a lecherous way, Stare", difficulty: "hard" },
+      { word: "Oath", meaning: "Pledge, Swear, Promise", difficulty: "medium" },
+      { word: "Onus", meaning: "Burden, Responsibility", difficulty: "medium" },
+      { word: "Opponent", meaning: "Rival, Competitor", difficulty: "easy" },
+      { word: "Opportune", meaning: "Favourable, Timely", difficulty: "medium" },
+      { word: "Oppressive", meaning: "Cruel, Autocratic, Tyrannical", difficulty: "medium" },
+      { word: "Oracle", meaning: "Prophet, Foreteller, Soothsayer", difficulty: "hard" },
+      { word: "Ordinance", meaning: "Law, Order, Decree", difficulty: "hard" },
+      { word: "Ordnance", meaning: "Weapon manufacturing factory", difficulty: "hard" },
+      { word: "Orientation", meaning: "Positioning, Angle, Inclination", difficulty: "medium" },
+      { word: "Pulable", meaning: "Distinct, Clear, Tangible, Perceptible, Discernible", difficulty: "hard" },
+      { word: "Procrastinate", meaning: "Filibuster, Delay, Postpone, Linger, Dillydally, Dawdle, Loiter, Defer, Put off", difficulty: "medium" },
+      { word: "Prolific", meaning: "Abundant, Fertile", difficulty: "medium" },
+      { word: "Pensive", meaning: "Contemplative, Thoughtful, Meditative, Ruminative", difficulty: "medium" },
+      { word: "Penury", meaning: "Poverty, Impoverishment, Destitution", difficulty: "hard" },
+      { word: "Profound", meaning: "Extreme, Deep, Extensive", difficulty: "medium" },
+      { word: "Parity", meaning: "Similarity, Equality, Congruity", difficulty: "hard" },
+      { word: "Proboscis", meaning: "Snout", difficulty: "hard" },
+      { word: "Preprogative", meaning: "Privilege, Advantage", difficulty: "hard" },
+      { word: "Propitious", meaning: "Favourable", difficulty: "hard" },
+      { word: "Paltry", meaning: "Insignificant, Unimportant, Trivial, Petty", difficulty: "medium" },
+      { word: "Palliable", meaning: "Relieve, Pacify, Calm down, Soothe, Assuage, Appease, Mollify, Allay, Placate, Tranquilize, Alleviate, Gratify, Lull, Conciliate", difficulty: "hard" },
+      { word: "Propitiate", meaning: "Appease", difficulty: "hard" },
+      { word: "Puissant", meaning: "Powerful", difficulty: "hard" },
+      { word: "Preposterous", meaning: "Absurd, Strange", difficulty: "hard" },
+      { word: "Pruning", meaning: "Trimming", difficulty: "medium" },
+      { word: "Prepossessing", meaning: "Pleasing, Attractive, Bewitching, Captivating, Beautiful", difficulty: "hard" },
+      { word: "Predisposed", meaning: "Ready", difficulty: "hard" },
+      { word: "Parlous", meaning: "Dangerous", difficulty: "hard" },
+      { word: "Paradox", meaning: "Contradiction", difficulty: "medium" },
+      { word: "Parsimonious", meaning: "Thrifty", difficulty: "hard" },
+      { word: "Precursor", meaning: "Forerunner", difficulty: "hard" },
+      { word: "Prosaic", meaning: "Mundane, Dull, Boring", difficulty: "hard" },
+      { word: "Proselytize", meaning: "Convert", difficulty: "hard" },
+      { word: "Prudent", meaning: "Cautious, Careful, Meticulous", difficulty: "medium" },
+      { word: "Proliferate", meaning: "Spread, Increase, Grow", difficulty: "hard" },
+      { word: "Perpetrators", meaning: "Offenders", difficulty: "hard" },
+      { word: "Prodigy", meaning: "Genius, God Gifted", difficulty: "medium" },
+      { word: "Preponderance", meaning: "Dominance, Prevalent", difficulty: "hard" },
+      { word: "Propinquity", meaning: "Nearness", difficulty: "hard" },
+      { word: "Perplex", meaning: "Confuse, Confound, Puzzle", difficulty: "hard" },
+      { word: "Pail", meaning: "Bucket", difficulty: "easy" },
+      { word: "Promiscuous", meaning: "Licentious", difficulty: "hard" },
+      { word: "Paucity", meaning: "Dearth, Shortage", difficulty: "hard" },
+      { word: "Probity", meaning: "Honesty, Virtue, Rectitude, Integrity", difficulty: "hard" },
+      { word: "Prevaricate", meaning: "Falsify, Cheat", difficulty: "hard" },
+      { word: "Pillory", meaning: "Scorn, Ridicule, Defame", difficulty: "hard" },
+      { word: "Parochial", meaning: "Narrowminded, Insular", difficulty: "hard" },
+      { word: "Perpicuous", meaning: "Clear", difficulty: "hard" },
+      { word: "Perspicacious", meaning: "Skilled, Expert", difficulty: "hard" },
+      { word: "Perish", meaning: "Decay, Destroy, Die", difficulty: "medium" },
+      { word: "Queer", meaning: "Absurd, Awkward, Quaint, Strange, Bizarre, Ridiculous, Offbeat, Ludicrous, Abnormal, Erratic, Anomalous", difficulty: "medium" },
+      { word: "Quibble", meaning: "Criticise, Condemn, Vituperate, Besmirch", difficulty: "medium" },
+      { word: "Quiver", meaning: "Tremble, Shiver", difficulty: "medium" },
+      { word: "Querulous", meaning: "Quarrelsome, Pugnacious, Cantankerous, Peevish", difficulty: "hard" },
+      { word: "Quash", meaning: "Cancel, Abrogate, Revoke, Reject, Annul, Repeal, Rescind, Exterminate", difficulty: "hard" },
+      { word: "Quarry", meaning: "Victim, (Excavation)", difficulty: "medium" },
+      { word: "Qualms", meaning: "Doubts, Misgivings, Scruples, Query", difficulty: "hard" },
+      { word: "Quest", meaning: "Search", difficulty: "medium" },
+      { word: "Quiescent", meaning: "Dull, Inactive, Idle, Passive, Dormant, Inert, Lethargic, Lackadaisical, Torpid, Slothful, Sluggish", difficulty: "hard" },
+      { word: "Quote", meaning: "Cite, Mention", difficulty: "easy" },
+      { word: "Quixotic", meaning: "Idealist, Unreal", difficulty: "hard" },
+      { word: "Quell", meaning: "Suppress, Crush", difficulty: "hard" },
+      { word: "Quack", meaning: "Unqualified", difficulty: "medium" },
+      { word: "Quarantine", meaning: "Isolation, Separate", difficulty: "medium" },
+      { word: "Quagmire", meaning: "Predicament, Labyrinth, Maze, Imbroglio, Dilemma", difficulty: "hard" },
+      { word: "Quaint", meaning: "Strange", difficulty: "medium" },
+      { word: "Quandary", meaning: "Predicament, Confusion, Quagmire", difficulty: "hard" },
+      { word: "Quantitative", meaning: "Measurable", difficulty: "medium" },
+      { word: "Quit", meaning: "Forswear, Abandon, Shun", difficulty: "easy" },
+      { word: "Quintessential", meaning: "Typical, Perfect example", difficulty: "hard" },
+      { word: "Quench", meaning: "Satiate, Satisfy", difficulty: "medium" },
+      { word: "Queue", meaning: "Line", difficulty: "easy" },
+      { word: "Quip", meaning: "Joke, Tease, Banter", difficulty: "medium" },
+      { word: "Quirk", meaning: "Strangeness", difficulty: "medium" },
+      { word: "Quisling", meaning: "Disloyal, Traitor, Collaborator", difficulty: "hard" },
+      { word: "Quizzical", meaning: "Perplexed", difficulty: "hard" },
+      { word: "Quotidian", meaning: "Mundane, Dull, Cliche, Dreary", difficulty: "hard" },
+      { word: "Random", meaning: "Arbitrary (At Random – Always use 'At' before it)", difficulty: "medium" },
+      { word: "Reckless", meaning: "Careless, Rash, Remiss, Slipshod, Unwary, Unmindful, Foolhardy, Impetuous, Thoughtless", difficulty: "medium" },
+      { word: "Ragged", meaning: "Ripped, Torn, Tatters", difficulty: "medium" },
+      { word: "Resplendent", meaning: "Bright, Attractive, Shiny, Dazzling", difficulty: "hard" },
+      { word: "Repulsive", meaning: "Disgusting, Abhorrent, Loathsome, Abominable", difficulty: "medium" },
+      { word: "Relish", meaning: "Enjoy, Delight, Zest", difficulty: "medium" },
+      { word: "Reassert", meaning: "Justify, Validate, Prove", difficulty: "medium" },
+      { word: "Resentment", meaning: "Rancour, Hatred, Bitter, Malice, Abomination", difficulty: "medium" },
+      { word: "Rescind", meaning: "Abrogate, Reject, Revoke, Repeal, Annul, Quash", difficulty: "hard" },
+      { word: "Reprisal", meaning: "Retaliation, Retort, Revenge", difficulty: "hard" },
+      { word: "Reverberate", meaning: "Resound, Echo", difficulty: "hard" },
+      { word: "Rectitude", meaning: "Honesty, Integrity, Righteousness", difficulty: "hard" },
+      { word: "Ravage", meaning: "Destroy", difficulty: "medium" },
+      { word: "Restive", meaning: "Restless", difficulty: "hard" },
+      { word: "Regress", meaning: "Backslide", difficulty: "hard" },
+      { word: "Recollect", meaning: "Remember, Recall, Reminisce", difficulty: "medium" },
+      { word: "Reverie", meaning: "Fantasy, Imagination, Daydream Pipe dream, Building castles in air, Brown study", difficulty: "hard" },
+      { word: "Rivalled", meaning: "Competed", difficulty: "medium" },
+      { word: "Repose", meaning: "Rest", difficulty: "medium" },
+      { word: "Restrict", meaning: "Confine, Control, Prohibit, Ban", difficulty: "medium" },
+      { word: "Request", meaning: "Solicit, Bag, Plead, Adjure, Supplicate, Implore, Beseech, Entreat, Importune", difficulty: "easy" },
+      { word: "Repartee", meaning: "Witty reply", difficulty: "hard" },
+      { word: "Reiterated", meaning: "Repeated", difficulty: "medium" },
+      { word: "Redeem", meaning: "Save, Recover, Retrieve", difficulty: "medium" },
+      { word: "Redundancy", meaning: "More than required, Excess", difficulty: "medium" },
+      { word: "Recalcitrant", meaning: "Stubborn, Obstinate, Obdurable, Intransigent, Refractory, Firm, Headstrong, Ossified, Adamant, Wayward, Wilful, Perverse, Mulish, Pig-headed", difficulty: "hard" },
+      { word: "Retrospect", meaning: "Recollect, Remember", difficulty: "medium" },
+      { word: "Rubicund", meaning: "Reddish", difficulty: "hard" },
+      { word: "Revivify", meaning: "(Life), Rejuvenate, Re-energise", difficulty: "hard" },
+      { word: "Retrogate", meaning: "Reverse", difficulty: "hard" },
+      { word: "Replenish", meaning: "Restore, Fill up", difficulty: "medium" },
+      { word: "Ruffian", meaning: "Villain, Scoundrel, Rogue, Rascal, Reprobate", difficulty: "hard" },
+      { word: "Reclusive", meaning: "Sequestered, Separated, Isolated, Hermit, Recluse", difficulty: "hard" },
+      { word: "Rankle", meaning: "Irritate, Annoy, Vex, Nettle", difficulty: "hard" },
+      { word: "Ramification", meaning: "Consequence", difficulty: "hard" },
+      { word: "Rendition", meaning: "Performance in music/drama, Interpretation", difficulty: "hard" },
+      { word: "Repugnance", meaning: "Dislike, Disgust", difficulty: "hard" },
+      { word: "Receptacle", meaning: "Container", difficulty: "medium" },
+      { word: "Rout", meaning: "Defeat", difficulty: "medium" },
+      { word: "Rapacious", meaning: "Greedy", difficulty: "hard" },
+      { word: "Relevant", meaning: "Related, Pertinent, Appropriate, Germane", difficulty: "medium" },
+      { word: "Succulent", meaning: "Juicy", difficulty: "hard" },
+      { word: "Spruce", meaning: "Neat, Clean, Smart, Kemp, Natt", difficulty: "hard" },
+      { word: "Secede", meaning: "Move back, To Withdraw", difficulty: "hard" },
+      { word: "Sole", meaning: "Only, Lonely", difficulty: "easy" },
+      { word: "Solitary", meaning: "Lonely", difficulty: "medium" },
+      { word: "Solace", meaning: "Comfort", difficulty: "medium" },
+      { word: "Solitude", meaning: "Aloneness", difficulty: "medium" },
+      { word: "Surreptitious", meaning: "Secretive", difficulty: "hard" },
+      { word: "Sauvity", meaning: "Urbanity, Polite, Courteous, Gentlemanly", difficulty: "hard" },
+      { word: "Stringent", meaning: "Rigorous, Harsh, Draconian", difficulty: "medium" },
+      { word: "Shabby", meaning: "Squalid, Bad, Unpleasant, Dirty", difficulty: "medium" },
+      { word: "Squander", meaning: "Dissipate, Waste, Fritter, Misuse", difficulty: "medium" },
+      { word: "Sulky", meaning: "Dismal, Sad, Dejected, Crestfallen, Sullen", difficulty: "medium" },
+      { word: "Salacious", meaning: "Indecent, Corrupt, Immoral, Ribald, Wanton, Depraved", difficulty: "hard" },
+      { word: "Sterile", meaning: "Dry, Arid, Sterile, Barren, Nugatory, Infecund", difficulty: "medium" },
+      { word: "Scintillating", meaning: "Incandescent, Bright, Attractive, Shiny", difficulty: "hard" },
+      { word: "Sycophant", meaning: "Flatter, Adulation, Sycophancy, Fawning, Obsequiousness, Bootlicking, Wheedle, Blandishment, Exuberant, Livewire", difficulty: "hard" },
+      { word: "Sprightly", meaning: "Lively, Enthusiastic, Frisky, Jaunty", difficulty: "hard" },
+      { word: "Surly", meaning: "Pugnacious, Irritable, Cantankerous, Grouchy, Peevish, Petulant, Sullen", difficulty: "hard" },
+      { word: "Scanty", meaning: "Meagre, Less, Scarce, Scanty, Deficient, Lack, Devoid, Deprived, Exiguous, Paucity, Dearth", difficulty: "medium" },
+      { word: "Subsequent", meaning: "Next, Following, Consecutive", difficulty: "medium" },
+      { word: "Severity", meaning: "Acute, Sober, Sharp, Die, Grave", difficulty: "medium" },
+      { word: "Salient", meaning: "Noticeable, Main", difficulty: "medium" },
+      { word: "Sturdy", meaning: "Robust, Fat, Corpulent, Beefy, Burly, Husky", difficulty: "medium" },
+      { word: "Silt", meaning: "Residue, Deposits", difficulty: "hard" },
+      { word: "Saga", meaning: "Narrative, Long Story", difficulty: "medium" },
+      { word: "Sardonic", meaning: "Acerbic, Bitter, Incisive, Caustic, Acidic, Acrid, Vitriol, Pungent, Sarcasm", difficulty: "hard" },
+      { word: "Sinister", meaning: "Menacing, Evilish, Threatening, Diabolical", difficulty: "medium" },
+      { word: "Supple", meaning: "Pliable, Flexible, Compliant, Submissive, Yielding", difficulty: "medium" },
+      { word: "Satiate", meaning: "Gratify, Satisfy, Please", difficulty: "hard" },
+      { word: "Sacrilegious", meaning: "Irreverent, Disrespectful", difficulty: "hard" },
+      { word: "Sagacious", meaning: "Wise", difficulty: "hard" },
+      { word: "Scathing", meaning: "Severe", difficulty: "hard" },
+      { word: "Schism", meaning: "Spit, Division", difficulty: "hard" },
+      { word: "Scornful", meaning: "Contemptuous, Disdainful, Disrespectful", difficulty: "medium" },
+      { word: "Seditious", meaning: "Renegade, Disloyalty, Infidelity, Treachery, Treason", difficulty: "hard" },
+      { word: "Sedulous", meaning: "Hardworking, Diligent, Toilsome, Painstaking, Industrious", difficulty: "hard" },
+      { word: "Segregation", meaning: "Separation in small groups", difficulty: "medium" },
+      { word: "Sentient", meaning: "Conscious, Aware", difficulty: "hard" },
+      { word: "Sequester", meaning: "Isolate, Separate", difficulty: "hard" },
+      { word: "Serendipity", meaning: "Unexpected success, Good fortune", difficulty: "hard" },
+      { word: "Sibylline", meaning: "Uncommon", difficulty: "hard" },
+      { word: "Sobriety", meaning: "Temperance", difficulty: "medium" },
+      { word: "Specious", meaning: "Deceptive, False, Forged, Sophistry, Chickenery, Spurious, Counterfeit, Apocryphal, Fallacy", difficulty: "hard" },
+      { word: "Speculation", meaning: "Conjecture, Guess, Surmise", difficulty: "medium" },
+      { word: "Spurn", meaning: "Scorn, Insult", difficulty: "hard" },
+      { word: "Squabble", meaning: "Quarrel, Fight, Conflict, Dispute, Fend, Fray, Fracas, Discord, Contention, Brickbat, Wrangle, Scuffle, Brawl", difficulty: "medium" },
+      { word: "Stagnant", meaning: "Dead", difficulty: "medium" },
+      { word: "Stalemate", meaning: "Standstill", difficulty: "hard" },
+      { word: "Statutory", meaning: "Rules, Law, Legal", difficulty: "medium" },
+      { word: "Stoic", meaning: "Indifferent, Apathetic", difficulty: "medium" },
+      { word: "Sumptuous", meaning: "Luxurious, Abundant, Rich", difficulty: "hard" },
+      { word: "Scrupulous", meaning: "Ethical", difficulty: "hard" },
+      { word: "Tangential", meaning: "Irrelevant, Unrelated, Inappropriate, Impertinent, Inapposite, Irrelevant", difficulty: "hard" },
+      { word: "Tertiary", meaning: "Third (Primary Sector, Secondary sector and Tertiary Sector)", difficulty: "medium" },
+      { word: "Terse", meaning: "Curt, In short, In a nutshell, Succinct, Brief, Compendium, Concise", difficulty: "hard" },
+      { word: "Tantamount", meaning: "Equal", difficulty: "hard" },
+      { word: "Taunt", meaning: "Mock, Insult, Scorn", difficulty: "medium" },
+      { word: "Taper", meaning: "Decrease, Tumble", difficulty: "medium" },
+      { word: "Temerity", meaning: "Audaciousness, Boldness", difficulty: "hard" },
+      { word: "Tariff", meaning: "Tax", difficulty: "medium" },
+      { word: "Tale", meaning: "Story", difficulty: "easy" },
+      { word: "Tavern", meaning: "Hotel, Bar, Inn", difficulty: "medium" },
+      { word: "Taut", meaning: "Rigid, Stretched", difficulty: "medium" },
+      { word: "Tenacity", meaning: "Perseverance", difficulty: "medium" },
+      { word: "Temporal", meaning: "Worldly, Earthly, Corporal, Corporeal, Bodily", difficulty: "hard" },
+      { word: "Tedious", meaning: "Dull, Boring, Mundane, Dreary, Stereotype, Platitude, Humdrum, Cliche, Common, Usual, Quotidian", difficulty: "medium" },
+      { word: "Tantalizing", meaning: "Tempting, Attractive, Captivating, Alluring, Betwitching", difficulty: "hard" },
+      { word: "Tangible", meaning: "Palpable, Practical, Clear, Plausible", difficulty: "medium" },
+      { word: "Tentative", meaning: "Approximate, Uncertain, Unconfirmed", difficulty: "medium" },
+      { word: "Tenet", meaning: "Dogma, Principles, Laws, Rules", difficulty: "hard" },
+      { word: "Tenuous", meaning: "Insignificant, Unimportant, Trivial, Petty, Insubstantial", difficulty: "hard" },
+      { word: "Tenure", meaning: "Incumbency, Occupant", difficulty: "medium" },
+      { word: "Terminal", meaning: "Concluding", difficulty: "medium" },
+      { word: "Throng", meaning: "Crowd, Flock", difficulty: "medium" },
+      { word: "Threshold", meaning: "Beginning", difficulty: "medium" },
+      { word: "Thrive", meaning: "Grow, Flourish, Develop", difficulty: "medium" },
+      { word: "Throttle", meaning: "Smother, Strangulate, Restrain", difficulty: "hard" },
+      { word: "Thrust", meaning: "Impel, Force", difficulty: "medium" },
+      { word: "Thwart", meaning: "Foil, Stop, Hinder, Impede", difficulty: "hard" },
+      { word: "Tirade", meaning: "Rant, Criticism, Pejorative, Jeremiad, Obloquy", difficulty: "hard" },
+      { word: "Toil", meaning: "Work", difficulty: "medium" },
+      { word: "Toilsome", meaning: "Diligent, Industries", difficulty: "hard" },
+      { word: "Trajectory", meaning: "Path, Route", difficulty: "hard" },
+      { word: "Tranquility", meaning: "Silence, Placidity, Quietness", difficulty: "medium" },
+      { word: "Transcendental", meaning: "Supernatural, Mystical", difficulty: "hard" },
+      { word: "Torpid", meaning: "Lazy, Sluggish, Indolent, Slothful, Lassitude, Torpor", difficulty: "hard" },
+      { word: "Torrential", meaning: "Downpour", difficulty: "medium" },
+      { word: "Torrid", meaning: "Fervent, Hot, Dry, Sultry, Enthusiastic, Ardent", difficulty: "hard" },
+      { word: "Totalitarian", meaning: "Autocrat, Undemocratic, Despotic", difficulty: "hard" },
+      { word: "Tout", meaning: "Boast, Praise, Swagger, Persuade", difficulty: "hard" },
+      { word: "Tract", meaning: "Expanse", difficulty: "hard" },
+      { word: "Transfixed", meaning: "Hypnotized", difficulty: "hard" },
+      { word: "Transgression", meaning: "Crime", difficulty: "hard" },
+      { word: "Transitory", meaning: "Temporary, Ephemeral, Evenescent, Fleeting, Fugacious, Shortlived, Momentary", difficulty: "hard" },
+      { word: "Transpire", meaning: "Happen, Occur, Come about", difficulty: "medium" },
+      { word: "Transverse", meaning: "Cross", difficulty: "hard" },
+      { word: "Travesty", meaning: "Mockery, Caricature", difficulty: "hard" },
+      { word: "Treachery", meaning: "Perfidy, Faithlessness, Treason, Infidility, Renegade, Sedition Revolt, Insurrection, Rebellion", difficulty: "hard" },
+      { word: "Treason", meaning: "Betrayal", difficulty: "medium" },
+      { word: "Tremulous", meaning: "Unsteady, Shake, Tremble, Unstable, Quake", difficulty: "hard" },
+      { word: "Tribulation", meaning: "Suffering, Mishap, Hardships, Woes, Distress", difficulty: "hard" },
+      { word: "Trifling", meaning: "Worthless, Trifles, Petty, Trivial, Paltry, Mean, Abject", difficulty: "hard" },
+      { word: "Trilogy", meaning: "Trio, A group of three", difficulty: "hard" },
+      { word: "Truncate", meaning: "Curtai, To decreasel", difficulty: "hard" },
+      { word: "Tumultuous", meaning: "Uproar, Disorder, Chaos, Upheaval, Pandemonium, Mayhem", difficulty: "hard" },
+      { word: "Tutelage", meaning: "Guardianship, Protection, Guidance, Aegisc (Under)", difficulty: "hard" },
+      { word: "Tyranny", meaning: "Autocrat, Despotism", difficulty: "medium" },
+      { word: "Ubiquitous", meaning: "Everywhere, Omnipresent, Universal, Pervasive, Widespread, Rampant", difficulty: "hard" },
+      { word: "Uninhibited", meaning: "Uncontrolled, Unstopped, Unrestricted, Unrestrained", difficulty: "hard" },
+      { word: "Undaunted", meaning: "Firm, Resolute", difficulty: "hard" },
+      { word: "Unilateral", meaning: "One-sided", difficulty: "hard" },
+      { word: "Undermine", meaning: "Sabotage, Destroy, Demage, Ruin", difficulty: "medium" },
+      { word: "Unctuous", meaning: "Flattering, Adulatory, Toady, Sycophantic, Bootlicking", difficulty: "hard" },
+      { word: "Unconventional", meaning: "Unusual, Uncustomary", difficulty: "hard" },
+      { word: "Unconscious", meaning: "Comatose, Senseless, Unaware", difficulty: "medium" },
+      { word: "Unanimous", meaning: "United, Collective Opinion", difficulty: "medium" },
+      { word: "Upbraid", meaning: "Scold, Chide, Critise, Reprimand, Admonish, Castigate, Chastise, Lambast", difficulty: "hard" },
+      { word: "Utility", meaning: "Usefulness", difficulty: "medium" },
+      { word: "Urbane", meaning: "Civilised, Suave, Genteel, Nathy", difficulty: "hard" },
+      { word: "Upheaval", meaning: "Cturmoil, Confusion, Uproar, Tumultuous, Turbulence, Chaos, Mayhem, Topsyturvy, Ruckus", difficulty: "hard" },
+      { word: "Uproar", meaning: "Turmoil", difficulty: "medium" },
+      { word: "Upshot", meaning: "Result, Effect, Aftermath, Ramification, Corollay, Consequence, Repercussion, Fallout", difficulty: "hard" },
+      { word: "Utopian", meaning: "Idealistic, Imaginary world, Quixotic, Unreal", difficulty: "hard" },
+      { word: "Uphold", meaning: "Maintain, Preserve, Conserve, Retain", difficulty: "medium" },
+      { word: "Utter", meaning: "Express", difficulty: "easy" },
+      { word: "Usurp", meaning: "Seize, Capture, Annex, Confiscate, Grab", difficulty: "hard" },
+      { word: "Unbiased", meaning: "Impartial", difficulty: "medium" },
+      { word: "Unscathed", meaning: "Unharmed", difficulty: "hard" },
+      { word: "Unfeigned", meaning: "Sincere", difficulty: "hard" },
+      { word: "Umbrage", meaning: "Angry", difficulty: "hard" },
+      { word: "Uncouth", meaning: "Ungraceful, Uncivilised, Boorish, Bumpkin, Oaf, Yokel", difficulty: "hard" },
+      { word: "Vast", meaning: "Mammoth, Huge, Tremendous, Enormous, Behemoth, Monstrous, Elephantine, Prodigious, Titanic, Collosal, Massive, Monumental", difficulty: "easy" },
+      { word: "Valor", meaning: "Courage", difficulty: "medium" },
+      { word: "Vendor", meaning: "Seller, Hawker", difficulty: "medium" },
+      { word: "Vernacular", meaning: "Slang, Language used in everyday conversation", difficulty: "hard" },
+      { word: "Vagrant", meaning: "Wanderer, Drifter, Vagabond, Derelict, Nomad", difficulty: "hard" },
+      { word: "Vibrant", meaning: "Colorful", difficulty: "medium" },
+      { word: "Varify", meaning: "Affirm, Justify", difficulty: "hard" },
+      { word: "Venal", meaning: "Dishonest, Corrupt", difficulty: "hard" },
+      { word: "Vanity", meaning: "Conceit", difficulty: "medium" },
+      { word: "Vacillate", meaning: "Waver, Oscillate, Unstable", difficulty: "hard" },
+      { word: "Veteran", meaning: "Seasoned, Expert", difficulty: "medium" },
+      { word: "Venturesome", meaning: "Daring, Risk", difficulty: "hard" },
+      { word: "Vanguard", meaning: "Forerunners, Pioneers", difficulty: "hard" },
+      { word: "Venue", meaning: "Place, Locale", difficulty: "medium" },
+      { word: "Verbal", meaning: "Spoken, Oral", difficulty: "medium" },
+      { word: "Verbatim", meaning: "Accurate, Exactly", difficulty: "hard" },
+      { word: "Vernal", meaning: "Related to spring, Youthful", difficulty: "hard" },
+      { word: "Versatile", meaning: "Multifaceted, Expert", difficulty: "medium" },
+      { word: "Verisimilitude", meaning: "Truth", difficulty: "hard" },
+      { word: "Valiant", meaning: "Brave", difficulty: "medium" },
+      { word: "Vagary", meaning: "Fluctuation, ups and downs, Changes, Vicissitudes", difficulty: "hard" },
+      { word: "Vestige", meaning: "Residue, Remains, Remnants", difficulty: "hard" },
+      { word: "Veto", meaning: "Recject", difficulty: "medium" },
+      { word: "Vehement", meaning: "Firm, Strong", difficulty: "hard" },
+      { word: "Vapid", meaning: "Prosaic, Dull, Boring", difficulty: "hard" },
+      { word: "Vault", meaning: "Overleap, Jump", difficulty: "medium" },
+      { word: "Verbiage", meaning: "Circumlocution, Wordy, Prolixity", difficulty: "hard" },
+      { word: "Vertigo", meaning: "Blackout, Dizziness", difficulty: "hard" },
+      { word: "Vacuous", meaning: "Asinine, Foolish", difficulty: "hard" },
+      { word: "Vex", meaning: "Irritate, Annoy, Nettle", difficulty: "hard" },
+      { word: "Widespread", meaning: "Ubiquitous, Rampant, Universal, Omnipresent, Pervasive", difficulty: "medium" },
+      { word: "Waggish", meaning: "Humorous, Comical, Witty", difficulty: "hard" },
+      { word: "Wail", meaning: "Moan, Cry, Lament, Groan", difficulty: "medium" },
+      { word: "Waive", meaning: "Forego, Ignore, Over look, Pardon", difficulty: "hard" },
+      { word: "Wayward", meaning: "Unpredictable, Erratic, Mercurial, Whimsical, Capricious", difficulty: "hard" },
+      { word: "Withered", meaning: "Decayed, Wilted, Shrunken", difficulty: "medium" },
+      { word: "Waspish", meaning: "Quarrelsome, Belicose, Pugnacious, Peevish, Surly, Grouchy, Crabby, Cantankerous, Belligerent", difficulty: "hard" },
+      { word: "Wondrous", meaning: "Extraordinary, Excellent, Splendid, Magnificent", difficulty: "hard" },
+      { word: "Wrangle", meaning: "Fight, Feud, Fray, Scuffle, Brawl", difficulty: "medium" },
+      { word: "Wanton", meaning: "Corrupt, Vicious, Bad, Wicked, Ribald, Nefarious, Debauchery, Egragious, Vile, Venal, Flagrant, Salacious", difficulty: "hard" },
+      { word: "Wizard", meaning: "Genius, Magician, Sorcerer", difficulty: "medium" },
+      { word: "Wrench", meaning: "Twist", difficulty: "medium" },
+      { word: "Warrant", meaning: "Sanction, Permit, Allow, Approve", difficulty: "medium" },
+      { word: "Whet", meaning: "Stimulate, Propel, Arouse", difficulty: "hard" },
+      { word: "Wheedle", meaning: "Coax, Cajole, Boot licking, Flatter", difficulty: "hard" },
+      { word: "Worldly", meaning: "Earthly", difficulty: "medium" },
+      { word: "Winnow", meaning: "Sift", difficulty: "hard" },
+      { word: "Wan", meaning: "Dull, Faint", difficulty: "hard" },
+      { word: "Whim", meaning: "Fancy, Imagination", difficulty: "medium" },
+      { word: "Wily", meaning: "Vulpine, Cunning, Shrewd, Foxine, Scheming, Artful, Canny", difficulty: "hard" },
+      { word: "Wince", meaning: "Recoil", difficulty: "hard" },
+      { word: "Witticism", meaning: "Jest, Comical", difficulty: "hard" },
+      { word: "Withstand", meaning: "Resist", difficulty: "medium" },
+      { word: "Wade", meaning: "Traverse, Cross", difficulty: "medium" },
+      { word: "Wispy", meaning: "Fragile, Weak, Delicate, Flimsy, Enervated", difficulty: "hard" },
+      { word: "Wistfully", meaning: "Longingly", difficulty: "hard" },
+      { word: "Withdrawn", meaning: "Reserved, Serious, Unsociable, Introvert", difficulty: "medium" },
+      { word: "Withhold", meaning: "Retain, Persist, Continue", difficulty: "medium" },
+      { word: "Waver", meaning: "Falter, Oscillate", difficulty: "medium" },
+      { word: "Wrest", meaning: "Seize", difficulty: "hard" },
+      { word: "Wretched", meaning: "Miserable, Pitiable, Hapeless", difficulty: "medium" },
+      { word: "Writhe", meaning: "Wriggle, Pain, Forment", difficulty: "hard" },
+      { word: "Wrought", meaning: "Create", difficulty: "hard" },
+      { word: "Wry", meaning: "Ironical", difficulty: "hard" },
+      { word: "Watchfulness", meaning: "Vigilance", difficulty: "medium" },
+      { word: "Weary", meaning: "Fatigued, Tired", difficulty: "medium" },
+      { word: "Wrath", meaning: "Anger, Fury, Rage, Displeasure", difficulty: "medium" },
+      { word: "Wary", meaning: "Careful", difficulty: "medium" },
+      { word: "Xeric", meaning: "Very Dry, Sultry", difficulty: "hard" },
+      { word: "Yokel", meaning: "Bumpkin, Oaf, Uncivilised, Boorish, Uncouthed, Simpleton, Rustic", difficulty: "hard" },
+      { word: "Yardstick", meaning: "Standard, Parameter, Benchmark", difficulty: "medium" },
+      { word: "Yahoo", meaning: "Savage, Uncivilised", difficulty: "medium" },
+      { word: "Yearn", meaning: "Crave (Yearn for, Appetite for, Thirst for, Aspire for, Desire for, Long for, Urge for, Pine for, Crave for)", difficulty: "medium" },
+      { word: "Yield", meaning: "Surrender, Produce, Result", difficulty: "medium" },
+      { word: "Yoke", meaning: "Harness, Oppression, Slavery, Confinement, Hostage, Incarceration, Serfrom, Fasten", difficulty: "hard" },
+      { word: "Yonder", meaning: "Distant", difficulty: "hard" },
+      { word: "Yesteryear", meaning: "Past", difficulty: "hard" },
+      { word: "Yank", meaning: "Pull", difficulty: "medium" },
+      { word: "Yell", meaning: "Shout", difficulty: "easy" },
+      { word: "Youthful", meaning: "Spry, Young, Spring", difficulty: "medium" },
+      { word: "Zing", meaning: "Enthusiasm", difficulty: "medium" },
+      { word: "Zoom", meaning: "Speed", difficulty: "easy" },
+      { word: "Zephyr", meaning: "Gentle Breeze", difficulty: "hard" },
+      { word: "Zealot", meaning: "Fanatic, Over enthusiastic, Chagrined", difficulty: "hard" },
+      { word: "Zany", meaning: "eEccentric", difficulty: "hard" },
+      { word: "Zest", meaning: "Gusto", difficulty: "medium" },
+      { word: "Zilch", meaning: "Nothingness, Zero", difficulty: "medium" },
+      { word: "Zeal", meaning: "Eagerness", difficulty: "medium" },
+      { word: "Zenith", meaning: "Apex, Top, Acme, Apogree, Summit, Apothesis", difficulty: "hard" }
+    ];
 
     document.addEventListener('DOMContentLoaded', function() {
       // DOM elements
@@ -1455,26 +2928,40 @@ const firebaseConfig = {
       const lensBtn = document.getElementById('lensBtn');
       const inputSection = document.getElementById('inputSection');
       const breathIndicator = document.getElementById('breathIndicator');
+      const clearWordsBtn = document.getElementById('clearWordsBtn');
+      const homeNavBtn = document.getElementById('homeNavBtn');
+      const hindiNavBtn = document.getElementById('hindiNavBtn');
+      const englishNavBtn = document.getElementById('englishNavBtn');
+      const homeContent = document.getElementById('homeContent');
+      const hindiWordsContent = document.getElementById('hindiWordsContent');
+      const englishWordsContent = document.getElementById('englishWordsContent');
+      const hindiWordTable = document.getElementById('hindiWordTable');
+      const englishWordTable = document.getElementById('englishWordTable');
+      const hindiStats = document.getElementById('hindiStats');
+      const englishStats = document.getElementById('englishStats');
+      const addAllHindiPageBtn = document.getElementById('addAllHindiPageBtn');
+      const addAllHindiBtn = document.getElementById('addAllHindiBtn');
+      const addAllEnglishPageBtn = document.getElementById('addAllEnglishPageBtn');
+      const addAllEnglishBtn = document.getElementById('addAllEnglishBtn');
+      const hindiPagination = document.getElementById('hindiPagination');
+      const englishPagination = document.getElementById('englishPagination');
       const visitCount = document.getElementById('visitCount');
-      const floatingVisitCount = document.getElementById('floatingVisitCount');
-      const progressFill = document.getElementById('progressFill');
       
       // State variables
       let currentLanguage = 'hindi';
-      let words = [];
+      let words = JSON.parse(localStorage.getItem('localWords')) || [];
       let speechRate = 1;
       let isSpeaking = false;
       let currentSpeakingIndex = -1;
       let isDarkMode = false;
-
-      // Initialize the app
+      let currentHindiPage = 1;
+      let currentEnglishPage = 1;
+      const wordsPerPage = 20;
+      
+      // Initialize the application
+      initApp();
+      
       function initApp() {
-       // Load words from local storage
-let savedDictation = JSON.parse(localStorage.getItem('dictationWords')) || [];
-let savedLocalWords = JSON.parse(localStorage.getItem('localWords')) || [];
-let words = [...new Set([...savedLocalWords, ...savedDictation])];
-localStorage.setItem('localWords', JSON.stringify(words));
-
         // Set up event listeners
         setupEventListeners();
         
@@ -1490,68 +2977,17 @@ localStorage.setItem('localWords', JSON.stringify(words));
           toggleTheme();
         }
         
-        // Update visit counter
-        updateGlobalVisitCounter();
+        // Render Hindi words table
+        renderHindiWords();
         
-        // Update progress
-        updateProgress();
-      }
-      
-      // Update global visit counter using Firebase
-      function updateGlobalVisitCounter() {
-        if (!database) {
-          console.error('Database not initialized');
-          showMessage('Cannot update visit count due to server issue.', 'error');
-          return;
-        }
-
-        const visitRef = database.ref('globalVisitCount');
+        // Render English words table
+        renderEnglishWords();
         
-        // Increment the count
-        visitRef.transaction(function(currentCount) {
-          console.log('Current visit count:', currentCount);
-          return (currentCount || 0) + 1;
-        }, function(error, committed, snapshot) {
-          if (error) {
-            console.error('Visit count update failed:', error);
-            showMessage('Failed to update visit count.', 'error');
-            // Display last known count from local storage as fallback
-            const lastCount = localStorage.getItem('lastVisitCount') || '0';
-            visitCount.textContent = lastCount;
-            floatingVisitCount.textContent = lastCount;
-          } else if (committed) {
-            const count = snapshot.val();
-            console.log('Updated visit count:', count);
-            visitCount.textContent = count;
-            floatingVisitCount.textContent = count;
-            // Store last known count in local storage
-            localStorage.setItem('lastVisitCount', count);
-          }
-        });
-        
-        // Listen for real-time updates
-        visitRef.on('value', function(snapshot) {
-          const count = snapshot.val() || 0;
-          console.log('Real-time visit count update:', count);
-          visitCount.textContent = count;
-          floatingVisitCount.textContent = count;
-          localStorage.setItem('lastVisitCount', count);
-        }, function(error) {
-          console.error('Real-time listener error:', error);
-          showMessage('Cannot fetch real-time visit count.', 'error');
-          // Display last known count
-          const lastCount = localStorage.getItem('lastVisitCount') || '0';
-          visitCount.textContent = lastCount;
-          floatingVisitCount.textContent = lastCount;
-        });
-      }
-      
-      // Update progress bar
-      function updateProgress() {
-        const totalWords = words.length;
-        const masteredWords = words.filter(word => word.mastered).length;
-        const percentage = totalWords > 0 ? (masteredWords / totalWords) * 100 : 0;
-        progressFill.style.width = `${percentage}%`;
+        // Initialize visit counter
+        let visitCounter = localStorage.getItem('visitCount') || 0;
+        visitCounter = parseInt(visitCounter) + 1;
+        localStorage.setItem('visitCount', visitCounter);
+        visitCount.textContent = visitCounter;
       }
       
       // Set up all event listeners
@@ -1587,8 +3023,34 @@ localStorage.setItem('localWords', JSON.stringify(words));
         // Theme toggle
         themeToggle.addEventListener('click', toggleTheme);
         
-        // Google Lens
-        lensBtn.addEventListener('click', showLensInstructions);
+        // Clear words button
+        clearWordsBtn.addEventListener('click', clearAllWords);
+        
+        // Navigation buttons
+        homeNavBtn.addEventListener('click', () => showContent('home'));
+        hindiNavBtn.addEventListener('click', () => showContent('hindi'));
+        englishNavBtn.addEventListener('click', () => showContent('english'));
+        
+        // Add all buttons
+        addAllHindiPageBtn.addEventListener('click', addAllHindiWordsOnPage);
+        addAllHindiBtn.addEventListener('click', addAllHindiWords);
+        addAllEnglishPageBtn.addEventListener('click', addAllEnglishWordsOnPage);
+        addAllEnglishBtn.addEventListener('click', addAllEnglishWords);
+      }
+      
+      // Show content based on selection
+      function showContent(content) {
+        document.querySelectorAll('.content-section').forEach(section => {
+          section.classList.remove('section-active');
+        });
+        
+        if (content === 'home') {
+          homeContent.classList.add('section-active');
+        } else if (content === 'hindi') {
+          hindiWordsContent.classList.add('section-active');
+        } else if (content === 'english') {
+          englishWordsContent.classList.add('section-active');
+        }
       }
       
       // Update speed display
@@ -1644,7 +3106,6 @@ localStorage.setItem('localWords', JSON.stringify(words));
         renderWordsList();
         wordInput.value = '';
         wordInput.focus();
-        updateProgress();
       }
       
       // Trigger box breathing animation
@@ -1674,7 +3135,7 @@ localStorage.setItem('localWords', JSON.stringify(words));
         wordsList.innerHTML = '';
         words.forEach((word, index) => {
           const wordElement = document.createElement('div');
-          wordElement.className = `word-card ${word.language} ${currentSpeakingIndex === index ? 'speaking' : ''} ${word.mastered ? 'mastered' : ''}`;
+          wordElement.className = `word-card ${currentSpeakingIndex === index ? 'speaking' : ''} ${word.mastered ? 'mastered' : ''}`;
           wordElement.innerHTML = `
             <div class="word-text">${word.text}</div>
             <div class="word-actions">
@@ -1706,7 +3167,6 @@ localStorage.setItem('localWords', JSON.stringify(words));
             words[index].mastered = !words[index].mastered;
             localStorage.setItem('localWords', JSON.stringify(words));
             renderWordsList();
-            updateProgress();
           });
         });
         
@@ -1721,7 +3181,6 @@ localStorage.setItem('localWords', JSON.stringify(words));
             words.splice(index, 1);
             localStorage.setItem('localWords', JSON.stringify(words));
             renderWordsList();
-            updateProgress();
           });
         });
       }
@@ -1817,11 +3276,6 @@ localStorage.setItem('localWords', JSON.stringify(words));
         localStorage.setItem('darkMode', isDarkMode);
       }
       
-      // Show Google Lens instructions
-      function showLensInstructions() {
-        alert('To add words with Google Lens:\n1. Install Google Lens app\n2. Capture text from books\n3. Copy and paste the words here');
-      }
-      
       // Show general message
       function showMessage(message, type) {
         const messageEl = document.createElement('div');
@@ -1842,6 +3296,9 @@ localStorage.setItem('localWords', JSON.stringify(words));
         } else if (type === 'success') {
           messageEl.style.background = 'rgba(46, 204, 113, 0.2)';
           messageEl.style.color = '#27ae60';
+        } else if (type === 'info') {
+          messageEl.style.background = 'rgba(241, 196, 15, 0.2)';
+          messageEl.style.color = '#f39c12';
         }
         
         if (isDarkMode) {
@@ -1851,6 +3308,9 @@ localStorage.setItem('localWords', JSON.stringify(words));
           } else if (type === 'success') {
             messageEl.style.background = 'rgba(46, 204, 113, 0.3)';
             messageEl.style.color = '#69f0ae';
+          } else if (type === 'info') {
+            messageEl.style.background = 'rgba(241, 196, 15, 0.3)';
+            messageEl.style.color = '#f1c40f';
           }
         }
         
@@ -1864,8 +3324,389 @@ localStorage.setItem('localWords', JSON.stringify(words));
         }, 3000);
       }
       
-      // Initialize the application
-      initApp();
+      // Clear all words
+      function clearAllWords() {
+        if (words.length === 0) {
+          showMessage('Word list is already empty!', 'error');
+          return;
+        }
+        
+        if (confirm('Are you sure you want to clear all words? This cannot be undone.')) {
+          words = [];
+          localStorage.setItem('localWords', JSON.stringify(words));
+          renderWordsList();
+          showMessage('All words have been cleared!', 'success');
+          
+          // Stop any ongoing speech
+          if (isSpeaking) {
+            window.speechSynthesis.cancel();
+            isSpeaking = false;
+            currentSpeakingIndex = -1;
+            playAllBtn.innerHTML = '<i class="fas fa-play-circle"></i> Play All Words';
+          }
+        }
+      }
+      
+      // Render Hindi words table
+      function renderHindiWords() {
+        const start = (currentHindiPage - 1) * wordsPerPage;
+        const end = Math.min(start + wordsPerPage, hindiWords.length);
+        const totalPages = Math.ceil(hindiWords.length / wordsPerPage);
+        
+        let tableHTML = '';
+        for (let i = start; i < end; i++) {
+          const word = hindiWords[i];
+          tableHTML += `
+            <tr>
+              <td>${i + 1}</td>
+              <td class="hindi-font">${word.word}</td>
+              <td>${word.meaning}</td>
+              <td>
+                <button class="btn" onclick="addHindiWordToDictation('${word.word}')">
+                  <i class="fas fa-plus"></i> Add
+                </button>
+              </td>
+            </tr>
+          `;
+        }
+        
+        hindiWordTable.innerHTML = tableHTML;
+        hindiStats.textContent = `Total Words: ${hindiWords.length} | Showing: ${end - start} | Page: ${currentHindiPage}/${totalPages}`;
+        
+        // Render pagination
+        renderPagination(hindiPagination, currentHindiPage, totalPages, 'hindi');
+      }
+      
+      // Render English words table
+      function renderEnglishWords() {
+        const start = (currentEnglishPage - 1) * wordsPerPage;
+        const end = Math.min(start + wordsPerPage, englishWords.length);
+        const totalPages = Math.ceil(englishWords.length / wordsPerPage);
+        
+        let tableHTML = '';
+        for (let i = start; i < end; i++) {
+          const word = englishWords[i];
+          tableHTML += `
+            <tr>
+              <td>${i + 1}</td>
+              <td>${word.word}</td>
+              <td>${word.meaning}</td>
+              <td>
+                <button class="btn" onclick="addEnglishWordToDictation('${word.word}')">
+                  <i class="fas fa-plus"></i> Add
+                </button>
+              </td>
+            </tr>
+          `;
+        }
+        
+        englishWordTable.innerHTML = tableHTML;
+        englishStats.textContent = `Total Words: ${englishWords.length} | Showing: ${end - start} | Page: ${currentEnglishPage}/${totalPages}`;
+        
+        // Render pagination
+        renderPagination(englishPagination, currentEnglishPage, totalPages, 'english');
+      }
+      
+      // Render pagination controls
+      function renderPagination(container, currentPage, totalPages, prefix) {
+        container.innerHTML = '';
+        
+        // Previous button
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'page-btn';
+        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i> Previous';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.addEventListener('click', () => {
+          if (prefix === 'hindi') {
+            currentHindiPage--;
+            renderHindiWords();
+          } else {
+            currentEnglishPage--;
+            renderEnglishWords();
+          }
+        });
+        container.appendChild(prevBtn);
+        
+        // Page numbers
+        const maxVisiblePages = 5;
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+        
+        if (endPage - startPage < maxVisiblePages - 1) {
+          startPage = Math.max(1, endPage - maxVisiblePages + 1);
+        }
+        
+        // First page
+        if (startPage > 1) {
+          const firstPageBtn = document.createElement('button');
+          firstPageBtn.className = `page-btn page-number ${currentPage === 1 ? 'active' : ''}`;
+          firstPageBtn.textContent = '1';
+          firstPageBtn.addEventListener('click', () => {
+            if (prefix === 'hindi') {
+              currentHindiPage = 1;
+              renderHindiWords();
+            } else {
+              currentEnglishPage = 1;
+              renderEnglishWords();
+            }
+          });
+          container.appendChild(firstPageBtn);
+          
+          if (startPage > 2) {
+            const ellipsis = document.createElement('span');
+            ellipsis.className = 'page-btn page-ellipsis';
+            ellipsis.textContent = '...';
+            container.appendChild(ellipsis);
+          }
+        }
+        
+        // Middle pages
+        for (let i = startPage; i <= endPage; i++) {
+          if (i === 1 && startPage > 1) continue; // Skip if we already added first page
+          
+          const pageBtn = document.createElement('button');
+          pageBtn.className = `page-btn page-number ${currentPage === i ? 'active' : ''}`;
+          pageBtn.textContent = i;
+          pageBtn.addEventListener('click', () => {
+            if (prefix === 'hindi') {
+              currentHindiPage = i;
+              renderHindiWords();
+            } else {
+              currentEnglishPage = i;
+              renderEnglishWords();
+            }
+          });
+          container.appendChild(pageBtn);
+        }
+        
+        // Last page
+        if (endPage < totalPages) {
+          if (endPage < totalPages - 1) {
+            const ellipsis = document.createElement('span');
+            ellipsis.className = 'page-btn page-ellipsis';
+            ellipsis.textContent = '...';
+            container.appendChild(ellipsis);
+          }
+          
+          const lastPageBtn = document.createElement('button');
+          lastPageBtn.className = `page-btn page-number ${currentPage === totalPages ? 'active' : ''}`;
+          lastPageBtn.textContent = totalPages;
+          lastPageBtn.addEventListener('click', () => {
+            if (prefix === 'hindi') {
+              currentHindiPage = totalPages;
+              renderHindiWords();
+            } else {
+              currentEnglishPage = totalPages;
+              renderEnglishWords();
+            }
+          });
+          container.appendChild(lastPageBtn);
+        }
+        
+        // Next button
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'page-btn';
+        nextBtn.innerHTML = 'Next <i class="fas fa-chevron-right"></i>';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.addEventListener('click', () => {
+          if (prefix === 'hindi') {
+            currentHindiPage++;
+            renderHindiWords();
+          } else {
+            currentEnglishPage++;
+            renderEnglishWords();
+          }
+        });
+        container.appendChild(nextBtn);
+      }
+      
+      // Add Hindi word to dictation
+      window.addHindiWordToDictation = function(word) {
+        // Check if word already exists
+        if (words.some(w => w.text === word && w.language === 'hindi')) {
+          showMessage('This word is already in your list!', 'error');
+          return;
+        }
+        
+        words.push({
+          text: word,
+          language: 'hindi',
+          mastered: false,
+          addedDate: new Date().toISOString()
+        });
+        
+        // Save words to local storage
+        localStorage.setItem('localWords', JSON.stringify(words));
+        
+        showMessage(`"${word}" added to your dictation list!`, 'success');
+        renderWordsList();
+      }
+      
+      // Add English word to dictation
+      window.addEnglishWordToDictation = function(word) {
+        // Check if word already exists
+        if (words.some(w => w.text === word && w.language === 'english')) {
+          showMessage('This word is already in your list!', 'error');
+          return;
+        }
+        
+        words.push({
+          text: word,
+          language: 'english',
+          mastered: false,
+          addedDate: new Date().toISOString()
+        });
+        
+        // Save words to local storage
+        localStorage.setItem('localWords', JSON.stringify(words));
+        
+        showMessage(`"${word}" added to your dictation list!`, 'success');
+        renderWordsList();
+      }
+      
+      // Add all Hindi words on current page
+      function addAllHindiWordsOnPage() {
+        const start = (currentHindiPage - 1) * wordsPerPage;
+        const end = Math.min(start + wordsPerPage, hindiWords.length);
+        const wordsToAdd = [];
+        
+        // Get words to add (only new ones)
+        for (let i = start; i < end; i++) {
+          const word = hindiWords[i].word;
+          if (!words.some(w => w.text === word && w.language === 'hindi')) {
+            wordsToAdd.push({
+              text: word,
+              language: 'hindi',
+              mastered: false,
+              addedDate: new Date().toISOString()
+            });
+          }
+        }
+        
+        if (wordsToAdd.length === 0) {
+          showMessage('All words on this page are already in your list!', 'info');
+          return;
+        }
+        
+        // Confirm with user
+        if (!confirm(`Add ${wordsToAdd.length} Hindi words to your dictation list?`)) {
+          return;
+        }
+        
+        // Add words to the list
+        words = [...words, ...wordsToAdd];
+        localStorage.setItem('localWords', JSON.stringify(words));
+        
+        showMessage(`Added ${wordsToAdd.length} Hindi words to your dictation list!`, 'success');
+        renderWordsList();
+      }
+      
+      // Add all English words on current page
+      function addAllEnglishWordsOnPage() {
+        const start = (currentEnglishPage - 1) * wordsPerPage;
+        const end = Math.min(start + wordsPerPage, englishWords.length);
+        const wordsToAdd = [];
+        
+        // Get words to add (only new ones)
+        for (let i = start; i < end; i++) {
+          const word = englishWords[i].word;
+          if (!words.some(w => w.text === word && w.language === 'english')) {
+            wordsToAdd.push({
+              text: word,
+              language: 'english',
+              mastered: false,
+              addedDate: new Date().toISOString()
+            });
+          }
+        }
+        
+        if (wordsToAdd.length === 0) {
+          showMessage('All words on this page are already in your list!', 'info');
+          return;
+        }
+        
+        // Confirm with user
+        if (!confirm(`Add ${wordsToAdd.length} English words to your dictation list?`)) {
+          return;
+        }
+        
+        // Add words to the list
+        words = [...words, ...wordsToAdd];
+        localStorage.setItem('localWords', JSON.stringify(words));
+        
+        showMessage(`Added ${wordsToAdd.length} English words to your dictation list!`, 'success');
+        renderWordsList();
+      }
+      
+      // Add all Hindi words
+      function addAllHindiWords() {
+        const wordsToAdd = [];
+        
+        // Get all words that aren't already in the list
+        for (let i = 0; i < hindiWords.length; i++) {
+          const word = hindiWords[i].word;
+          if (!words.some(w => w.text === word && w.language === 'hindi')) {
+            wordsToAdd.push({
+              text: word,
+              language: 'hindi',
+              mastered: false,
+              addedDate: new Date().toISOString()
+            });
+          }
+        }
+        
+        if (wordsToAdd.length === 0) {
+          showMessage('All Hindi words are already in your list!', 'info');
+          return;
+        }
+        
+        // Confirm with user
+        if (!confirm(`Add all ${hindiWords.length} Hindi words to your dictation list?`)) {
+          return;
+        }
+        
+        // Add words to the list
+        words = [...words, ...wordsToAdd];
+        localStorage.setItem('localWords', JSON.stringify(words));
+        
+        showMessage(`Added all ${hindiWords.length} Hindi words to your dictation list!`, 'success');
+        renderWordsList();
+      }
+      
+      // Add all English words
+      function addAllEnglishWords() {
+        const wordsToAdd = [];
+        
+        // Get all words that aren't already in the list
+        for (let i = 0; i < englishWords.length; i++) {
+          const word = englishWords[i].word;
+          if (!words.some(w => w.text === word && w.language === 'english')) {
+            wordsToAdd.push({
+              text: word,
+              language: 'english',
+              mastered: false,
+              addedDate: new Date().toISOString()
+            });
+          }
+        }
+        
+        if (wordsToAdd.length === 0) {
+          showMessage('All English words are already in your list!', 'info');
+          return;
+        }
+        
+        // Confirm with user
+        if (!confirm(`Add all ${englishWords.length} English words to your dictation list?`)) {
+          return;
+        }
+        
+        // Add words to the list
+        words = [...words, ...wordsToAdd];
+        localStorage.setItem('localWords', JSON.stringify(words));
+        
+        showMessage(`Added all ${englishWords.length} English words to your dictation list!`, 'success');
+        renderWordsList();
+      }
       
       // Security features
       document.addEventListener('contextmenu', function(e) {
@@ -1884,112 +3725,27 @@ localStorage.setItem('localWords', JSON.stringify(words));
         document.body.innerHTML = '<div style="padding: 100px; text-align: center; font-size: 24px;"><i class="fas fa-ban" style="font-size: 48px; margin-bottom: 20px;"></i><p>Printing disabled for security</p></div>';
       });
     });
-  </script>
-  <script>
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('selectstart', e => e.preventDefault());
-  </script>
-
-<!-- Firebase Visit Tracking Script -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyBKZO_8CgrQfm7eBGcR9h8D6JxWY4MBaQ",
-    authDomain: "hindi-english-dictation.firebaseapp.com",
-    databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "hindi-english-dictation",
-    storageBucket: "hindi-english-dictation.appspot.com",
-    messagingSenderId: "186334580803",
-    appId: "1:186334580803:web:7dfdf806d9da19a4cc4f6",
-    measurementId: "G-7LH1856B2W"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  const today = new Date().toISOString().slice(0, 10); // format: YYYY-MM-DD
-
-  // Update total visit count
-  const totalRef = ref(db, 'visitCount');
-  get(totalRef).then((snapshot) => {
-    const current = snapshot.exists() ? snapshot.val() : 0;
-    set(totalRef, current + 1);
-  });
-
-  // Update daily visit count
-  const dailyRef = ref(db, `visits_by_day/${today}`);
-  get(dailyRef).then((snapshot) => {
-    const count = snapshot.exists() ? snapshot.val() : 0;
-    set(dailyRef, count + 1);
-  });
-</script>
-
-
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyBKZO_8CgrQfm7eBGcR9h8D6JxWY4MBaQ",
-    authDomain: "hindi-english-dictation.firebaseapp.com",
-    databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "hindi-english-dictation",
-    storageBucket: "hindi-english-dictation.appspot.com",
-    messagingSenderId: "186334580803",
-    appId: "1:186334580803:web:7dfdf806d9da19a4cc4f6",
-    measurementId: "G-7LH1856B2W"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  window.submitFeedback = function () {
-    const text = document.getElementById("feedbackText").value.trim();
-    const msg = document.getElementById("feedbackMsg");
-
-    if (!text) {
-      msg.style.color = "red";
-      msg.innerText = "❗ कृपया फीडबैक लिखें।";
-      return;
-    }
-
-    const feedbackRef = ref(db, 'feedbacks');
-    push(feedbackRef, {
-      text: text,
-      timestamp: Date.now()
-    }).then(() => {
+    
+    // Feedback function
+    function submitFeedback() {
+      const text = document.getElementById("feedbackText").value.trim();
+      const msg = document.getElementById("feedbackMsg");
+      
+      if (!text) {
+        msg.style.color = "red";
+        msg.innerText = "Please write some feedback first!";
+        return;
+      }
+      
+      // In a real implementation, this would send to a server
       msg.style.color = "green";
-      msg.innerText = "✅ आपका फीडबैक भेजा गया!";
+      msg.innerText = "Thank you for your feedback!";
       document.getElementById("feedbackText").value = "";
-    }).catch(() => {
-      msg.style.color = "red";
-      msg.innerText = "❌ कुछ त्रुटि हुई। बाद में पुनः प्रयास करें।";
-    });
-  };
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const dictationWords = JSON.parse(localStorage.getItem('dictationWords') || '[]');
-    // Render dictationWords in your word list container
-    const container = document.querySelector('.words-container');
-    if (dictationWords.length) {
-        container.innerHTML = '';
-        dictationWords.forEach(wordObj => {
-            const card = document.createElement('div');
-            card.className = 'word-card';
-            card.innerHTML = `<div class="word-text hindi-font">${wordObj.word}</div>
-                              <div class="word-meaning">${wordObj.meaning}</div>`;
-            container.appendChild(card);
-        });
+      
+      setTimeout(() => {
+        msg.innerText = "";
+      }, 3000);
     }
-});
-</script>
-  
-
-
+  </script>
 </body>
 </html>

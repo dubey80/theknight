@@ -88,6 +88,11 @@
 </head>
 <body>
 
+<button onclick="window.location.href='https://theknight.info'" 
+    style="position: fixed; top: 10px; left: 10px; background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; z-index: 1000;">
+    🏠 Home
+  </button>
+
 <div class="section english">
   <h2>🔡 English Alphabet (A to Z)</h2>
   <button class="play-all-btn" onclick="playAll(Object.keys(eng), 'en-US')">🔊 Play All English Letters</button>

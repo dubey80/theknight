@@ -33,7 +33,7 @@
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
-      min-height: 350px; /* NEW: Sets minimum height for card stability */
+      min-height: 350px; /* Maintains vertical space for stability */
     }
     .stats-grid {
         display: flex;
@@ -65,11 +65,13 @@
         width: 100%;
         max-width: 1200px;
     }
-    /* --- CHART STABILITY FIX --- */
+    /* --- CHART STABILITY FIX CSS --- */
     .chart-card canvas {
-        min-height: 300px; /* Forces height on canvas area */
+        /* This ensures the browser reserves height before Chart.js loads */
+        min-height: 300px; 
     }
-    /* --------------------------- */
+    /* --------------------------------- */
+
     .logout-btn {
       background: #e74c3c;
       color: white;
@@ -164,7 +166,7 @@
     const ADMIN_UID = '3fyIVo6WCUOJQeUixDmJ6igpoYq2';
 
     const firebaseConfig = {
-      apiKey: "AIzaSyBKZO_80CrgQfm7eBGcR9h8D6JxWY4MBaQ", // **NOTE: This must be your correct key!**
+      apiKey: "AIzaSyBKZO_80CrgQfm7eBGcR9h8D6JxWY4MBaQ",
       authDomain: "hindi-english-dictation.firebaseapp.com",
       databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
       projectId: "hindi-english-dictation",
@@ -233,7 +235,9 @@
                         datasets: [{ label: "Visits", data: values, backgroundColor: "#3498db" }]
                     },
                     options: {
-                        responsive: true, maintainAspectRatio: false,
+                        responsive: true, 
+                        maintainAspectRatio: false, // NEW: Ensures height stability
+                        aspectRatio: 2.5,          // NEW: Sets fixed chart shape
                         plugins: { legend: { display: false } },
                         scales: {
                             x: { ticks: { maxRotation: 90, minRotation: 45 } },
@@ -286,7 +290,9 @@
                         }]
                     },
                     options: {
-                        responsive: true, maintainAspectRatio: false,
+                        responsive: true, 
+                        maintainAspectRatio: false, // NEW: Ensures height stability
+                        aspectRatio: 2.5,          // NEW: Sets fixed chart shape
                         scales: { y: { beginAtZero: true } }
                     }
                 });

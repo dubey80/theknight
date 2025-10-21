@@ -1,90 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Admin Dashboard</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 30px;
-      background-color: #f9f9f9;
-    }
-    .card, .chart-card {
-      background: #fff;
-      padding: 20px;
-      max-width: 600px;
-      margin: 20px auto;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .title {
-      font-size: 22px;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-    .value {
-      font-size: 28px;
-      font-weight: bold;
-      color: #3498db;
-      text-align: center;
-    }
-    .logout-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: #e74c3c;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Logout Button -->
-  <button onclick="logout()" class="logout-btn">Logout</button>
-
-  <!-- Total Visitors -->
-  <div class="card">
-    <div class="title">Total Visitors</div>
-    <div class="value" id="visitCount">Loading...</div>
-  </div>
-
-  <!-- Past 7 Days Visitors -->
-  <div class="card">
-    <div class="title">Past 7 Days</div>
-    <div class="value" id="weeklyCount">Loading...</div>
-  </div>
-
-  <!-- Past 30 Days Visitors -->
-  <div class="card">
-    <div class="title">Past 30 Days</div>
-    <div class="value" id="monthlyCount">Loading...</div>
-  </div>
-
-  <!-- Feedback Viewer Section with Delete -->
-  <div class="card" style="margin-top: 30px;">
-    <div class="title">📬 User Feedbacks</div>
-    <div id="feedbackList" style="text-align: left; max-height: 400px; overflow-y: auto;"></div>
-  </div>
-
-  <!-- Daily Visit Graph -->
-  <div class="chart-card">
-    <div class="title">Daily Visit Graph (Last 30 Days)</div>
-    <canvas id="dailyChart" width="100%" height="60"></canvas>
-  </div>
-
-  <!-- Ad Earnings Graph -->
-  <div class="chart-card">
-    <div class="title">📈 Ad Earnings (Last 30 Days)</div>
-    <canvas id="adsChart" width="100%" height="60"></canvas>
-  </div>
-
-  <!-- Firebase & Chart.js Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script type="module">
+// --- Start of Corrected Dashboard Script ---
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="module">
+    // Authentication Check (Keep this at the top)
     if (sessionStorage.getItem("loggedIn") !== "true") {
       window.location.href = "admin-login.html";
     }
@@ -115,10 +32,16 @@
     // Load Total Visitors
     get(ref(db, 'visitCount')).then(snapshot => {
       document.getElementById('visitCount').innerText = snapshot.exists() ? snapshot.val() : "0";
+    }).catch(error => {
+      console.error("Firebase Error (Total Visits):", error);
+      document.getElementById('visitCount').innerText = "DATA ERROR";
     });
 
-    // Load Daily Visits
+    // Load Daily Visits and Calculate 7/30 Day Totals (and Chart)
     get(ref(db, 'visits_by_day')).then(snapshot => {
+      const weeklyCountEl = document.getElementById('weeklyCount');
+      const monthlyCountEl = document.getElementById('monthlyCount');
+        
       if (snapshot.exists()) {
         const data = snapshot.val();
         const today = new Date();
@@ -135,8 +58,8 @@
           monthlySum += count;
         }
 
-        document.getElementById('weeklyCount').innerText = weeklySum;
-        document.getElementById('monthlyCount').innerText = monthlySum;
+        weeklyCountEl.innerText = weeklySum;
+        monthlyCountEl.innerText = monthlySum;
 
         const ctx = document.getElementById("dailyChart").getContext("2d");
         new Chart(ctx, {
@@ -150,14 +73,21 @@
             plugins: { legend: { display: false } },
             scales: {
               x: { ticks: { maxRotation: 90, minRotation: 45 } },
-              y: { beginAtZero: true }
+              y: { beginAtZero: true, suggestedMax: Math.max(...values) + 5 } // Improve Y-axis scaling
             }
           }
         });
+      } else {
+        weeklyCountEl.innerText = "0";
+        monthlyCountEl.innerText = "0";
       }
+    }).catch(error => {
+      console.error("Firebase Error (Daily Visits):", error);
+      document.getElementById('weeklyCount').innerText = "DATA ERROR";
+      document.getElementById('monthlyCount').innerText = "DATA ERROR";
     });
 
-    // Load Ad Earnings
+    // Load Ad Earnings (and Chart)
     get(ref(db, 'ads_earnings')).then(snapshot => {
       if (snapshot.exists()) {
         const earnings = snapshot.val();
@@ -191,11 +121,14 @@
           }
         });
       }
+    }).catch(error => {
+      console.error("Firebase Error (Ad Earnings):", error);
     });
 
-    // Load Feedbacks
+    // Load Feedbacks (Kept your existing robust logic)
     const feedbackRef = ref(db, 'feedbacks');
     get(feedbackRef).then(snapshot => {
+      // ... (your existing feedback rendering logic here)
       const listDiv = document.getElementById('feedbackList');
       if (snapshot.exists()) {
         const feedbacks = snapshot.val();
@@ -219,17 +152,47 @@
       document.getElementById('feedbackList').innerText = "Error loading feedbacks.";
     });
 
-    // Delete Feedback
+    // Delete Feedback (Needs to be a global function)
     window.deleteFeedback = function (key) {
       const confirmDelete = confirm("Are you sure you want to delete this feedback?");
       if (!confirmDelete) return;
       remove(ref(db, 'feedbacks/' + key)).then(() => {
         alert("Deleted!");
         location.reload();
-      }).catch(() => {
-        alert("Failed to delete.");
+      }).catch((error) => {
+        console.error("Delete Error:", error);
+        alert("Failed to delete. Check console for error details.");
       });
     }
-  </script>
-</body>
-</html>
+</script>
+---
+
+## 2. Fixing the Feedback Visibility Issue
+
+You mentioned: **"there is also error when anyone give feedback I can't able to view in my dashboard."**
+
+This is almost certainly a **Firebase Security Rule issue** related to authentication and permissions.
+
+### A. The Cause: Read Access is Blocked
+
+Your feedback submission works from the public site because you likely set the `.write` rule to `true`. However, your dashboard requires the ability to **read** and **delete** this data.
+
+If you are not properly *authenticated* as the Admin User when you load the dashboard, Firebase blocks the read access, resulting in the "Error loading feedbacks" message.
+
+### B. The Solution: Check Authentication and Rules
+
+You must ensure two things are true:
+
+1.  **Authentication:** Your `admin-login.html` successfully signs you in using Firebase Authentication (e.g., `signInWithEmailAndPassword`) **before** it redirects you to the dashboard. Simply setting `sessionStorage.setItem("loggedIn", "true")` is **not enough** to authenticate you with Firebase.
+2.  **Security Rule:** Your Firebase Realtime Database Rule for the `feedbacks` node must look exactly like this (using your actual Admin User ID):
+
+```json
+"feedbacks": {
+  // Allows anyone to write (submit feedback)
+  ".write": true,
+  // ONLY allows the authenticated admin user to read/delete
+  ".read": "auth != null && auth.uid === 'YOUR_ADMIN_UID'",
+  "$feedbackId": {
+    ".write": "auth != null && auth.uid === 'YOUR_ADMIN_UID'"
+  }
+}

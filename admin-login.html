@@ -1,197 +1,167 @@
+<!DOCTYPE html>
 <html>
-
 <head>
-
     <meta charset="UTF-8">
-
     <title>Admin Login | theknight.info</title>
-
     <style>
-
-        body { font-family: 'Poppins', Arial; background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-
+        body { 
+            font-family: 'Poppins', Arial; 
+            background-color: #f0f4f8; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
         .box { 
-
             background: white; 
-
             padding: 30px; 
-
             border-radius: 12px; 
-
             box-shadow: 0 6px 15px rgba(0,0,0,0.15); 
-
             text-align: center;
-
             width: 90%;
-
             max-width: 400px;
-
         }
-
-        h2 { color: #1a2a6c; margin-bottom: 20px; }
-
+        h2 { 
+            color: #1a2a6c; 
+            margin-bottom: 20px; 
+        }
         input { 
-
             padding: 12px; 
-
-            width: calc(100% - 24px); /* Full width minus padding */
-
+            width: calc(100% - 24px);
             margin-top: 15px; 
-
             border: 1px solid #ccc;
-
             border-radius: 6px;
-
             font-size: 1rem;
-
+            box-sizing: border-box;
         }
-
         button { 
-
             padding: 12px 25px; 
-
             margin-top: 30px; 
-
             background: #2ecc71; 
-
             color: white; 
-
             border: none; 
-
             border-radius: 6px; 
-
             font-weight: 600;
-
             cursor: pointer;
-
             transition: background 0.3s;
-
+            width: 100%;
         }
-
-        button:hover { background: #27ae60; }
-
-        #error { margin-top: 15px; font-weight: 600; }
-
+        button:hover { 
+            background: #27ae60; 
+        }
+        #error { 
+            margin-top: 15px; 
+            font-weight: 600; 
+            min-height: 20px;
+        }
+        .loading {
+            display: none;
+            color: #3498db;
+        }
     </style>
-
 </head>
-
 <body>
-
     <div class="box">
-
         <h2>Admin Login</h2>
-
         <input type="email" id="adminEmail" placeholder="Admin Email" value="admin@example.com" />
-
         <input type="password" id="adminPass" placeholder="Password" />
-
         <button onclick="signInAdmin()">Secure Login</button>
-
+        <div class="loading" id="loading">Logging in...</div>
         <p id="error" style="color: red;"></p>
-
     </div>
 
-
-
     <script type="module">
-
         // Import Firebase modules for initialization and authentication
-
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-
-
-        // Your Firebase Configuration (CRITICAL: MUST be accurate)
-
+        // Your Firebase Configuration
         const firebaseConfig = {
-
             apiKey: "AIzaSyBKZO_8CgrQfm7eBGcR9h8D6JxWY4MBaQ",
-
             authDomain: "hindi-english-dictation.firebaseapp.com",
-
             databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
-
             projectId: "hindi-english-dictation",
-
             storageBucket: "hindi-english-dictation.appspot.com",
-
             messagingSenderId: "186334580803",
-
             appId: "1:186334580803:web:7dfdf806d9da19a4cc4f6",
-
             measurementId: "G-7LH1856B2W"
-
         };
 
-
-
         const app = initializeApp(firebaseConfig);
-
         const auth = getAuth(app);
-
         const errorEl = document.getElementById("error");
+        const loadingEl = document.getElementById("loading");
 
-
+        // Allow Enter key to trigger login
+        document.getElementById('adminPass').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                signInAdmin();
+            }
+        });
 
         // Main sign-in function
-
         window.signInAdmin = function() {
-
             const email = document.getElementById('adminEmail').value.trim();
-
             const password = document.getElementById('adminPass').value.trim();
-
             errorEl.innerText = ""; // Clear previous errors
-
-
+            loadingEl.style.display = 'block';
 
             if (!email || !password) {
-
                 errorEl.innerText = "Please enter both email and password.";
-
+                loadingEl.style.display = 'none';
                 return;
-
             }
 
-
+            console.log("Attempting login with:", email);
 
             signInWithEmailAndPassword(auth, email, password)
-
                 .then((userCredential) => {
-
                     // Success! The user is authenticated with Firebase.
-
-                    // We don't need sessionStorage anymore, but it can be used for fast local checks.
-
-                    sessionStorage.setItem("loggedIn", "true"); 
-
-                    errorEl.innerText = "Login successful!";
-
-                    // Redirect to dashboard now that Firebase knows who they are
-
-                    window.location.href = "admin-dashboard.html";
-
+                    const user = userCredential.user;
+                    console.log("Login successful, user UID:", user.uid);
+                    
+                    // Store login state
+                    sessionStorage.setItem("loggedIn", "true");
+                    errorEl.style.color = "green";
+                    errorEl.innerText = "Login successful! Redirecting...";
+                    
+                    // Redirect to dashboard
+                    setTimeout(() => {
+                        window.location.href = "admin-dashboard.html";
+                    }, 1000);
                 })
-
                 .catch((error) => {
-
                     // Failure: Display friendly error message
-
-                    console.error("Firebase Auth Error:", error.code, error.message);
-
-                    errorEl.innerText = "Login failed: Invalid email or password.";
-
+                    console.error("Full Firebase Auth Error:", error);
+                    loadingEl.style.display = 'none';
+                    
+                    let errorMessage = "Login failed: ";
+                    
+                    switch (error.code) {
+                        case 'auth/invalid-email':
+                            errorMessage += "Invalid email address.";
+                            break;
+                        case 'auth/user-disabled':
+                            errorMessage += "This account has been disabled.";
+                            break;
+                        case 'auth/user-not-found':
+                            errorMessage += "No account found with this email.";
+                            break;
+                        case 'auth/wrong-password':
+                            errorMessage += "Incorrect password.";
+                            break;
+                        case 'auth/too-many-requests':
+                            errorMessage += "Too many failed attempts. Try again later.";
+                            break;
+                        default:
+                            errorMessage += error.message;
+                    }
+                    
+                    errorEl.innerText = errorMessage;
                     document.getElementById('adminPass').value = ''; // Clear password field
-
                 });
-
         }
-
     </script>
-
 </body>
-
 </html>

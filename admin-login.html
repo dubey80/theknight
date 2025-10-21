@@ -17,7 +17,7 @@
         h2 { color: #1a2a6c; margin-bottom: 20px; }
         input { 
             padding: 12px; 
-            width: calc(100% - 24px); /* Full width minus padding */
+            width: 100%; 
             margin-top: 15px; 
             border: 1px solid #ccc;
             border-radius: 6px;
@@ -41,7 +41,7 @@
 <body>
     <div class="box">
         <h2>Admin Login</h2>
-        <input type="email" id="adminEmail" placeholder="Admin Email" value="admin@example.com" />
+        <input type="email" id="adminEmail" placeholder="Admin Email" value="didishiv08@gmail.com" />
         <input type="password" id="adminPass" placeholder="Password" />
         <button onclick="signInAdmin()">Secure Login</button>
         <p id="error" style="color: red;"></p>
@@ -82,7 +82,6 @@
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     // Success! The user is authenticated with Firebase.
-                    // We don't need sessionStorage anymore, but it can be used for fast local checks.
                     sessionStorage.setItem("loggedIn", "true"); 
                     errorEl.innerText = "Login successful!";
                     // Redirect to dashboard now that Firebase knows who they are

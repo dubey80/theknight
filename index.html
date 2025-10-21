@@ -424,6 +424,8 @@
     .btn-play-all:after {
       background: linear-gradient(to right, #8e44ad, #9b59b6);
     }
+
+
     
     /* Words Container */
     .words-container {
@@ -1456,8 +1458,9 @@
 
 <!-- Firebase Visit Tracking Script -->
 <script type="module">
+  // Consolidated imports for all required functions
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  import { getDatabase, ref, get, set, push } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBKZO_8CgrQfm7eBGcR9h8D6JxWY4MBaQ",
@@ -1472,24 +1475,106 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
-  const today = new Date().toISOString().slice(0, 10); // format: YYYY-MM-DD
+  // -----------------------------------------------------------
+  // 1. VISITOR COUNTING LOGIC (Runs once per page load)
+  // -----------------------------------------------------------
 
-  // Update total visit count
-  const totalRef = ref(db, 'visitCount');
-  get(totalRef).then((snapshot) => {
-    const current = snapshot.exists() ? snapshot.val() : 0;
-    set(totalRef, current + 1);
+  // Function to increment total count and daily count
+  function incrementVisitCounters() {
+    // A. Update total visit count (visitCount)
+    const totalRef = ref(db, 'visitCount');
+    get(totalRef).then((snapshot) => {
+      const current = snapshot.exists() ? snapshot.val() : 0;
+      set(totalRef, current + 1);
+    });
+
+    // B. Update daily visit count (visits_by_day/YYYY-MM-DD)
+    const dailyRef = ref(db, `visits_by_day/${today}`);
+    get(dailyRef).then((snapshot) => {
+      const count = snapshot.exists() ? snapshot.val() : 0;
+      set(dailyRef, count + 1);
+    });
+  }
+
+  // -----------------------------------------------------------
+  // 2. LIVE DISPLAY LOGIC (The function you needed)
+  // -----------------------------------------------------------
+
+  function fetchTotalVisits() {
+    const totalRef = ref(db, 'visitCount');
+    get(totalRef).then((snapshot) => {
+      const visitCountElement = document.getElementById('visitCount');
+      if (snapshot.exists()) {
+        const totalVisits = snapshot.val();
+        // Displays the live count from Firebase
+        visitCountElement.textContent = totalVisits.toLocaleString();
+      } else {
+        visitCountElement.textContent = '0';
+      }
+    }).catch((error) => {
+        console.error("Error fetching total visits:", error);
+        document.getElementById('visitCount').textContent = 'Error Loading';
+    });
+  }
+
+  // -----------------------------------------------------------
+  // 3. FEEDBACK SUBMISSION LOGIC
+  // -----------------------------------------------------------
+  
+  window.submitFeedback = function () {
+    const text = document.getElementById("feedbackText").value.trim();
+    const msg = document.getElementById("feedbackMsg");
+
+    if (!text) {
+      msg.style.color = "red";
+      msg.innerText = "❗ कृपया फीडबैक लिखें।";
+      return;
+    }
+
+    const feedbackRef = ref(db, 'feedbacks');
+    push(feedbackRef, {
+      text: text,
+      timestamp: Date.now()
+    }).then(() => {
+      msg.style.color = "green";
+      msg.innerText = "✅ आपका फीडबैक भेजा गया!";
+      document.getElementById("feedbackText").value = "";
+    }).catch(() => {
+      msg.style.color = "red";
+      msg.innerText = "❌ कुछ त्रुटि हुई। बाद में पुनः प्रयास करें।";
+    });
+  };
+
+  // -----------------------------------------------------------
+  // 4. EXECUTION ON LOAD
+  // -----------------------------------------------------------
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Run the increment logic immediately
+    incrementVisitCounters();
+    
+    // 2. Fetch and display the (newly incremented) total count
+    fetchTotalVisits();
+    
+    // Your other local DOMContentLoaded logic below this...
+    const dictationWords = JSON.parse(localStorage.getItem('dictationWords') || '[]');
+    const container = document.querySelector('.words-container');
+    if (dictationWords.length) {
+        container.innerHTML = '';
+        dictationWords.forEach(wordObj => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            // Note: This still doesn't show the meaning, but we fixed the counter!
+            card.innerHTML = `<div class="word-text hindi-font">${wordObj.word}</div>
+                              <div class="word-meaning">${wordObj.meaning}</div>`;
+            container.appendChild(card);
+        });
+    }
   });
 
-  // Update daily visit count
-  const dailyRef = ref(db, `visits_by_day/${today}`);
-  get(dailyRef).then((snapshot) => {
-    const count = snapshot.exists() ? snapshot.val() : 0;
-    set(dailyRef, count + 1);
-  });
 </script>
-
 
 
 <script type="module">
@@ -1570,7 +1655,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
       </button>
-      <h1>Hindi-English Dictation</h1>
+      <h2 style="font-size: 2.8rem; margin: 10px 0 15px; color: #2c3e50;">Hindi-English Dictation</h2>
       <p>Master difficult words for competitive exams like IAS, PCS, UPSI and more</p>
     </div>
 
@@ -1585,9 +1670,13 @@ document.addEventListener('DOMContentLoaded', () => {
       <button class="nav-btn secondary" id="englishNavBtn">
         <i class="fas fa-book"></i> English Hard Words
       </button>
-       <a href="learn-letters.html" style="margin: 5px; padding: 10px 20px; background: green; border: 2px solid yellow; color: white; text-decoration: none; border-radius: 8px;">🔤 Learn Letters</a>
-
- <a href="learn-Language.html" style="background-color: green; color: white; border: 2px solid yellow; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;">🎥 Learn via YouTube</a>
+      
+      <a href="learn-letters.html" class="nav-btn important">
+  <i class="fas fa-font"></i> Learn Letters
+</a>
+<a href="learn-Language.html" class="nav-btn secondary">
+  <i class="fas fa-video"></i> Learn via YouTube
+</a>
 
 
       
@@ -3092,10 +3181,8 @@ document.addEventListener('DOMContentLoaded', () => {
         renderEnglishWords();
         
         // Initialize visit counter
-        let visitCounter = localStorage.getItem('visitCount') || 0;
-        visitCounter = parseInt(visitCounter) + 1;
-        localStorage.setItem('visitCount', visitCounter);
-        visitCount.textContent = visitCounter;
+        
+      
       }
       
       // Set up all event listeners

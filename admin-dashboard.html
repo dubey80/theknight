@@ -33,9 +33,10 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
-            /* Set a consistent height for all cards/charts */
-            height: 350px; 
-            box-sizing: border-box; /* Include padding in the height */
+            height: 400px; /* Increased height for better chart display */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
         .stats-grid {
             display: flex;
@@ -55,6 +56,7 @@
             text-align: center;
             font-weight: 500;
             color: #555;
+            flex-shrink: 0;
         }
         .value {
             font-size: 2.2rem;
@@ -62,15 +64,22 @@
             color: #1a2a6c;
             text-align: center;
             display: block;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        /* --- CHART STABILITY FIX CSS --- */
-        .chart-card canvas {
-            /* Now the canvas will take the remaining height of the card, 
-               respecting the 350px total height set on .chart-card */
-            height: calc(100% - 45px); /* 45px is roughly the height of the .title + margin */
+        /* FIXED CHART CONTAINER */
+        .chart-container {
+            flex-grow: 1;
+            position: relative;
             width: 100%;
+            height: 300px;
         }
-        /* --------------------------------- */
+        .chart-card canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
 
         .logout-btn {
             background: #e74c3c;
@@ -141,16 +150,20 @@
     <div class="stats-grid">
         <div class="chart-card"> 
             <div class="title">Daily Visit Graph (Last 30 Days)</div>
-            <canvas id="dailyChart"></canvas> 
+            <div class="chart-container">
+                <canvas id="dailyChart"></canvas>
+            </div>
         </div>
         
         <div class="chart-card"> 
             <div class="title">📈 Ad Earnings (Last 30 Days)</div>
-            <canvas id="adsChart"></canvas>
+            <div class="chart-container">
+                <canvas id="adsChart"></canvas>
+            </div>
         </div>
     </div>
 
-    <div class="chart-card" style="margin-top: 20px; max-width: 1200px; height: auto;">
+    <div class="chart-card" style="margin-top: 20px; max-width: 1200px; height: auto; min-height: 400px;">
         <div class="title">📬 User Feedbacks</div>
         <div id="feedbackList" style="text-align: left; max-height: 400px; overflow-y: auto;">Loading feedbacks...</div>
     </div>
@@ -180,6 +193,10 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
 
+        // Chart instances for proper cleanup
+        let dailyChartInstance = null;
+        let adsChartInstance = null;
+
         // --- Logout Function (Uses Firebase Auth) ---
         window.logout = function () {
             signOut(auth).then(() => {
@@ -191,8 +208,23 @@
             });
         }
 
+        // Function to destroy charts properly
+        function destroyCharts() {
+            if (dailyChartInstance) {
+                dailyChartInstance.destroy();
+                dailyChartInstance = null;
+            }
+            if (adsChartInstance) {
+                adsChartInstance.destroy();
+                adsChartInstance = null;
+            }
+        }
+
         // --- Main Data Loading Function ---
         function loadDashboardData() {
+            // Destroy existing charts first
+            destroyCharts();
+
             // Load Total Visitors
             get(ref(db, 'visitCount')).then(snapshot => {
                 const count = snapshot.exists() ? snapshot.val() : 0;
@@ -228,25 +260,68 @@
                     monthlyCountEl.innerText = monthlySum.toLocaleString();
 
                     const ctx = document.getElementById("dailyChart").getContext("2d");
-                    new Chart(ctx, {
+                    dailyChartInstance = new Chart(ctx, {
                         type: 'bar',
                         data: {
                             labels: labels,
-                            datasets: [{ label: "Visits", data: values, backgroundColor: "#3498db" }]
+                            datasets: [{ 
+                                label: "Visits", 
+                                data: values, 
+                                backgroundColor: "#3498db",
+                                borderColor: "#2980b9",
+                                borderWidth: 1
+                            }]
                         },
                         options: {
-                            responsive: true, 
-                            maintainAspectRatio: false, // Essential for fixed height container
-                            aspectRatio: 2.5,           // This is ignored when maintainAspectRatio is false, but kept for clarity
-                            plugins: { legend: { display: false } },
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { 
+                                legend: { 
+                                    display: false 
+                                } 
+                            },
                             scales: {
-                                x: { ticks: { maxRotation: 90, minRotation: 45 } },
-                                y: { beginAtZero: true, suggestedMax: Math.max(...values) + 5 }
+                                x: { 
+                                    ticks: { 
+                                        maxRotation: 90, 
+                                        minRotation: 45,
+                                        autoSkip: true,
+                                        maxTicksLimit: 15
+                                    } 
+                                },
+                                y: { 
+                                    beginAtZero: true,
+                                    suggestedMax: Math.max(...values) > 0 ? Math.max(...values) + 5 : 10
+                                }
                             }
                         }
                     });
                 } else {
-                    weeklyCountEl.innerText = "0"; monthlyCountEl.innerText = "0";
+                    weeklyCountEl.innerText = "0"; 
+                    monthlyCountEl.innerText = "0";
+                    
+                    // Create empty chart if no data
+                    const ctx = document.getElementById("dailyChart").getContext("2d");
+                    dailyChartInstance = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: [],
+                            datasets: [{ 
+                                label: "Visits", 
+                                data: [], 
+                                backgroundColor: "#3498db"
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { display: false },
+                                y: { display: false }
+                            }
+                        }
+                    });
                 }
             }).catch(error => {
                 console.error("Firebase Error (Daily Visits):", error);
@@ -277,7 +352,7 @@
                     totalAdsEl.innerText = `₹ ${totalSum.toFixed(2).toLocaleString()}`;
 
                     const ctx = document.getElementById("adsChart").getContext("2d");
-                    new Chart(ctx, {
+                    adsChartInstance = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels,
@@ -286,18 +361,47 @@
                                 data: values,
                                 borderColor: "#2ecc71",
                                 backgroundColor: "rgba(46, 204, 113, 0.1)",
-                                fill: true
+                                fill: true,
+                                tension: 0.4
                             }]
                         },
                         options: {
-                            responsive: true, 
-                            maintainAspectRatio: false, // Essential for fixed height container
-                            aspectRatio: 2.5,           // This is ignored when maintainAspectRatio is false
-                            scales: { y: { beginAtZero: true } }
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: { 
+                                y: { 
+                                    beginAtZero: true,
+                                    suggestedMax: Math.max(...values) > 0 ? Math.max(...values) + 5 : 10
+                                } 
+                            }
                         }
                     });
                 } else {
                     totalAdsEl.innerText = "₹ 0.00";
+                    
+                    // Create empty chart if no data
+                    const ctx = document.getElementById("adsChart").getContext("2d");
+                    adsChartInstance = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: [],
+                            datasets: [{
+                                label: "₹ Earnings",
+                                data: [],
+                                borderColor: "#2ecc71",
+                                backgroundColor: "rgba(46, 204, 113, 0.1)",
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: { 
+                                y: { display: false },
+                                x: { display: false }
+                            }
+                        }
+                    });
                 }
             }).catch(error => {
                 console.error("Firebase Error (Ad Earnings):", error);
@@ -358,6 +462,9 @@
                 window.location.href = "admin-login.html";
             }
         });
+
+        // Clean up charts when page is unloaded
+        window.addEventListener('beforeunload', destroyCharts);
 
     </script>
 </body>

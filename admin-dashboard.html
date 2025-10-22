@@ -33,7 +33,8 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
-            height: 400px; /* Increased height for better chart display */
+            /* FIX 1: Set fixed height for card and flex properties for layout */
+            height: 400px; 
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -56,7 +57,7 @@
             text-align: center;
             font-weight: 500;
             color: #555;
-            flex-shrink: 0;
+            flex-shrink: 0; /* Ensures the title doesn't shrink */
         }
         .value {
             font-size: 2.2rem;
@@ -64,21 +65,21 @@
             color: #1a2a6c;
             text-align: center;
             display: block;
-            flex-grow: 1;
+            flex-grow: 1; /* Ensures value takes up remaining space in data cards */
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        /* FIXED CHART CONTAINER */
+        /* CHART STABILITY FIX CSS */
         .chart-container {
-            flex-grow: 1;
+            flex-grow: 1; /* FIX 2: Container takes up all available vertical space */
             position: relative;
             width: 100%;
-            height: 300px;
         }
         .chart-card canvas {
+            /* FIX 3: Canvas forced to fill the fixed size of the container */
             width: 100% !important;
-            height: 100% !important;
+            height: 100% !important; 
         }
 
         .logout-btn {
@@ -176,9 +177,11 @@
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
         // --- ADMIN UID IS CORRECTLY INSERTED HERE ---
+        // NOTE: This UID is publicly visible. SECURITY MUST be enforced via Firebase Security Rules.
         const ADMIN_UID = '3fyIVo6WCUOJQeUixDmJ6igpoYq2';
 
         const firebaseConfig = {
+            // NOTE: This config is publicly visible. SECURITY MUST be enforced via Firebase Security Rules.
             apiKey: "AIzaSyBKZO_80CrgQfm7eBGcR9h8D6JxWY4MBaQ",
             authDomain: "hindi-english-dictation.firebaseapp.com",
             databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -193,9 +196,19 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
 
-        // Chart instances for proper cleanup
         let dailyChartInstance = null;
         let adsChartInstance = null;
+
+        function destroyCharts() {
+            if (dailyChartInstance) {
+                dailyChartInstance.destroy();
+                dailyChartInstance = null;
+            }
+            if (adsChartInstance) {
+                adsChartInstance.destroy();
+                adsChartInstance = null;
+            }
+        }
 
         // --- Logout Function (Uses Firebase Auth) ---
         window.logout = function () {
@@ -208,21 +221,8 @@
             });
         }
 
-        // Function to destroy charts properly
-        function destroyCharts() {
-            if (dailyChartInstance) {
-                dailyChartInstance.destroy();
-                dailyChartInstance = null;
-            }
-            if (adsChartInstance) {
-                adsChartInstance.destroy();
-                adsChartInstance = null;
-            }
-        }
-
         // --- Main Data Loading Function ---
         function loadDashboardData() {
-            // Destroy existing charts first
             destroyCharts();
 
             // Load Total Visitors
@@ -274,12 +274,8 @@
                         },
                         options: {
                             responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: { 
-                                legend: { 
-                                    display: false 
-                                } 
-                            },
+                            maintainAspectRatio: false, // CHART STABILITY FIX
+                            plugins: { legend: { display: false } },
                             scales: {
                                 x: { 
                                     ticks: { 
@@ -297,29 +293,17 @@
                         }
                     });
                 } else {
-                    weeklyCountEl.innerText = "0"; 
-                    monthlyCountEl.innerText = "0";
+                    weeklyCountEl.innerText = "0"; monthlyCountEl.innerText = "0";
                     
-                    // Create empty chart if no data
                     const ctx = document.getElementById("dailyChart").getContext("2d");
                     dailyChartInstance = new Chart(ctx, {
                         type: 'bar',
-                        data: {
-                            labels: [],
-                            datasets: [{ 
-                                label: "Visits", 
-                                data: [], 
-                                backgroundColor: "#3498db"
-                            }]
-                        },
+                        data: { labels: [], datasets: [{ label: "Visits", data: [], backgroundColor: "#3498db" }] },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
                             plugins: { legend: { display: false } },
-                            scales: {
-                                x: { display: false },
-                                y: { display: false }
-                            }
+                            scales: { x: { display: false }, y: { display: false } }
                         }
                     });
                 }
@@ -367,7 +351,7 @@
                         },
                         options: {
                             responsive: true,
-                            maintainAspectRatio: false,
+                            maintainAspectRatio: false, // CHART STABILITY FIX
                             scales: { 
                                 y: { 
                                     beginAtZero: true,
@@ -379,27 +363,14 @@
                 } else {
                     totalAdsEl.innerText = "₹ 0.00";
                     
-                    // Create empty chart if no data
                     const ctx = document.getElementById("adsChart").getContext("2d");
                     adsChartInstance = new Chart(ctx, {
                         type: 'line',
-                        data: {
-                            labels: [],
-                            datasets: [{
-                                label: "₹ Earnings",
-                                data: [],
-                                borderColor: "#2ecc71",
-                                backgroundColor: "rgba(46, 204, 113, 0.1)",
-                                fill: true
-                            }]
-                        },
+                        data: { labels: [], datasets: [{ label: "₹ Earnings", data: [], borderColor: "#2ecc71" }] },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
-                            scales: { 
-                                y: { display: false },
-                                x: { display: false }
-                            }
+                            scales: { y: { display: false }, x: { display: false } }
                         }
                     });
                 }
@@ -453,17 +424,14 @@
         // --- Authentication Handler (Secure Check) ---
         onAuthStateChanged(auth, (user) => {
             if (user && user.uid === ADMIN_UID) {
-                // User is signed in and is the Admin, load data
                 console.log("Admin authenticated successfully.");
                 loadDashboardData();
             } else {
-                // User is not signed in or is not the admin, redirect to login
                 console.log("Not authenticated as admin. Redirecting.");
                 window.location.href = "admin-login.html";
             }
         });
 
-        // Clean up charts when page is unloaded
         window.addEventListener('beforeunload', destroyCharts);
 
     </script>

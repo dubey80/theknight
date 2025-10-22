@@ -1,167 +1,212 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Login | theknight.info</title>
-    <style>
-        body { 
-            font-family: 'Poppins', Arial; 
-            background-color: #f0f4f8; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-        }
-        .box { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 6px 15px rgba(0,0,0,0.15); 
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-        }
-        h2 { 
-            color: #1a2a6c; 
-            margin-bottom: 20px; 
-        }
-        input { 
-            padding: 12px; 
-            width: calc(100% - 24px);
-            margin-top: 15px; 
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-            box-sizing: border-box;
-        }
-        button { 
-            padding: 12px 25px; 
-            margin-top: 30px; 
-            background: #2ecc71; 
-            color: white; 
-            border: none; 
-            border-radius: 6px; 
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-            width: 100%;
-        }
-        button:hover { 
-            background: #27ae60; 
-        }
-        #error { 
-            margin-top: 15px; 
-            font-weight: 600; 
-            min-height: 20px;
-        }
-        .loading {
-            display: none;
-            color: #3498db;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | theknight.info</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { 
+            font-family: 'Poppins', Arial; 
+            background-color: #f0f4f8; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        .box { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15); 
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+        h2 { 
+            color: #1a2a6c; 
+            margin-bottom: 20px; 
+        }
+        input { 
+            padding: 12px; 
+            width: calc(100% - 24px);
+            margin-top: 15px; 
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        button { 
+            padding: 12px 25px; 
+            margin-top: 30px; 
+            background: #1a2a6c; 
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        button:hover:not(:disabled) { 
+            background: #283e8a; 
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        #error { 
+            margin-top: 15px; 
+            font-weight: 600; 
+            min-height: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="box">
-        <h2>Admin Login</h2>
-        <input type="email" id="adminEmail" placeholder="Admin Email" value="admin@example.com" />
-        <input type="password" id="adminPass" placeholder="Password" />
-        <button onclick="signInAdmin()">Secure Login</button>
-        <div class="loading" id="loading">Logging in...</div>
-        <p id="error" style="color: red;"></p>
-    </div>
+    <div class="box">
+        <h2>Admin Login</h2>
+        <input type="email" id="adminEmail" placeholder="Admin Email" value="admin@example.com" />
+        <input type="password" id="adminPass" placeholder="Password" />
+        <button id="loginButton" onclick="signInAdmin()">
+            <span id="buttonText">Secure Login</span>
+            <i id="loadingSpinner" class="fas fa-spinner fa-spin ml-2 hidden"></i>
+        </button>
+        <p id="error" style="color: red;"></p>
+    </div>
 
-    <script type="module">
-        // Import Firebase modules for initialization and authentication
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-        // Your Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBKZO_80CrgQfm7eBGcR9h8D6JxWY4MBaQ",
-            authDomain: "hindi-english-dictation.firebaseapp.com",
-            databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "hindi-english-dictation",
-            storageBucket: "hindi-english-dictation.appspot.com",
-            messagingSenderId: "186334580803",
-            appId: "1:186334580803:web:7dfdf806d9da19a4cc4f6",
-            measurementId: "G-7LH1856B2W"
-        };
+        // VITAL SECURITY STEP 1:
+        // *** ACTION REQUIRED: YOU MUST REPLACE THIS PLACEHOLDER WITH YOUR NEW, RESTRICTED API KEY ***
+        const firebaseConfig = {
+            apiKey: "[REPLACE_WITH_YOUR_NEW_API_KEY]", 
+            authDomain: "hindi-english-dictation.firebaseapp.com",
+            databaseURL: "https://hindi-english-dictation-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "hindi-english-dictation",
+            storageBucket: "hindi-english-dictation.appspot.com",
+            messagingSenderId: "186334580803",
+            appId: "1:186334580803:web:7dfdf806d9da19a4cc4f6",
+            measurementId: "G-7LH1856B2W"
+        };
+        
+        // This Admin UID is used for client-side redirection and MUST match the UID in your Firebase Security Rules.
+        const ADMIN_UID = '3fyIVo6WCUOJQeUixDmJ6igpoYq2'; 
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const errorEl = document.getElementById("error");
-        const loadingEl = document.getElementById("loading");
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        const errorEl = document.getElementById("error");
+        const loginButton = document.getElementById('loginButton');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
 
-        // Allow Enter key to trigger login
-        document.getElementById('adminPass').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                signInAdmin();
-            }
-        });
+        function setButtonState(loading) {
+            loginButton.disabled = loading;
+            if (loading) {
+                buttonText.innerText = 'Signing In...';
+                loadingSpinner.classList.remove('hidden');
+                loginButton.style.opacity = '0.8';
+            } else {
+                buttonText.innerText = 'Secure Login';
+                loadingSpinner.classList.add('hidden');
+                loginButton.style.opacity = '1';
+            }
+        }
 
-        // Main sign-in function
-        window.signInAdmin = function() {
-            const email = document.getElementById('adminEmail').value.trim();
-            const password = document.getElementById('adminPass').value.trim();
-            errorEl.innerText = ""; // Clear previous errors
-            loadingEl.style.display = 'block';
+        // Allow Enter key to trigger login
+        document.getElementById('adminPass').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                signInAdmin();
+            }
+        });
 
-            if (!email || !password) {
-                errorEl.innerText = "Please enter both email and password.";
-                loadingEl.style.display = 'none';
-                return;
-            }
+        // Main sign-in function
+        window.signInAdmin = function() {
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPass').value.trim();
+            
+            errorEl.innerText = ""; 
+            setButtonState(true);
 
-            console.log("Attempting login with:", email);
+            if (!email || !password) {
+                errorEl.innerText = "Please enter both email and password.";
+                setButtonState(false);
+                return;
+            }
 
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    // Success! The user is authenticated with Firebase.
-                    const user = userCredential.user;
-                    console.log("Login successful, user UID:", user.uid);
-                    
-                    // Store login state
-                    sessionStorage.setItem("loggedIn", "true");
-                    errorEl.style.color = "green";
-                    errorEl.innerText = "Login successful! Redirecting...";
-                    
-                    // Redirect to dashboard
-                    setTimeout(() => {
-                        window.location.href = "admin-dashboard.html";
-                    }, 1000);
-                })
-                .catch((error) => {
-                    // Failure: Display friendly error message
-                    console.error("Full Firebase Auth Error:", error);
-                    loadingEl.style.display = 'none';
-                    
-                    let errorMessage = "Login failed: ";
-                    
-                    switch (error.code) {
-                        case 'auth/invalid-email':
-                            errorMessage += "Invalid email address.";
-                            break;
-                        case 'auth/user-disabled':
-                            errorMessage += "This account has been disabled.";
-                            break;
-                        case 'auth/user-not-found':
-                            errorMessage += "No account found with this email.";
-                            break;
-                        case 'auth/wrong-password':
-                            errorMessage += "Incorrect password.";
-                            break;
-                        case 'auth/too-many-requests':
-                            errorMessage += "Too many failed attempts. Try again later.";
-                            break;
-                        default:
-                            errorMessage += error.message;
-                    }
-                    
-                    errorEl.innerText = errorMessage;
-                    document.getElementById('adminPass').value = ''; // Clear password field
-                });
-        }
-    </script>
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    
+                    // VITAL SECURITY STEP 2: Client-side check to ensure the signed-in user is the Admin UID
+                    if (user.uid === ADMIN_UID) {
+                        sessionStorage.setItem("loggedIn", "true");
+                        errorEl.style.color = "green";
+                        errorEl.innerText = "Login successful! Redirecting...";
+                        
+                        setTimeout(() => {
+                            window.location.href = "admin-dashboard.html";
+                        }, 500);
+                        
+                    } else {
+                        // User signed in successfully but is NOT the admin; sign them out immediately.
+                        signOut(auth).then(() => {
+                            errorEl.style.color = "red";
+                            errorEl.innerText = "Access Denied: Account not authorized.";
+                            setButtonState(false);
+                        }).catch(e => {
+                            errorEl.innerText = "Access Denied. Error during sign-out. Check console.";
+                            setButtonState(false);
+                        });
+                    }
+                })
+                .catch((error) => {
+                    setButtonState(false);
+                    let errorMessage = "Login failed: ";
+                    
+                    // Enhanced error messages to help debug the failure
+                    switch (error.code) {
+                        case 'auth/invalid-email':
+                        case 'auth/user-not-found':
+                        case 'auth/wrong-password':
+                        case 'auth/invalid-credential':
+                            errorMessage = "Invalid email or password.";
+                            break;
+                        case 'auth/user-disabled':
+                            errorMessage = "This account has been disabled.";
+                            break;
+                        case 'auth/too-many-requests':
+                            errorMessage = "Too many failed attempts. Try again later.";
+                            break;
+                        case 'auth/network-request-failed':
+                            errorMessage = "Network error. Check your connection or API key status.";
+                            break;
+                        default:
+                            errorMessage = `An unexpected error occurred. Error Code: ${error.code}`;
+                    }
+                    
+                    errorEl.innerText = errorMessage;
+                    document.getElementById('adminPass').value = ''; 
+                });
+        }
+        
+        // Check if the user is already logged in as admin and redirect
+        auth.onAuthStateChanged(user => {
+            if (user && user.uid === ADMIN_UID) {
+                window.location.href = "admin-dashboard.html";
+            }
+        });
+    </script>
 </body>
-</html> correct it and give me final result
+</html>

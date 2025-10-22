@@ -88,7 +88,7 @@
         import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
         // VITAL SECURITY STEP 1:
-        // *** YOU MUST REPLACE THIS PLACEHOLDER WITH YOUR NEW, RESTRICTED API KEY ***
+        // *** ACTION REQUIRED: YOU MUST REPLACE THIS PLACEHOLDER WITH YOUR NEW, RESTRICTED API KEY ***
         const firebaseConfig = {
             apiKey: "[REPLACE_WITH_YOUR_NEW_API_KEY]", 
             authDomain: "hindi-english-dictation.firebaseapp.com",
@@ -165,6 +165,9 @@
                             errorEl.style.color = "red";
                             errorEl.innerText = "Access Denied: Account not authorized.";
                             setButtonState(false);
+                        }).catch(e => {
+                            errorEl.innerText = "Access Denied. Error during sign-out. Check console.";
+                            setButtonState(false);
                         });
                     }
                 })
@@ -172,6 +175,7 @@
                     setButtonState(false);
                     let errorMessage = "Login failed: ";
                     
+                    // Enhanced error messages to help debug the failure
                     switch (error.code) {
                         case 'auth/invalid-email':
                         case 'auth/user-not-found':
@@ -185,8 +189,11 @@
                         case 'auth/too-many-requests':
                             errorMessage = "Too many failed attempts. Try again later.";
                             break;
+                        case 'auth/network-request-failed':
+                            errorMessage = "Network error. Check your connection or API key status.";
+                            break;
                         default:
-                            errorMessage = `Login failed.`;
+                            errorMessage = `An unexpected error occurred. Error Code: ${error.code}`;
                     }
                     
                     errorEl.innerText = errorMessage;
